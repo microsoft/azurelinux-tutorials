@@ -1,0 +1,15 @@
+[Unit]
+Description=Resizes rootfs for the boot disk
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=systemd-remount-fs.service dev-disk-by\x2dpartuuid.device var.mount
+Before=systemd-sysusers.service sysinit.target shutdown.target
+ConditionPathExists=!/var/rootfsresized
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/resizefs.sh
+
+[Install]
+WantedBy=multi-user.target

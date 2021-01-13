@@ -1,0 +1,69 @@
+{
+    "Disks": [
+        {
+            "PartitionTableType": "gpt",
+            "MaxSize": 2048,
+            "Artifacts": [
+                {
+                    "Name": "demo",
+                    "Type": "vhd"
+                }
+            ],
+            "Partitions": [
+                {
+                    "ID": "boot",
+                    "Flags": [
+                        "grub"
+                    ],
+                    "Start": 1,
+                    "End": 9,
+                    "FsType": "fat32"
+                },
+                {
+                    "ID": "rootfs",
+                    "Start": 9,
+                    "End": 0,
+                    "FsType": "ext4"
+                }
+            ]
+        }
+    ],
+    "SystemConfigs": [
+        {
+            "Name": "Standard",
+            "BootType": "legacy",
+            "PartitionSettings": [
+                {
+                    "ID": "boot",
+                    "MountPoint": ""
+                },
+                {
+                    "ID": "rootfs",
+                    "MountPoint": "/"
+                }
+            ],
+            "PackageLists": [
+                "demo_package_lists/core-packages.json",
+                "demo_package_lists/demo-packages.json"
+            ],
+            "KernelOptions": {
+                "default": "kernel"
+            },
+            "Hostname": "demo",
+            "Users": [
+                {
+                    "Name": "root",
+                    "Password": "p@ssw0rd"
+                }
+            ],
+            "PostInstallScripts": [
+                {
+                    "Path": "postinstallscripts/demo_script.sh"
+                }
+            ],
+            "AdditionalFiles": {
+                "demo_files/demo_file.txt": "/final_file.txt"
+            }
+        }
+    ]
+}

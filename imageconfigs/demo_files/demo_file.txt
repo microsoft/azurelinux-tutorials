@@ -1,0 +1,1 @@
+Sample additional file copied to the built image. See: 'additional_files' field inside config.json.
