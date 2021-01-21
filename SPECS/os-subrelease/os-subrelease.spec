@@ -6,8 +6,8 @@
 %global _version        %{_version_id}
    
 
-Summary:        Product Subrelease Information
-Name:           product-subrelease
+Summary:        Product OS Subrelease Information
+Name:           os-subrelease
 Version:        1.0
 Release:        1%{?dist}
 License:        Apache License
@@ -18,7 +18,7 @@ Distribution:   Mariner
 BuildArch:      noarch
 
 %description
-This package creates a sample product subrelease file: /etc/os-subrelease.  Replace contents as needed for your CBL-Mariner based product.
+This package creates a sample os subrelease file: /etc/os-subrelease.  Replace contents as needed for your CBL-Mariner based product information
 
 %install
 rm -rf $RPM_BUILD_ROOT

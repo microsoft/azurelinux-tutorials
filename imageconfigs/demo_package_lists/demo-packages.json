@@ -1,6 +1,6 @@
 {
     "packages": [
         "hello_world_demo",
-        "product-subrelease"
+        "os-subrelease"
     ]
 }
