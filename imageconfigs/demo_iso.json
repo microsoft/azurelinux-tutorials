@@ -1,0 +1,23 @@
+{
+    "SystemConfigs": [
+        {
+            "Name": "Demo",
+            "PackageLists": [
+                "demo_package_lists/core-packages.json",
+                "demo_package_lists/demo-packages.json",
+                "demo_package_lists/uefi-bootloader-packages.json"
+            ],
+            "PostInstallScripts": [
+                {
+                    "Path": "postinstallscripts/demo_script.sh"
+                }
+            ],
+            "KernelOptions": {
+                "default": "kernel"
+            },
+            "AdditionalFiles": {
+                "demo_files/demo_file.txt": "/final_file.txt"
+            }
+        }
+    ]
+}
