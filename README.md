@@ -193,7 +193,7 @@ In the previous section we described how the package lists are defined.  In this
 
 The Zip package is not included in the demo image by default.  Because Zip is already released for CBL-Mariner lets add it to your demo image.  Open the [core-packages.json](./imageconfigs/demo_package_lists/core-packages.json) file with your favorite editor,  Add zip to the packages array before initramfs.  While it's possible to add zip after initramfs, it is currently recommended to insert new packages before initramfs due to a performance quirk in the build system.
 
-```json
+```
  {
     "packages": [
         "core-packages-base-image",
@@ -219,7 +219,7 @@ Boot the image and verify that the latest version of zip is now provided:
     Installed Packages
     Name        : zip
     Version     : 3.0   <---\
-    Release     : 5.cm  <---|--- Your Version+Release will be greater than or equal to this version
+    Release     : 5.cm1 <---|--- Your Version+Release will be greater than or equal to this version
     
 ```
 
@@ -235,7 +235,7 @@ Occassionally you may need to install a very specific version of a package in yo
 
 This time lets add Unzip version 6.0-16 to our demo image.  To do this, you must specify the full name and architecture of your preferred package.
 
-```json
+```
  {
     "packages": [
         "core-packages-base-image",
@@ -392,7 +392,7 @@ Boot your image, log in and verify that gnuchess is now available:
 ```bash
     root@demo [~]# gnuchess
     GNU Chess 6.2.7
-    Copyright (C) 202 Free Software Foundation, Inc.
+    Copyright (C) 2020 Free Software Foundation, Inc.
     License GPLv3+ GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
     This is free software: you are free to change and redistribute it.
     There is NO WARRANTY, to the extent permitted by law.
