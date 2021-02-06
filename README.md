@@ -1,14 +1,27 @@
 
 # **Introduction**
 
-The CBL-Mariner repository provides detailed instructions on building CBL-Mariner from end-to-end.  While it is possible to clone CBL-Mariner and build packages or images from that environment, it is _not the recommended approach_ for most users.  Usually it is best to work in a smaller, problem focused environment where you can quickly build just what you need, and rely on the fact that the curated CBL-Mariner packages are already available in the cloud. In this way, you can customize an image with your preferred disk layout or adding supplemental packages that CBL-Mariner may not provide.  If you are building a product based on CBL-Mariner, you may want your own repository with just the minimal set of packages for your business needs.  This repo, the CBL-MarinerDemo repo, provides a basic template for getting started.  From here you can create a CBL-Mariner based product (aka a Derivative Image) or you may generate quick experimental or debug builds to try out new ideas.
+The [CBL-Mariner](https://github.com/microsoft/CBL-Mariner) repository provides detailed instructions for building CBL-Mariner from end-to-end.  While it is possible to clone CBL-Mariner and build packages or images from that environment, for most users, it is _not the recommended approach_.  Usually it is best to work in a smaller, problem focused environment where you can quickly build just what you need, and rely on the fact that the curated CBL-Mariner packages are already available in the cloud. In this way, you can customize an image with your preferred disk layout or adding supplemental packages that CBL-Mariner may not provide.  If you are building a product based on CBL-Mariner, you may want your own repository with just the minimal set of packages for your business needs.  This repo, the CBL-MarinerDemo repo, provides a basic template for getting started.  From here you can create a CBL-Mariner based product (aka a Derivative Image) or you may generate quick experimental or debug builds to try out new ideas.
 
 When you build an ISO, VHD or VHDX image from this repository,  the resulting image will contain additional content unavailable in the CBL-Mariner repo.  The CBL-MarinerDemo repository demonstrates how you can augment CBL-Mariner without forking the CBL-Mariner repository.  This repository contains the SPEC file and source for building a simple "Hello World" application.  This repository also includes a simple "os-subrelease" package that allows you to add identifying information about your derivative to an /etc/os-subrelease file.  
 
 The following tutorial guides you through the process of building and running the basic CBL-MarinerDemo image.  These instructions also describe how to customize or extend the basic CBL-MarinerDemo image.
 
 # Table of Contents
-[TOC]
+[Prequisites: Prepare your Environment](#Prequisites:_Prepare_your_Environment)
+
+[Build Demo VHD or VHDX Image](#build_demo_vhd_or_vhdx)
+
+[Build Demo ISO Image](#build_demo_iso)
+
+[Package Lists](#package_lists)
+
+[Customize Demo Image with Pre-built Packages](#customize_demo_image_with_pre-built_packages)
+
+[Customize Demo Image with New Packages](#customize_demo_image_with_new_packages)
+
+[Modify the Demo Image Kernel](#modify_the_demo_image_kernel)
+
 
 # **Prequisites: Prepare your Environment**
 
@@ -42,7 +55,7 @@ cd CBL-MarinerDemo/toolkit
 sudo mv out/tools ../tools
 ```
 
-# **Build Demo Image**
+# **Build Demo VHD or VHDX**
 
 In the previous section we configured your build machine.  In this section we will build a VHD or VHD(X) image.
 
@@ -111,7 +124,7 @@ Now show the contents of the os-subrelease file
     ```
 Congratulations you've built and launched your first CBL-Mariner derivative image.
 
-# Building an ISO
+# Build Demo ISO
 
 In the previous section we learned how to create a simple VHD(X) image. In this section we will turn our attention to creating a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive. 
 
@@ -189,7 +202,7 @@ The second package list, demo-packages.json, contains the Hello World and os-sub
    }
    ```
 
-# Adding Pre-built Packages to an Image
+# Customize Demo Image with Pre-built Packages
 
 In the previous section we described how the package lists are defined.  In this section we will add a pre-built package to the core-packages.json file.
 
@@ -272,7 +285,7 @@ Boot the image and verify that unzip in now provided, _and_ it is the -16 versio
     ...
 ```
 
-# Adding New Packages to an Image
+# Customize Demo Image with New Packages
 
 In the previous section we described how pre-existing packages can be added to the Demo image.  In this section we will walk through the process of adding a new package.  
 
@@ -411,7 +424,7 @@ Boot your image, log in and verify that gnuchess is now available:
     White (1) :
 ```
 
-# Modifying the Kernel
+# Modify the Demo Image Kernel
 
 In some situations you may want to build and test variations of the default CBL-Mariner Kernel.  Because the kernel is also a package, the process is similar to adding a new package as discussed in the previous section.  
 
@@ -489,7 +502,7 @@ One last step before building.  When there is a conflict, the build system will 
 Summary:        Linux Kernel
 Name:           kernel
 Version:        5.4.91
-Release:        100%{?dist}               <------------------ set this value to 100
+Release:        100%{?dist}               <------------------ set this value to 100 (for example)
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
