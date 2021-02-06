@@ -428,7 +428,7 @@ Boot your image, log in and verify that gnuchess is now available:
 
 In some situations you may want to build and test variations of the default CBL-Mariner Kernel.  Because the kernel is also a package, the process is similar to adding a new package as discussed in the previous section.  
 
-To begin, copy the complete contents of the CBL-Mariner kernel spec folder into your clone of the CBL-MarinerDemo repo.  The following assumes you have CBL-Mariner and CBL-MarinerDemo cloned and nested under a git folder:
+To begin, copy the complete contents of the CBL-Mariner kernel spec folder into your clone of the CBL-MarinerDemo repo.  The following assumes you have already cloned CBL-Mariner and the CBL-MarinerDemo demo repo and both are nested under a git folder:
 
 ```bash
 user@machine:~/git$ cp -r CBL-Mariner/SPECS/kernel/ CBL-MarinerDemo/SPECS/kernel/ 
@@ -460,7 +460,7 @@ CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0x1
 CONFIG_MAGIC_SYSRQ_SERIAL=y
 ```
 
-Note that the kernel spec file, from the CBL-Mariner repo, requires implicitly enabled settings to be explicitly set.  In this case enabling CONFIG_MAGIC_SYSRQ is insufficient because CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE and CONFIG_MAGIC_SYSRQ_SERIAL are implicitly enabled.  If they were missing, compilation of the kernel would fail.  In general, when an error of this nature occurs, the build log file for the kernel will indicate what needs to be changed.  For example, if we only set CONFIG_MAGIC_SYSRQ=y, the build would have crashed and the output log would have looked similar to the following:
+Note that the kernel spec file, from the CBL-Mariner repo, requires implicitly enabled settings to be explicitly set.  In this case enabling CONFIG_MAGIC_SYSRQ is insufficient because CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE and CONFIG_MAGIC_SYSRQ_SERIAL are implicitly enabled.  If they were missing, compilation of the kernel would fail.  In general, when an error of this nature occurs, the build log file for the kernel will indicate what needs to be changed.  For example, if we _only_ set CONFIG_MAGIC_SYSRQ=y, the build would eventually fail with the build output shown here:
 
 ```
 time="2021-02-05T11:16:15-08:00" level=debug msg="Magic SysRq key (MAGIC_SYSRQ) [Y/n/?] y"
@@ -487,7 +487,7 @@ time="2021-02-05T11:16:15-08:00" level=debug msg=" CONFIG_DEBUG_MISC=y"
 time="2021-02-05T11:16:15-08:00" level=debug msg=" "
 ```
 
-After editing save the file and compute a new sha256sum.
+After editing your config file, save it and compute a new sha256sum.
 
 ```bash
 $ sha256sum config
@@ -512,14 +512,19 @@ After saving your file, rebuild your demo image.  The kernel will take some time
 
 ```bash
 cd CBL-MarinerDemo/toolkit
+sudo make clean
 sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 
-Boot your image, log in.  Now verify that you have your modified kernel and that you can trigger a sysrq function
+After the build completes, boot your image and log in.  Next, verify that you have your modified kernel and that you can trigger a sysrq function.
 
 ```bash
+    # Verify your kernel's version and release number (this may vary)
     root@demo [~]# uname -r
     5.4.91-100.cm1
+
+    # Verify that sysrq functionality is enabled in the kernel.  
+    # There are several ways to do this, but we'll directly write the
+    # reboot command to /proc/sysrq-trigger 
     root@demo [~]# echo b > /proc/sysrq-trigger
-    #system will immediately reboot.
 ```
