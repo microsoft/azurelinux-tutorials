@@ -1,3 +1,4 @@
+
 # **Introduction**
 
 The CBL-Mariner repository provides detailed instructions on building CBL-Mariner from end-to-end.  While it is possible to clone CBL-Mariner and build packages or images from that environment, it is _not the recommended approach_ for most users.  Usually it is best to work in a smaller, problem focused environment where you can quickly build just what you need, and rely on the fact that the curated CBL-Mariner packages are already available in the cloud. In this way, you can customize an image with your preferred disk layout or adding supplemental packages that CBL-Mariner may not provide.  If you are building a product based on CBL-Mariner, you may want your own repository with just the minimal set of packages for your business needs.  This repo, the CBL-MarinerDemo repo, provides a basic template for getting started.  From here you can create a CBL-Mariner based product (aka a Derivative Image) or you may generate quick experimental or debug builds to try out new ideas.
@@ -5,6 +6,9 @@ The CBL-Mariner repository provides detailed instructions on building CBL-Marine
 When you build an ISO, VHD or VHDX image from this repository,  the resulting image will contain additional content unavailable in the CBL-Mariner repo.  The CBL-MarinerDemo repository demonstrates how you can augment CBL-Mariner without forking the CBL-Mariner repository.  This repository contains the SPEC file and source for building a simple "Hello World" application.  This repository also includes a simple "os-subrelease" package that allows you to add identifying information about your derivative to an /etc/os-subrelease file.  
 
 The following tutorial guides you through the process of building and running the basic CBL-MarinerDemo image.  These instructions also describe how to customize or extend the basic CBL-MarinerDemo image.
+
+# Table of Contents
+[TOC]
 
 # **Prequisites: Prepare your Environment**
 
@@ -387,6 +391,14 @@ Finally, we need to add gnuchess to the demo-packages.json file.
        ]
    }
 ```
+
+Save your demo-packages.json file and rebuild your image.
+
+```bash
+cd CBL-MarinerDemo/toolkit
+sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json
+```
+
 Boot your image, log in and verify that gnuchess is now available:
 
 ```bash
@@ -399,3 +411,102 @@ Boot your image, log in and verify that gnuchess is now available:
     White (1) :
 ```
 
+# Modifying the Kernel
+
+In some situations you may want to build and test variations of the default CBL-Mariner Kernel.  Because the kernel is also a package, the process is similar to adding a new package as discussed in the previous section.  
+
+To begin, copy the complete contents of the CBL-Mariner kernel spec folder into your clone of the CBL-MarinerDemo repo.  The following assumes you have CBL-Mariner and CBL-MarinerDemo cloned and nested under a git folder:
+
+```bash
+user@machine:~/git$ cp -r CBL-Mariner/SPECS/kernel/ CBL-MarinerDemo/SPECS/kernel/ 
+```
+Next, we will need to download a source tarball from github that matches the kernel version in the kernel.spec file.
+
+```bash
+# Switch to the kernel folder
+$ cd CBL-MarinerDemo/SPECS/kernel/ 
+
+# Determine the kernel version you are using (yours may vary)
+$ grep Version: kernel.spec
+Version:        5.4.91
+
+# Download the associated tar.gz file.  Be sure to substitute your version number in the URL here
+$ wget  https://github.com/microsoft/WSL2-Linux-Kernel/archive/linux-msft-5.4.91.tar.gz
+```
+
+Now make your modifications to the one or both of the config files.  For AMD64 modify the `config` file.  For AARCH64, modify the `config_aarch64` file.  
+
+By default the CONFIG_MAGIC_SYSRQ setting is disabled.  For this tutorial we will enable it. Using your favorite editor open the config file.  Find the CONFIG_MAGIC_SYSRQ setting, then make the adjustments as shown here:
+```bash
+# Before
+# CONFIG_MAGIC_SYSRQ is not set
+
+# After
+CONFIG_MAGIC_SYSRQ=y
+CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0x1
+CONFIG_MAGIC_SYSRQ_SERIAL=y
+```
+
+Note that the kernel spec file, from the CBL-Mariner repo, requires implicitly enabled settings to be explicitly set.  In this case enabling CONFIG_MAGIC_SYSRQ is insufficient because CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE and CONFIG_MAGIC_SYSRQ_SERIAL are implicitly enabled.  If they were missing, compilation of the kernel would fail.  In general, when an error of this nature occurs, the build log file for the kernel will indicate what needs to be changed.  For example, if we only set CONFIG_MAGIC_SYSRQ=y, the build would have crashed and the output log would have looked similar to the following:
+
+```
+time="2021-02-05T11:16:15-08:00" level=debug msg="Magic SysRq key (MAGIC_SYSRQ) [Y/n/?] y"
+time="2021-02-05T11:16:15-08:00" level=debug
+time="2021-02-05T11:16:15-08:00" level=debug msg="Error in reading or end of file."
+time="2021-02-05T11:16:15-08:00" level=debug msg="  Enable magic SysRq key functions by default (MAGIC_SYSRQ_DEFAULT_ENABLE) [0x1] (NEW) "
+time="2021-02-05T11:16:15-08:00" level=debug
+time="2021-02-05T11:16:15-08:00" level=debug msg="Error in reading or end of file."
+time="2021-02-05T11:16:15-08:00" level=debug msg="  Enable magic SysRq key over serial (MAGIC_SYSRQ_SERIAL) [Y/n/?] (NEW) "
+.
+.
+.
+time="2021-02-05T11:16:15-08:00" level=debug msg="+ cat config_diff"
+time="2021-02-05T11:16:15-08:00" level=debug msg="--- new_config\t2021-02-05 19:16:15.316175432 +0000"
+time="2021-02-05T11:16:15-08:00" level=debug msg="+++ current_config\t2021-02-05 19:16:09.440117553 +0000"
+time="2021-02-05T11:16:15-08:00" level=debug msg="@@ -6484,8 +6484,6 @@"
+time="2021-02-05T11:16:15-08:00" level=debug msg=" # end of Compile-time checks and compiler options"
+time="2021-02-05T11:16:15-08:00" level=debug msg=" "
+time="2021-02-05T11:16:15-08:00" level=debug msg=" CONFIG_MAGIC_SYSRQ=y"
+time="2021-02-05T11:16:15-08:00" level=debug msg="-CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0x1"
+time="2021-02-05T11:16:15-08:00" level=debug msg="-CONFIG_MAGIC_SYSRQ_SERIAL=y"
+time="2021-02-05T11:16:15-08:00" level=debug msg=" CONFIG_DEBUG_KERNEL=y"
+time="2021-02-05T11:16:15-08:00" level=debug msg=" CONFIG_DEBUG_MISC=y"
+time="2021-02-05T11:16:15-08:00" level=debug msg=" "
+```
+
+After editing save the file and compute a new sha256sum.
+
+```bash
+$ sha256sum config
+f6c3c5eb536f7c7778c3aaa45984de9bf6c58d2a7e5dfd74ace203faabf090a6  config
+```
+
+Now, using your favorite editor update the config file hash(es) in the kernel.signatures.json.
+
+One last step before building.  When there is a conflict, the build system will make a best-effort attempt at prioritizing the local version of a package over the version on packages.microsoft.com.  However, to ensure we can differentiate our new custom kernel from the default kernel, and to guarantee the local version will be consumed, bump the release number in the kernel release spec. In this case use your favorite editor and change the release number to 100 as shown below and save the file.
+
+```
+Summary:        Linux Kernel
+Name:           kernel
+Version:        5.4.91
+Release:        100%{?dist}               <------------------ set this value to 100
+License:        GPLv2
+Vendor:         Microsoft Corporation
+Distribution:   Mariner
+```
+
+After saving your file, rebuild your demo image.  The kernel will take some time to build.
+
+```bash
+cd CBL-MarinerDemo/toolkit
+sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json
+```
+
+Boot your image, log in.  Now verify that you have your modified kernel and that you can trigger a sysrq function
+
+```bash
+    root@demo [~]# uname -r
+    5.4.91-100.cm1
+    root@demo [~]# echo b > /proc/sysrq-trigger
+    #system will immediately reboot.
+```
