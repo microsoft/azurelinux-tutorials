@@ -8,19 +8,19 @@ When you build an ISO, VHD or VHDX image from this repository,  the resulting im
 The following tutorial guides you through the process of building and running the basic CBL-MarinerDemo image.  These instructions also describe how to customize or extend the basic CBL-MarinerDemo image.
 
 # Table of Contents
-[Prequisites: Prepare your Environment](#Prequisites:_Prepare_your_Environment)
+[Prequisites: Prepare your Environment](#Prequisites-Prepare-your-Environment)
 
-[Build Demo VHD or VHDX Image](#build_demo_vhd_or_vhdx)
+[Build Demo VHD or VHDX Image](#build-demo-vhd-or-vhdx)
 
-[Build Demo ISO Image](#build_demo_iso)
+[Build Demo ISO Image](#build-demo-iso)
 
-[Package Lists](#package_lists)
+[Package Lists](#package-lists)
 
-[Customize Demo Image with Pre-built Packages](#customize_demo_image_with_pre-built_packages)
+[Customize Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
 
-[Customize Demo Image with New Packages](#customize_demo_image_with_new_packages)
+[Customize Demo Image with New Packages](#customize-demo-image-with-new-packages)
 
-[Modify the Demo Image Kernel](#modify_the_demo_image_kernel)
+[Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
 
 
 # **Prequisites: Prepare your Environment**
