@@ -35,25 +35,22 @@ To build the CBL-MarinerDemo repository you will need the same toolkit and makef
 git clone https://github.com/microsoft/CBL-Mariner.git
 pushd CBL-Mariner/toolkit
 git checkout 1.0-stable
-sudo make go-tools REBUILD_TOOLS=y
+sudo make package-toolkit REBUILD_TOOLS=y
 popd
 ```
 
-## **Clone CBL-MarinerDemo Repo and Copy the Toolkit**
+## **Clone CBL-MarinerDemo Repo and Extract the Toolkit**
 
-Now clone the CBL-MarinerDemo repo and copy the toolkit to the CBL-MarinerDemo repository.  
+Now clone the CBL-MarinerDemo repo and extract the toolkit to the CBL-MarinerDemo repository.  
 
 ```bash
 git clone https://github.com/microsoft/CBL-MarinerDemo.git
-sudo cp -r CBL-Mariner/toolkit CBL-MarinerDemo/toolkit
+pushd CBL-MarinerDemo
+cp ../CBL-Mariner/out/toolkit-*.tar.gz ./
+tar -xzvf tookit-*.tar.gz
 ```
 
-The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  It is recommended at this point to move the compiled tools to a new folder to prevent them from being scrubbed in a make clean situation.
-
-```bash
-cd CBL-MarinerDemo/toolkit 
-sudo mv out/tools ../tools
-```
+The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build).
 
 # **Build Demo VHD or VHDX**
 
@@ -64,8 +61,8 @@ In the previous section we configured your build machine.  In this section we wi
 Choose an image to build by invoking one of the following build commands from the _CBL-Mariner/toolkit_ folder.
 
 ```bash
-sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json 
-sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhdx.json
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json 
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhdx.json
 ```
 
 The first time make image is invoked the toolkit downloads the necessary toolchain packages from the CBL-Mariner repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the CBL-MarinerDemo repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the [Hello World](./SPECS/hello_world_demo/hello_world_demo.spec) and [OS-Subrelease](./SPECS/os-subrelease/os-subrelease.spec) packages will be compiled.  After all local packages are built, make will assemble the packages to build an image.
@@ -132,7 +129,7 @@ Let's jump right in.  Run the following command to build the demo ISO:
 
 ```bash
 cd CBL-MarinerDemo/toolkit
-sudo make iso TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_iso.json
+sudo make iso CONFIG_FILE=../imageconfigs/demo_iso.json
 ```
 
 **Copy ISO Image to Your VM Host Machine**
@@ -223,7 +220,7 @@ Save the file.  For this tutorial we will continue building the VHD image, but y
 
 ```bash
 cd CBL-MarinerDemo/toolkit
-sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 Boot the image and verify that the latest version of zip is now provided:
 
@@ -267,7 +264,7 @@ Save the file and rebuild your image.
 
 ```bash
 cd CBL-MarinerDemo/toolkit
-sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 Boot the image and verify that unzip in now provided, _and_ it is the -16 version.
 
@@ -387,7 +384,7 @@ At this point, we can use a shortcut to verify that the gnu chess package compil
 
 ```bash
 $ cd CBL-MarinerDemo/toolkit
-$ sudo make build-packages TOOL_BINS_DIR=../tools CONFIG_FILE=
+$ sudo make build-packages CONFIG_FILE=
 ```
 
 If the build fails, inspect the build output for clues and repair any issues.  The default location for build logs is in the 
@@ -409,7 +406,7 @@ Save your demo-packages.json file and rebuild your image.
 
 ```bash
 cd CBL-MarinerDemo/toolkit
-sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 
 Boot your image, log in and verify that gnuchess is now available:
@@ -513,7 +510,7 @@ After saving your file, rebuild your demo image.  The kernel will take some time
 ```bash
 cd CBL-MarinerDemo/toolkit
 sudo make clean
-sudo make image TOOL_BINS_DIR=../tools CONFIG_FILE=../imageconfigs/demo_vhd.json
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 
 After the build completes, boot your image and log in.  Next, verify that you have your modified kernel and that you can trigger a sysrq function.
