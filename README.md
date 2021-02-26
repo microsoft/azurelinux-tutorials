@@ -27,6 +27,33 @@ The following tutorial guides you through the process of building and running th
 
 Before starting this tutorial, you will need to setup your development machine.  These instructions were tested on an x86_64 based machine using Ubuntu 18.04.
 
+## **Install Tools**
+
+These tools are required for building both the toolkit and the images built from the toolkit.  These are the same [prerequisites needed for building CBL-Mariner](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/prerequisites.md).
+
+```bash
+# Add a backports repo in order to install the necessary version of Go.
+sudo add-apt-repository ppa:longsleep/golang-backports
+sudo apt-get update
+
+# Install required dependencies.
+sudo apt -y install make tar wget curl rpm qemu-utils golang-1.15-go genisoimage python-minimal bison gawk
+
+# Recommended but not required: `pigz` for faster compression operations.
+sudo apt -y install pigz
+
+# Fix go 1.15 link
+sudo ln -vsf /usr/lib/go-1.15/bin/go /usr/bin/go
+
+# Install Docker.
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+```
+
+**You will need to log out and lock back in** for user changes to take effect.
+
+
 ## **Clone CBL-Mariner and Build the Toolkit**
 
 To build the CBL-MarinerDemo repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner and build the toolkit.
