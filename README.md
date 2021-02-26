@@ -85,7 +85,7 @@ In the previous section we configured your build machine.  In this section we wi
 
 ## **Build Derivate VHD or VHDX**
 
-Choose an image to build by invoking one of the following build commands from the _CBL-Mariner/toolkit_ folder.
+Choose an image to build by invoking one of the following build commands from the _CBL-MarinerDemo/toolkit_ folder.
 
 ```bash
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json 
