@@ -74,7 +74,7 @@ Now clone the CBL-MarinerDemo repo and extract the toolkit to the CBL-MarinerDem
 git clone https://github.com/microsoft/CBL-MarinerDemo.git
 pushd CBL-MarinerDemo
 cp ../CBL-Mariner/out/toolkit-*.tar.gz ./
-tar -xzvf tookit-*.tar.gz
+tar -xzvf toolkit-*.tar.gz
 ```
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build).
