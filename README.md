@@ -8,20 +8,20 @@ When you build an ISO, VHD or VHDX image from this repository,  the resulting im
 The following tutorial guides you through the process of building and running the basic CBL-MarinerDemo image.  These instructions also describe how to customize or extend the basic CBL-MarinerDemo image.
 
 # Table of Contents
+
 [Prequisites: Prepare your Environment](#Prequisites-Prepare-your-Environment)
 
 [Build Demo VHD or VHDX Image](#build-demo-vhd-or-vhdx)
 
 [Build Demo ISO Image](#build-demo-iso)
 
-[Package Lists](#package-lists)
+[Image config file](#image-config-file)
 
 [Customize Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
 
 [Customize Demo Image with New Packages](#customize-demo-image-with-new-packages)
 
 [Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
-
 
 # **Prequisites: Prepare your Environment**
 
@@ -189,7 +189,19 @@ Copy your binary image(s) to your VM Host Machine using your preferred technique
 1. When installation completes, select restart to reboot the machine. The installation ISO will be automatically ejected.
 1. When prompted sign in to your CBL-Mariner system using the user name and password provisioned through the Installer.
 
-# Package Lists
+# Image config file
+
+## File paths
+
+Any **relative** file path referring to a file on the **build machine** is by default relative to the directory containing the config file itself. In case of this project, all config files are located inside the `imageconfigs` directory, so for a post-install script with a path of `postinstallscripts/demo_script.sh`, the tooling will look for `[repo_path]/imageconfigs/postinstallscripts/demo_script.sh`.
+
+This default path can be changed by setting the `CONFIG_BASE_DIR` argument to a different directory.
+
+All of the **absolute** paths are not affected.
+
+Any file paths on the **built image** should always be absolute. Refer to the `AdditionalFiles` map in this project's config files for an example of using both the relative paths referring to files on the build machine and absolute paths referring to the paths, where these files should appear on the built image.
+
+## Package Lists
 
 In the previous sections, we learned how to build a specific image or iso by passing a CONFIG_FILE argument to make. Each CONFIG_FILE specifies how the image should be built and what contents should be added to it.  In this section we will focus on how the image content is defined.  
 
