@@ -267,7 +267,7 @@ Boot the image and verify that the latest version of zip is now provided:
     root@demo [~]# zip
     Copyright (c) 1990-2008 Info-ZIP - Type 'zip -"L"' for software license.
     Zip 3.0 (July 5th 2008). Usage:
-    ...
+    (...)
     root@demo [~]# dnf info -y zip
     Installed Packages
     Name        : zip
@@ -286,18 +286,21 @@ The next section also describes a technique for pinning specific package version
 
 Occassionally you may need to install a very specific version of a package in your image at build time, rather than the latest version. CBL-Mariner supports this capability.
 
-This time lets add Unzip version 6.0-16 to our demo image.  To do this, you must specify the full name and architecture of your preferred package.
+This time let's add `unzip` version 6.0, release 16.cm1, and the latest release for `etcd` version 3.4.3 to our demo image.  You do this in the following way:
 
-```
- {
+```json
+{
     "packages": [
         "core-packages-base-image",
+        "etcd=3.4.3",         <---- add specific 'etcd' version
         "zip",
-        "unzip-6.0-16.cm1.x86_64",   <---- add specific unzip version
+        "unzip=6.0-16.cm1",   <---- add specific 'unzip' version and release
         "initramfs"
     ],
 }
 ```
+
+**NOTE**: Release fields always have the `.[mariner_release]` suffix (`.cm1` in our case). Specifying only the version without the release number will always get you the latest release for the chosen version.
 
 Save the file and rebuild your image.
 
@@ -305,7 +308,9 @@ Save the file and rebuild your image.
 cd CBL-MarinerDemo/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
-Boot the image and verify that unzip in now provided, _and_ it is the -16 version.
+
+Boot the image and verify that `unzip` in now provided, _and_ it is the 6.0-16 version.
+Similarly, `etcd` is version 3.4.3, latest release.
 
 ```bash
     root@demo [~]# dnf info -y unzip
@@ -313,11 +318,22 @@ Boot the image and verify that unzip in now provided, _and_ it is the -16 versio
     Name        : unzip
     Version     : 6.0
     Release     : 16.cm1
-    ...
+    (...)
     Available Packages
     Name        : unzip
-    Version     : 6.0
-    Release     : 18.cm1  <--- this version may vary
+    Version     : 6.0     <--- this field may vary
+    Release     : 18.cm1  <--- this field may vary
+    (...)
+    root@demo [~]# dnf info -y etcd
+    Installed Packages
+    Name        : etcd
+    Version     : 3.4.3
+    Release     : 2.cm1   <--- this field may vary
+    (...)
+    Available Packages
+    Name        : etcd
+    Version     : 3.4.13  <--- this field may vary
+    Release     : 2.cm1   <--- this field may vary
     ...
 ```
 
