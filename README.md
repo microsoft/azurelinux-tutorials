@@ -1,5 +1,5 @@
 
-# **Introduction**
+# Introduction
 
 The [CBL-Mariner](https://github.com/microsoft/CBL-Mariner) repository provides detailed instructions for building CBL-Mariner from end-to-end.  While it is possible to clone CBL-Mariner and build packages or images from that environment, for most users, it is _not the recommended approach_.  Usually it is best to work in a smaller, problem focused environment where you can quickly build just what you need, and rely on the fact that the curated CBL-Mariner packages are already available in the cloud. In this way, you can customize an image with your preferred disk layout or adding supplemental packages that CBL-Mariner may not provide.  If you are building a product based on CBL-Mariner, you may want your own repository with just the minimal set of packages for your business needs.  This repo, the CBL-MarinerDemo repo, provides a basic template for getting started.  From here you can create a CBL-Mariner based product (aka a Derivative Image) or you may generate quick experimental or debug builds to try out new ideas.
 
@@ -9,25 +9,29 @@ The following tutorial guides you through the process of building and running th
 
 # Table of Contents
 
-[Prequisites: Prepare your Environment](#Prequisites-Prepare-your-Environment)
+- [Prequisites: Prepare your Environment](#prequisites-prepare-your-environment)
+  - [Install Tools](#install-tools)
+  - [Clone CBL-Mariner and Build the Toolkit](#clone-cbl-mariner-and-build-the-toolkit)
+  - [Clone CBL-MarinerDemo Repo and Extract the Toolkit](#clone-cbl-marinerdemo-repo-and-extract-the-toolkit)
+- [Build Demo VHD or VHDX](#build-demo-vhd-or-vhdx)
+  - [Build Derivate VHD or VHDX](#build-derivate-vhd-or-vhdx)
+  - [Use Hyper-V to Boot Your Demo Image](#use-hyper-v-to-boot-your-demo-image)
+- [Build Demo ISO](#build-demo-iso)
+- [Image config file](#image-config-file)
+  - [File paths](#file-paths)
+  - [Package Lists](#package-lists)
+- [Customize Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
+  - [Add Latest Pre-Built Package](#add-latest-pre-built-package)
+  - [Add Specific Pre-Built Package Version](#add-specific-pre-built-package-version)
+  - [Using other RPM repositories](#using-other-rpm-repositories)
+- [Customize Demo Image with New Packages](#customize-demo-image-with-new-packages)
+- [Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
 
-[Build Demo VHD or VHDX Image](#build-demo-vhd-or-vhdx)
-
-[Build Demo ISO Image](#build-demo-iso)
-
-[Image config file](#image-config-file)
-
-[Customize Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
-
-[Customize Demo Image with New Packages](#customize-demo-image-with-new-packages)
-
-[Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
-
-# **Prequisites: Prepare your Environment**
+# Prequisites: Prepare your Environment
 
 Before starting this tutorial, you will need to setup your development machine.  These instructions were tested on an x86_64 based machine using Ubuntu 18.04.
 
-## **Install Tools**
+## Install Tools
 
 These tools are required for building both the toolkit and the images built from the toolkit.  These are the same [prerequisites needed for building CBL-Mariner](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/prerequisites.md).
 
@@ -54,7 +58,7 @@ sudo usermod -aG docker $USER
 **You will need to log out and lock back in** for user changes to take effect.
 
 
-## **Clone CBL-Mariner and Build the Toolkit**
+## Clone CBL-Mariner and Build the Toolkit
 
 To build the CBL-MarinerDemo repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner and build the toolkit.
 
@@ -66,7 +70,7 @@ sudo make package-toolkit REBUILD_TOOLS=y
 popd
 ```
 
-## **Clone CBL-MarinerDemo Repo and Extract the Toolkit**
+## Clone CBL-MarinerDemo Repo and Extract the Toolkit
 
 Now clone the CBL-MarinerDemo repo and extract the toolkit to the CBL-MarinerDemo repository.  
 
@@ -79,11 +83,11 @@ tar -xzvf toolkit-*.tar.gz
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build).
 
-# **Build Demo VHD or VHDX**
+# Build Demo VHD or VHDX
 
 In the previous section we configured your build machine.  In this section we will build a VHD or VHD(X) image.
 
-## **Build Derivate VHD or VHDX**
+## Build Derivate VHD or VHDX
 
 Choose an image to build by invoking one of the following build commands from the _CBL-MarinerDemo/toolkit_ folder.
 
@@ -100,7 +104,7 @@ The resulting binaries (images and rpms) are placed in the CBL-MarinerDemo/out f
     PACKAGES:   `CBL-MarinerDemo/out/RPMS/x86_64/`
 
 
-## **Use Hyper-V to Boot Your Demo Image**
+## Use Hyper-V to Boot Your Demo Image
 Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-V.    
 
 **Create VHD(X) Virtual Machine with Hyper-V**
@@ -336,6 +340,18 @@ Similarly, `etcd` is version 3.4.3, latest release.
     Release     : 2.cm1   <--- this field may vary
     ...
 ```
+
+## Using other RPM repositories
+
+It is possible to build your images and packages using pre-built RPMs from other repositories than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
+
+Example:
+
+```bash
+sudo make build-packages REPO_LIST="path/to/first.repo path/to/second.repo" [your_other_args]
+```
+
+CBL-Mariner's toolkit provides a few of its own .repo files under "toolkit/repos". Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) for more details.
 
 # Customize Demo Image with New Packages
 
