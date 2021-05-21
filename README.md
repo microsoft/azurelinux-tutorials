@@ -9,23 +9,19 @@ The following tutorial guides you through the process of building and running th
 
 # Table of Contents
 
-- [Prequisites: Prepare your Environment](#prequisites-prepare-your-environment)
-  - [Install Tools](#install-tools)
-  - [Clone CBL-Mariner and Build the Toolkit](#clone-cbl-mariner-and-build-the-toolkit)
-  - [Clone CBL-MarinerDemo Repo and Extract the Toolkit](#clone-cbl-marinerdemo-repo-and-extract-the-toolkit)
-- [Build Demo VHD or VHDX](#build-demo-vhd-or-vhdx)
-  - [Build Derivate VHD or VHDX](#build-derivate-vhd-or-vhdx)
-  - [Use Hyper-V to Boot Your Demo Image](#use-hyper-v-to-boot-your-demo-image)
-- [Build Demo ISO](#build-demo-iso)
-- [Image config file](#image-config-file)
-  - [File paths](#file-paths)
-  - [Package Lists](#package-lists)
-- [Customize Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
-  - [Add Latest Pre-Built Package](#add-latest-pre-built-package)
-  - [Add Specific Pre-Built Package Version](#add-specific-pre-built-package-version)
-  - [Using other RPM repositories](#using-other-rpm-repositories)
-- [Customize Demo Image with New Packages](#customize-demo-image-with-new-packages)
-- [Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
+[Prequisites: Prepare your Environment](#Prequisites-Prepare-your-Environment)
+
+[Build Demo VHD or VHDX Image](#build-demo-vhd-or-vhdx)
+
+[Build Demo ISO Image](#build-demo-iso)
+
+[Image config file](#image-config-file)
+
+[Customize Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
+
+[Customize Demo Image with New Packages](#customize-demo-image-with-new-packages)
+
+[Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
 
 # Prequisites: Prepare your Environment
 
@@ -341,9 +337,9 @@ Similarly, `etcd` is version 3.4.3, latest release.
     ...
 ```
 
-## Using other RPM repositories
+## Adding packages from other RPM repositories
 
-It is possible to build your images and packages using pre-built RPMs from other repositories than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
+It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
 
 Example:
 
