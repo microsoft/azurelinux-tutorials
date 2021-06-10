@@ -301,7 +301,7 @@ Let's say your image requires the `libX11` package. This package is available in
 }
 ```
 
-and the by running the following command:
+and then by running the following command:
 
 ```bash
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/mariner-ui.repo
