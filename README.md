@@ -304,7 +304,7 @@ Let's say your image requires the `libX11` package. This package is available in
 and the by running the following command:
 
 ```bash
-sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST="repos/mariner-ui.repo"
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/mariner-ui.repo
 ```
 
 CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) for more details.
