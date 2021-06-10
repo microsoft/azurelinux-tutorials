@@ -246,7 +246,7 @@ In the previous section we described how the package lists are defined.  In this
 
 The Zip package is not included in the demo image by default.  Because Zip is already released for CBL-Mariner lets add it to your demo image.  Open the [core-packages.json](./imageconfigs/demo_package_lists/core-packages.json) file with your favorite editor,  Add zip to the packages array before initramfs.  While it's possible to add zip after initramfs, it is currently recommended to insert new packages before initramfs due to a performance quirk in the build system.
 
-```
+```json
  {
     "packages": [
         "core-packages-base-image",
@@ -281,6 +281,33 @@ By default the _latest_ version of any package specified in a package list will 
 If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerDemo/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
 
 The next section also describes a technique for pinning specific package versions.
+
+## Adding packages from other RPM repositories
+
+It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
+
+Example:
+
+Let's say your image requires the `libX11` package. This package is available inside the [CBL-MarinerCoreUI repository](https://github.com/microsoft/CBL-MarinerCoreUI) and the corresponding .repo file pointing to Mariner's official RPM repository hosting its packages is available in the toolkit under `toolkit/repos/mariner-ui.repo`. With that you'll be able to build your image by first adding `libX11` to your package list:
+
+```json
+ {
+    "packages": [
+        "core-packages-base-image",
+        "zip",
+        "libX11",                   <----- added libX11 here
+        "initramfs"
+    ],
+}
+```
+
+and the by running the following command:
+
+```bash
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST="repos/mariner-ui.repo"
+```
+
+CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) for more details.
 
 ## Add Specific Pre-Built Package Version
 
@@ -336,18 +363,6 @@ Similarly, `etcd` is version 3.4.3, latest release.
     Release     : 2.cm1   <--- this field may vary
     ...
 ```
-
-## Adding packages from other RPM repositories
-
-It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
-
-Example:
-
-```bash
-sudo make build-packages REPO_LIST="path/to/first.repo path/to/second.repo" [your_other_args]
-```
-
-CBL-Mariner's toolkit provides a few of its own .repo files under "toolkit/repos". Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) for more details.
 
 # Customize Demo Image with New Packages
 
