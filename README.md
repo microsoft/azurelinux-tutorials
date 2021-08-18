@@ -377,7 +377,7 @@ To add a new package to the CBL-MarinerDemo repo you must take the following act
 
 For this tutorial we will add the "gnuchess" package to your CBL-MarinerDemo image.
 
-First, download the source code for gnuchess 6.2.7 [here](ftp://ftp.gnu.org/pub/gnu/chess/gnuchess-6.2.7.tar.gz).  And save it in a new CBL-MarinerDemo/SPECS/gnuchess folder.  Also, download and save the [game data file](http://ftp.gnu.org/pub/gnu/chess/book_1.01.pgn.gz) to the gnuchess folder.
+First, download the source code for gnuchess 6.2.7 [here](https://ftp.gnu.org/gnu/chess/gnuchess-6.2.7.tar.gz).  And save it in a new CBL-MarinerDemo/SPECS/gnuchess folder.  Also, download and save the [game data file](http://ftp.gnu.org/pub/gnu/chess/book_1.01.pgn.gz) to the gnuchess folder.
 
 Next, create the spec file for gnuchess.  This may be created from scratch, but in many cases it's easiest to leverage an open source version as a template.  Since the focus of this tutorial is to demonstrate how to quickly add a new package, we will obtain an existing spec file [Fedora source rpm for gnuchess](https://src.fedoraproject.org/rpms/gnuchess/blob/master/f/gnuchess.spec).
 
