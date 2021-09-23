@@ -1,0 +1,57 @@
+{
+  "variables": {
+    "vm_name": "@VMNAME@",
+    "hyperv_switch_name": "@NETWORKSWITCH@",
+    "username": "@USERNAME@",
+    "password": "@PASSWORD@",
+    "iso_url": "@ISOFILE@",
+    "iso_checksum": "@ISOCHECKSUM@",
+    "disk_size": "@DISKSIZE@",
+    "cpu": "@CPU@",
+    "memory": "@MEMORY@",
+    "out_dir": "@OUTDIR@"
+  },
+  "builders": [
+    {
+      "type": "hyperv-iso",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+
+      "vm_name": "{{user `vm_name`}}",
+      "switch_name": "{{user `hyperv_switch_name`}}",
+
+      "communicator": "ssh",
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_timeout": "1h",
+      "shutdown_command": "echo '{{user `password`}}' | sudo -S shutdown -P now",
+     
+      "output_directory": "{{user `out_dir`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "cpus": "{{user `cpu`}}",
+      "memory": "{{user `memory`}}",
+      "enable_secure_boot": false,
+      "generation": 2,
+
+      "http_directory": "./packer_http/",
+      "http_port_min": "8080",
+      "http_port_max": "8089",
+
+      "boot_command": [
+        "<esc><wait>",
+        "<rightCtrlOn>c<rightCtrlOff><tab><enter><wait>",
+        " cd /root <enter><wait>",
+        " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/unattended_config.json -o $HOME/unattended_config.json <enter><wait>",
+        " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/test_installer.sh -o $HOME/test_installer.sh <enter><wait>",
+        " chmod 755 $HOME/test_installer.sh <enter><wait>",
+        " mkdir -p $HOME/config <enter><wait>",
+        " cp -R /mnt/cdrom/config/* $HOME/config <enter><wait>",
+        " mkdir -p $HOME/config/postinstallscripts <enter><wait>",
+        " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/postinstall.sh -o $HOME/config/postinstallscripts/postinstall.sh <enter><wait>",
+        " chmod 755 $HOME/config/postinstallscripts/postinstall.sh <enter><wait>",
+        " $HOME/test_installer.sh -u $HOME/unattended_config.json -c $HOME/config <enter><wait>"
+      ]
+    }
+  ]
+ }
