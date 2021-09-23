@@ -1,9 +1,3 @@
- Get-FileHash .\full-1.0.20210922.iso
+These scripts and json files can be used to build vhd/vhdx from a Mariner ISO image using 'packer'
 
-https://aka.ms/mariner-1.0-x86_64-iso
-https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso
-https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256
-
-https://www.apcension.com/articles/Packer/
-
-        " ./runliveinstaller -u $HOME/unattended_config.json <enter><wait>"
+for more information about 'packer' see https://www.packer.io/ and more specifically https://www.packer.io/docs/builders/hyperv/iso

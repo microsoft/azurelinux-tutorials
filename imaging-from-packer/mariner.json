@@ -35,8 +35,8 @@
       "generation": 2,
 
       "http_directory": "./packer_http/",
-      "http_port_min": "8080",
-      "http_port_max": "8089",
+      "http_port_min": "8000",
+      "http_port_max": "9000",
 
       "boot_command": [
         "<esc><wait>",
