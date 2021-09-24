@@ -2,7 +2,7 @@
 
 echo "################Starting Postinstall####################"
 
-# # Enable Open-SSH server
+# # Enable and start Open-SSH server
 # systemctl enable sshd
 # systemctl start sshd
 

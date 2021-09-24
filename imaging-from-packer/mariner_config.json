@@ -75,7 +75,7 @@
     "PostInstallScripts": [
       {
         "Args": "",
-        "Path": "postinstallscripts/postinstall.sh"
+        "Path": "postinstallscripts/@POSTINSTALLSCRIPT@"
       }
     ],
     "Groups": null,

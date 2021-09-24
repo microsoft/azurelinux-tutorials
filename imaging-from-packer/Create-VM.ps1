@@ -1,18 +1,21 @@
 param (
    [string]
-   $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso",
-   # $isoFile = "$PSScriptRoot\full-1.0.20210922.iso",
+   # $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso",
+   $isoFile = "$PSScriptRoot\full-1.0.20210922.iso",
 
    # checksum is stored here https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256
    [string]
-   $isoChecksum = "sha256:3dd44b3947829750bdd3164d4263df06867e49e421ed332d9c0dd54c12458092",
-   # $isoChecksum = 'sha256:6A071F41773D2D2AFBB692C69DA82A9059D7CF9C6C8A8F7E9690036E5D4B0727',
+   # $isoChecksum = "sha256:3dd44b3947829750bdd3164d4263df06867e49e421ed332d9c0dd54c12458092",
+   $isoChecksum = 'sha256:6A071F41773D2D2AFBB692C69DA82A9059D7CF9C6C8A8F7E9690036E5D4B0727',
 
    [string]
    $userName = 'mariner_user',
 
    [string]
    $password = 'Mariner@Test9',
+   
+   [string]
+   $publicSshCertFile = 'C:\Users\nicolasg\.ssh\id_rsa.pub',
    
    [string]
    $vmName = 'TestVM',
@@ -52,8 +55,9 @@ $packerHttpFolder = "$tempFolder\packer_http"
 $tempOutDir=".\\outdir"
 
 $networkSwitchName = "New Virtual Switch"
-$marinerUnattendedConfigFile = "unattended_config.json"
-$packerConfigFile = "mariner.json"
+$marinerUnattendedConfigFile = "mariner_config.json"
+$marinerPostInstallScript = "postinstall.sh"
+$packerConfigFile = "packer_config.json"
 
 try 
 {
@@ -67,22 +71,22 @@ try
    # creat working directories
    New-Item -Path $packerHttpFolder -ItemType directory
 
-   if (! $isoFile.Contains("https://")) {
+   if ($isoFile.Contains("https://")) {
+      Write-Host "Packer will download iso from $isoFile"
+      $isoFileName = $isoFile
+   }
+   else {
       # copy iso file to build dir (temp folder)
       Write-Host "Copy iso file to working directory"
       Copy-Item $isoFile -Destination $tempFolder -Force
       $isoFileName = (Get-ChildItem $isoFile).Name
-   }
-   else {
-      Write-Host "Packer will download iso from $isoFile"
-      $isoFileName = $isoFile
    }
 
    # populate working dir
    Write-Output "Populate working folder ($tempFolder)"
    Copy-Item $PSScriptRoot\$packerConfigFile -Destination $tempFolder -Force
    Copy-Item $PSScriptRoot\$marinerUnattendedConfigFile -Destination $packerHttpFolder -Force
-   Copy-Item "$PSScriptRoot\postinstall.sh" -Destination $packerHttpFolder -Force
+   Copy-Item $PSScriptRoot\$marinerPostInstallScript -Destination $packerHttpFolder -Force
 
    # !!! DEBUG  ------------------------------------------------
    Copy-Item "$PSScriptRoot\test_installer.sh" -Destination $packerHttpFolder -Force
@@ -119,6 +123,12 @@ try
    Replace-InFile -tagToReplace "@OUTDIR@" `
                   -tagValue "$tempOutDir" `
                   -fileName $tempFolder\$packerConfigFile
+   Replace-InFile -tagToReplace "@MARINERCONFIGFILE@" `
+                  -tagValue "$marinerUnattendedConfigFile" `
+                  -fileName $tempFolder\$packerConfigFile
+   Replace-InFile -tagToReplace "@POSTINSTALLSCRIPT@" `
+                  -tagValue "$marinerPostInstallScript" `
+                  -fileName $tempFolder\$packerConfigFile
 
    Replace-InFile -tagToReplace "@VMNAME@" `
                   -tagValue "$vmName" `
@@ -128,6 +138,9 @@ try
                   -fileName $packerHttpFolder\$marinerUnattendedConfigFile
    Replace-InFile -tagToReplace "@PASSWORD@" `
                   -tagValue "$password" `
+                  -fileName $packerHttpFolder\$marinerUnattendedConfigFile
+   Replace-InFile -tagToReplace "@POSTINSTALLSCRIPT@" `
+                  -tagValue "$marinerPostInstallScript" `
                   -fileName $packerHttpFolder\$marinerUnattendedConfigFile
 
    # packer must be launched from location of its config file
