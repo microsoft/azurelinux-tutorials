@@ -11,7 +11,9 @@
     "memory": "@MEMORY@",
     "out_dir": "@OUTDIR@",
     "mariner_config_file": "@MARINERCONFIGFILE@",
-    "postinstall_script": "@POSTINSTALLSCRIPT@"
+    "postinstall_script": "@POSTINSTALLSCRIPT@",
+    "provisioner_script": "@PROVISIONERSCRIPT@",
+    "provisioner_src_folder": "@PROVISIONERSRCFOLDER@"
   },
   "builders": [
     {
@@ -55,5 +57,28 @@
         " $HOME/test_installer.sh -u $HOME/{{user `mariner_config_file`}} -c $HOME/config <enter><wait>"
       ]
     }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p /tmp/provisionerScripts"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "{{user `provisioner_src_folder`}}/",
+      "destination": "/tmp/provisionerScripts"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "chmod 755 /tmp/provisionerScripts/{{user `provisioner_script`}}",
+        "/tmp/provisionerScripts/{{user `provisioner_script`}}"
+      ],
+      "environment_vars": [
+        "USER_PSW={{user `password`}}"
+      ]
+    }
   ]
- }
+}

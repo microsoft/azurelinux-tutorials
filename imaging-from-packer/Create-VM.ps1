@@ -15,7 +15,10 @@ param (
    $password = 'Mariner@Test9',
    
    [string]
-   $publicSshCertFile = 'C:\Users\nicolasg\.ssh\id_rsa.pub',
+   $srcProvisionerFolder = "$PSScriptRoot\provisioners",
+   
+   [string]
+   $provisionerScript = 'customizeMariner.sh',
    
    [string]
    $vmName = 'TestVM',
@@ -53,6 +56,7 @@ if (! (New-Object Security.Principal.WindowsPrincipal([Security.Principal.Window
 $tempFolder = Join-Path $Env:Temp $(New-Guid)
 $packerHttpFolder = "$tempFolder\packer_http"
 $tempOutDir=".\\outdir"
+$tempProvisioneFolderName="provisioners"
 
 $networkSwitchName = "New Virtual Switch"
 $marinerUnattendedConfigFile = "mariner_config.json"
@@ -87,6 +91,9 @@ try
    Copy-Item $PSScriptRoot\$packerConfigFile -Destination $tempFolder -Force
    Copy-Item $PSScriptRoot\$marinerUnattendedConfigFile -Destination $packerHttpFolder -Force
    Copy-Item $PSScriptRoot\$marinerPostInstallScript -Destination $packerHttpFolder -Force
+
+   New-Item -Path $tempFolder\$tempProvisioneFolderName -ItemType directory
+   Copy-Item $srcProvisionerFolder\* -Destination $tempFolder\$tempProvisioneFolderName -Force -Recurse
 
    # !!! DEBUG  ------------------------------------------------
    Copy-Item "$PSScriptRoot\test_installer.sh" -Destination $packerHttpFolder -Force
@@ -128,6 +135,12 @@ try
                   -fileName $tempFolder\$packerConfigFile
    Replace-InFile -tagToReplace "@POSTINSTALLSCRIPT@" `
                   -tagValue "$marinerPostInstallScript" `
+                  -fileName $tempFolder\$packerConfigFile
+   Replace-InFile -tagToReplace "@PROVISIONERSCRIPT@" `
+                  -tagValue "$provisionerScript" `
+                  -fileName $tempFolder\$packerConfigFile
+   Replace-InFile -tagToReplace "@PROVISIONERSRCFOLDER@" `
+                  -tagValue "$tempProvisioneFolderName" `
                   -fileName $tempFolder\$packerConfigFile
 
    Replace-InFile -tagToReplace "@VMNAME@" `
