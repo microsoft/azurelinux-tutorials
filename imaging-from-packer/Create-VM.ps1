@@ -56,7 +56,7 @@ if (! (New-Object Security.Principal.WindowsPrincipal([Security.Principal.Window
 $tempFolder = Join-Path $Env:Temp $(New-Guid)
 $packerHttpFolder = "$tempFolder\packer_http"
 $tempOutDir=".\\outdir"
-$tempProvisioneFolderName="provisioners"
+$tempProvisionerFolderName="provisioners"
 
 $networkSwitchName = "New Virtual Switch"
 $marinerUnattendedConfigFile = "mariner_config.json"
@@ -92,14 +92,14 @@ try
    Copy-Item $PSScriptRoot\$marinerUnattendedConfigFile -Destination $packerHttpFolder -Force
    Copy-Item $PSScriptRoot\$marinerPostInstallScript -Destination $packerHttpFolder -Force
 
-   New-Item -Path $tempFolder\$tempProvisioneFolderName -ItemType directory
-   Copy-Item $srcProvisionerFolder\* -Destination $tempFolder\$tempProvisioneFolderName -Force -Recurse
+   New-Item -Path $tempFolder\$tempProvisionerFolderName -ItemType directory
+   Copy-Item $srcProvisionerFolder\* -Destination $tempFolder\$tempProvisionerFolderName -Force -Recurse
 
    # !!! DEBUG  ------------------------------------------------
    Copy-Item "$PSScriptRoot\test_installer.sh" -Destination $packerHttpFolder -Force
    # !!! DEBUG  ------------------------------------------------
 
-   # customized config files (packer and mariner unattended)
+   # customized config files (packer and mariner)
    Replace-InFile -tagToReplace "@VMNAME@" `
                   -tagValue "$vmName" `
                   -fileName $tempFolder\$packerConfigFile
@@ -140,7 +140,7 @@ try
                   -tagValue "$provisionerScript" `
                   -fileName $tempFolder\$packerConfigFile
    Replace-InFile -tagToReplace "@PROVISIONERSRCFOLDER@" `
-                  -tagValue "$tempProvisioneFolderName" `
+                  -tagValue "$tempProvisionerFolderName" `
                   -fileName $tempFolder\$packerConfigFile
 
    Replace-InFile -tagToReplace "@VMNAME@" `
@@ -155,12 +155,18 @@ try
    Replace-InFile -tagToReplace "@POSTINSTALLSCRIPT@" `
                   -tagValue "$marinerPostInstallScript" `
                   -fileName $packerHttpFolder\$marinerUnattendedConfigFile
+  
+   # launch packer
+   #
+   # notes:
+   #  - packer executable must be in system PATH
+   #  - packer must be launched from location of its config file
+   #    because config file uses relative path
+   #  - launch with '-debug' option to debug
 
-   # packer must be launched from location of its config file
-   # because config file uses relative path
    Push-Location $tempFolder
    Write-Output 'Launch packer'
-   packer build -debug .\$packerConfigFile
+   packer build .\$packerConfigFile
    if (Test-Path $tempOutDir) 
    { 
       Copy-Item -Path $tempOutDir\* -Destination $outDir -Recurse
