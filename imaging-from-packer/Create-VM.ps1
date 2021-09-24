@@ -162,6 +162,9 @@ try
    #  - packer executable must be in system PATH
    #  - packer must be launched from location of its config file
    #    because config file uses relative path
+   #  - last <wait> in the 'boot_command' is used to leave time
+   #    to Mariner to setup, reboot and start sshd service
+   #    before packer starts to poke ssh connection and overload it
    #  - launch with '-debug' option to debug
 
    Push-Location $tempFolder

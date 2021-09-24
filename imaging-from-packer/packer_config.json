@@ -54,7 +54,8 @@
         " mkdir -p $HOME/config/postinstallscripts <enter><wait>",
         " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `postinstall_script`}} -o $HOME/config/postinstallscripts/{{user `postinstall_script`}} <enter><wait>",
         " chmod 755 $HOME/config/postinstallscripts/{{user `postinstall_script`}} <enter><wait>",
-        " $HOME/test_installer.sh -u $HOME/{{user `mariner_config_file`}} -c $HOME/config <enter><wait>"
+        " $HOME/test_installer.sh -u $HOME/{{user `mariner_config_file`}} -c $HOME/config <enter><wait>",
+        " <wait3m>"
       ]
     }
   ],
