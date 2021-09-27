@@ -1,12 +1,12 @@
 param (
    [string]
    # $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso",
-   $isoFile = "$PSScriptRoot\full-1.0.20210926.iso",
+   $isoFile = "$PSScriptRoot\full-1.0.20210927.iso",
 
    # checksum is stored here https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256
    [string]
    # $isoChecksum = "sha256:3dd44b3947829750bdd3164d4263df06867e49e421ed332d9c0dd54c12458092",
-   $isoChecksum = 'sha256:B650283C90C536F9BB71D2B61DE12FED69A8CF540E284A5F2C0AE95CCBD76F4E',
+   $isoChecksum = 'sha256:246F000F1C493E5A8F78D13D4503DDB4BE5A77A5418A42809CC3CA5B8111931A',
 
    [string]
    $marinerConfigName = 'CBL-Mariner Full',
@@ -195,8 +195,6 @@ try
    Replace-InFile -tagToReplace "@POSTINSTALLSCRIPT@" `
                   -tagValue "$marinerPostInstallScript" `
                   -fileName $packerHttpFolder\$marinerUnattendedConfigFile
-  
-   Get-Content $packerHttpFolder\$marinerUnattendedConfigFile
 
    # launch packer
    #
@@ -211,7 +209,7 @@ try
 
    Push-Location $tempFolder
    Write-Output 'Launch packer'
-   packer build .\$packerConfigFile
+   packer build -debug .\$packerConfigFile
    if (Test-Path $tempOutDir) 
    { 
       Copy-Item -Path $tempOutDir\* -Destination $outDir -Recurse
