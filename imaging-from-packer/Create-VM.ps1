@@ -1,42 +1,66 @@
 param (
+   # path to the iso file (could be a URL)
    [string]
-   # $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso",
-   $isoFile = "$PSScriptRoot\full-1.0.20210927.iso",
+   $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso",
 
-   # checksum is stored here https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256
+   # ISO file checksum, could be either:
+   #   - URL like https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256
+   #   - text [checksum type]:[value], e.g.: sha256:246F000F1C493E5A8F78D13D4503DDB4BE5A77A5418A42809CC3CA5B8111931A
    [string]
-   # $isoChecksum = "sha256:3dd44b3947829750bdd3164d4263df06867e49e421ed332d9c0dd54c12458092",
-   $isoChecksum = 'sha256:246F000F1C493E5A8F78D13D4503DDB4BE5A77A5418A42809CC3CA5B8111931A',
+   $isoChecksum = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256",
 
+   # Name of the CBL-Mariner configuration in the ISO
+   # Note that default config name for CBL-Mariner ISO is "CBL-Mariner Full"
    [string]
    $marinerConfigName = 'CBL-Mariner Full',
 
+   # username used to login
+   [Parameter(mandatory=$true)]
+   [ValidateNotNullorEmpty()]
    [string]
-   $userName = 'mariner_user',
+   $userName,
 
+   # password use to login
+   [Parameter(mandatory=$true)]
+   [ValidateNotNullorEmpty()]
    [string]
-   $password = 'Mariner@Test9',
+   $password,
    
+   # path to provisionner folder
+   # Note that everything under that path will be copied to the VM
    [string]
    $srcProvisionerFolder = "$PSScriptRoot\provisioners",
    
+   # name of the 'main' provisioner script
+   # this script must be in the provisionner folder
    [string]
    $provisionerScript = 'customizeMariner.sh',
    
+   # Name of the VM
    [string]
    $vmName = 'TestVM',
 
+   # folder where VHDX will be copied
    [string]
    $outDir = "$PSScriptRoot\outdir",
 
+   # Size of the VM/VHDX hard drive
    [string]
    $diskSize = '10240',
 
+   # Number of CPU of the VM/VHDX
    [string]
    $cpu = '2',
 
+   # Amount of RAM for VM/VHDX
    [string]
-   $memory = '2048'
+   $memory = '2048',
+
+   # name of the Hyper-V virtual switch to use 
+   [Parameter(mandatory=$true)]
+   [ValidateNotNullorEmpty()]
+   [string]
+   $hyperVSwitchName
 )
 
 function Replace-InFile {
@@ -61,7 +85,6 @@ $packerHttpFolder = "$tempFolder\packer_http"
 $tempOutDir=".\\outdir"
 $tempProvisionerFolderName="provisioners"
 
-$networkSwitchName = "New Virtual Switch"
 $marinerUnattendedConfigFile = "mariner_config.json"
 $marinerPostInstallScript = "postinstall.sh"
 $packerConfigFile = "packer_config.json"
@@ -138,7 +161,7 @@ try
                   -tagValue "$vmName" `
                   -fileName $tempFolder\$packerConfigFile
    Replace-InFile -tagToReplace "@NETWORKSWITCH@" `
-                  -tagValue "$networkSwitchName" `
+                  -tagValue "$hyperVSwitchName" `
                   -fileName $tempFolder\$packerConfigFile
    Replace-InFile -tagToReplace "@USERNAME@" `
                   -tagValue "$userName" `
