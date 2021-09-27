@@ -47,14 +47,13 @@
         "<rightCtrlOn>c<rightCtrlOff><tab><enter><wait>",
         " cd /root <enter><wait>",
         " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `mariner_config_file`}} -o $HOME/{{user `mariner_config_file`}} <enter><wait>",
-        " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/test_installer.sh -o $HOME/test_installer.sh <enter><wait>",
         " chmod 755 $HOME/test_installer.sh <enter><wait>",
         " mkdir -p $HOME/config <enter><wait>",
         " cp -R /mnt/cdrom/config/* $HOME/config <enter><wait>",
         " mkdir -p $HOME/config/postinstallscripts <enter><wait>",
         " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `postinstall_script`}} -o $HOME/config/postinstallscripts/{{user `postinstall_script`}} <enter><wait>",
         " chmod 755 $HOME/config/postinstallscripts/{{user `postinstall_script`}} <enter><wait>",
-        " $HOME/test_installer.sh -u $HOME/{{user `mariner_config_file`}} -c $HOME/config <enter><wait>",
+        " $HOME/runliveinstaller -u $HOME/{{user `mariner_config_file`}} -c $HOME/config <enter><wait>",
         " <wait3m>"
       ]
     }

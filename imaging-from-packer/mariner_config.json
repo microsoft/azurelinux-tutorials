@@ -39,12 +39,8 @@
     "IsDefault": true,
     "BootType": "efi",
     "Hostname": "@VMNAME@",
-    "Name": "CBL-Mariner Full",
-    "PackageLists": [
-      "packages/0/hyperv-packages.json",
-      "packages/1/developer-packages.json",
-      "packages/2/virtualization-host-packages.json",
-      "packages/3/core-packages-image.json"
+    "Name": "@CONFIGNAME@",
+    "PackageLists": [ "@PACAKGELIST@"
     ],
     "KernelOptions": {
       "default": "kernel"

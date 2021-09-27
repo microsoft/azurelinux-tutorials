@@ -1,12 +1,15 @@
 param (
    [string]
    # $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso",
-   $isoFile = "$PSScriptRoot\full-1.0.20210922.iso",
+   $isoFile = "$PSScriptRoot\full-1.0.20210926.iso",
 
    # checksum is stored here https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256
    [string]
    # $isoChecksum = "sha256:3dd44b3947829750bdd3164d4263df06867e49e421ed332d9c0dd54c12458092",
-   $isoChecksum = 'sha256:6A071F41773D2D2AFBB692C69DA82A9059D7CF9C6C8A8F7E9690036E5D4B0727',
+   $isoChecksum = 'sha256:B650283C90C536F9BB71D2B61DE12FED69A8CF540E284A5F2C0AE95CCBD76F4E',
+
+   [string]
+   $marinerConfigName = 'CBL-Mariner Full',
 
    [string]
    $userName = 'mariner_user',
@@ -76,14 +79,49 @@ try
    New-Item -Path $packerHttpFolder -ItemType directory
 
    if ($isoFile.Contains("https://")) {
-      Write-Host "Packer will download iso from $isoFile"
-      $isoFileName = $isoFile
+      Write-Host "get iso from $isoFile"
+      Invoke-WebRequest -Uri $isoFile -OutFile $tempFolder/MarinerImage.iso
+      $isoFileName = MarinerImage.iso
    }
    else {
       # copy iso file to build dir (temp folder)
       Write-Host "Copy iso file to working directory"
       Copy-Item $isoFile -Destination $tempFolder -Force
       $isoFileName = (Get-ChildItem $isoFile).Name
+   }
+
+   # Get package list from atttended config file in the iso
+   Write-Host "Get package lists from iso"
+   Mount-DiskImage -ImagePath $tempFolder/$isoFileName
+   $driveLetter=(Get-DiskImage -ImagePath $tempFolder/$isoFileName | Get-Volume).DriveLetter
+   $attendedConfig=(Get-Childitem -Path "${driveLetter}:\*" -Include "ATTENDED_CONFIG.json" -Recurse).FullName
+   if (! $attendedConfig) {
+      Write-Host "Error: The iso contains an unattended config file and cannot be customized using packer"
+      exit 1
+   }
+
+   $packageListFound = $false
+   $packageLists = ""
+   Write-Host "Get package list from $attendedConfig"
+   $configJson = Get-Content $attendedConfig -Raw | ConvertFrom-Json
+   ForEach ($systemConfig in $configJson.SystemConfigs) {
+      if ($systemConfig.Name -eq $marinerConfigName) {
+         Write-Host "Extract package list from '$marinerConfigName' config"
+         $packageListFound = $true
+
+         ForEach ($package in $systemConfig.PackageLists) {
+            if ($packageLists.Length -ne 0) {
+               $packageLists += ", "
+            }
+            $packageLists = $packageLists + '"' + $package + '"'
+         }
+         break
+      }
+   }
+
+   if (!$packageListFound) {
+      Write-Host "Error: config '$marinerConfigName' cannot be found in the iso"
+      exit 1
    }
 
    # populate working dir
@@ -94,10 +132,6 @@ try
 
    New-Item -Path $tempFolder\$tempProvisionerFolderName -ItemType directory
    Copy-Item $srcProvisionerFolder\* -Destination $tempFolder\$tempProvisionerFolderName -Force -Recurse
-
-   # !!! DEBUG  ------------------------------------------------
-   Copy-Item "$PSScriptRoot\test_installer.sh" -Destination $packerHttpFolder -Force
-   # !!! DEBUG  ------------------------------------------------
 
    # customized config files (packer and mariner)
    Replace-InFile -tagToReplace "@VMNAME@" `
@@ -146,6 +180,12 @@ try
    Replace-InFile -tagToReplace "@VMNAME@" `
                   -tagValue "$vmName" `
                   -fileName $packerHttpFolder\$marinerUnattendedConfigFile
+   Replace-InFile -tagToReplace "@CONFIGNAME@" `
+                  -tagValue "$marinerConfigName" `
+                  -fileName $packerHttpFolder\$marinerUnattendedConfigFile
+   Replace-InFile -tagToReplace '"@PACAKGELIST@"' `
+                  -tagValue "$packageLists" `
+                  -fileName $packerHttpFolder\$marinerUnattendedConfigFile
    Replace-InFile -tagToReplace "@USERNAME@" `
                   -tagValue "$userName" `
                   -fileName $packerHttpFolder\$marinerUnattendedConfigFile
@@ -156,6 +196,8 @@ try
                   -tagValue "$marinerPostInstallScript" `
                   -fileName $packerHttpFolder\$marinerUnattendedConfigFile
   
+   Get-Content $packerHttpFolder\$marinerUnattendedConfigFile
+
    # launch packer
    #
    # notes:
@@ -182,6 +224,9 @@ finally
    Write-Host "`n=========================="
    Write-Host "== Cleanup test machine =="
    Write-Host "=========================="
+
+   Write-Host "-- dismount iso ($tempFolder/$isoFileName)"
+   Dismount-DiskImage -ImagePath $tempFolder/$isoFileName
 
    Pop-Location
    if (Test-Path $tempFolder) 
