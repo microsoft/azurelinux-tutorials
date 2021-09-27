@@ -232,7 +232,7 @@ try
 
    Push-Location $tempFolder
    Write-Output 'Launch packer'
-   packer build -debug .\$packerConfigFile
+   packer build .\$packerConfigFile
    if (Test-Path $tempOutDir) 
    { 
       Copy-Item -Path $tempOutDir\* -Destination $outDir -Recurse
