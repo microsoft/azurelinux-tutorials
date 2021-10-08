@@ -23,6 +23,8 @@ The following tutorial guides you through the process of building and running th
 
 [Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
 
+[Automate VHD or VHDX creation 'packer'](imaging-from-packer/Readme.md)
+
 # Prequisites: Prepare your Environment
 
 Before starting this tutorial, you will need to setup your development machine.  These instructions were tested on an x86_64 based machine using Ubuntu 18.04.
