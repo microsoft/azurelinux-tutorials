@@ -1,6 +1,7 @@
 {
     "packages": [
         "hello_world_demo",
+        "hello_world_driver",
         "os-subrelease"
     ]
 }

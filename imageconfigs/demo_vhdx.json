@@ -47,10 +47,14 @@
             "PackageLists": [
                 "demo_package_lists/core-packages.json",
                 "demo_package_lists/demo-packages.json",
+                "demo_package_lists/developer.json",
                 "demo_package_lists/uefi-bootloader-packages.json"
             ],
             "KernelOptions": {
                 "default": "kernel"
+            },
+            "KernelCommandLine": {
+                "ExtraCommandLine": "lockdown=none"
             },
             "Hostname": "demo",
             "Users": [
@@ -60,6 +64,9 @@
                 }
             ],
             "PostInstallScripts": [
+                {
+                    "Path": "postinstallscripts/remove_lockdown.sh"
+                },
                 {
                     "Path": "postinstallscripts/demo_script.sh"
                 }
