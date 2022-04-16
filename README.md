@@ -58,12 +58,21 @@ sudo usermod -aG docker $USER
 
 ## Clone CBL-Mariner and Build the Toolkit
 
-To build the CBL-MarinerDemo repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner and build the toolkit.
+To build the CBL-MarinerDemo repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner, and then checkout the stable release of interest (e.g. 1.0-stable or 2.0-stable), then build the toolkit.
 
+### Example for CBL-Mariner 1.0 Toolkit
 ```bash
 git clone https://github.com/microsoft/CBL-Mariner.git
 pushd CBL-Mariner/toolkit
 git checkout 1.0-stable
+sudo make package-toolkit REBUILD_TOOLS=y
+popd
+```
+### Example for CBL-Mariner 2.0 Preview Toolkit 
+```bash
+git clone https://github.com/microsoft/CBL-Mariner.git
+pushd CBL-Mariner/toolkit
+git checkout 2.0-stable
 sudo make package-toolkit REBUILD_TOOLS=y
 popd
 ```
@@ -81,9 +90,18 @@ tar -xzvf toolkit-*.tar.gz
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build).
 
+# Working with Preview Releases
+
+The remainder of this tutorial assumes you are using CBL-Mariner 1.0.  However, it is possible to build this Demo using the CBL-Mariner 2.0 Preview Release as well.  Note that preview builds are fluid and subject to change at any time without notice.  To build against a preview release, add `USE_PREVIEW_REPO=y` to all "sudo make" commands in the tutorial.
+
+For example:
+```bash
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json USE_PREVIEW_REPO=y
+```
+
 # Build Demo VHD or VHDX
 
-In the previous section we configured your build machine.  In this section we will build a VHD or VHD(X) image.
+In the previous section we configured your build machine.  In this section we will build a VHD or VHD(X) image.  
 
 ## Build Derivate VHD or VHDX
 
