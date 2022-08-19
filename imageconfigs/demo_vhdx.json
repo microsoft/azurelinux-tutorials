@@ -52,6 +52,9 @@
             "KernelOptions": {
                 "default": "kernel"
             },
+            "KernelCommandLine": {
+               "ExtraCommandLine": "console=tty1 console=ttyS0 earlyprintk=ttyS0"
+            },
             "Hostname": "demo",
             "Users": [
                 {
