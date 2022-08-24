@@ -543,7 +543,7 @@ $ grep Version: kernel.spec
 Version:        5.4.91
 
 # Download the associated tar.gz file.  Be sure to substitute your version number in the URL here
-$ wget  https://github.com/microsoft/WSL2-Linux-Kernel/archive/linux-msft-5.4.91.tar.gz
+$ wget https://github.com/microsoft/CBL-Mariner-Linux-Kernel/archive/rolling-lts/mariner/5.4.91.tar.gz
 ```
 
 Now make your modifications to the one or both of the config files.  For AMD64 modify the `config` file.  For AARCH64, modify the `config_aarch64` file.  
