@@ -405,6 +405,9 @@ Clone the Fedora gnuchess repo and copy the spec and patch files into your gnuch
 ```bash
 cd CBL-MarinerDemo/SPECS/gnuchess
 git clone https://src.fedoraproject.org/rpms/gnuchess.git /tmp/gnuchess
+pushd /tmp/gnuchess
+git checkout 03a6481
+popd
 cp /tmp/gnuchess/gnuchess.spec .
 ```
 
