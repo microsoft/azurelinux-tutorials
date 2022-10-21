@@ -292,7 +292,7 @@ Boot the image and verify that the latest version of zip is now provided:
     Installed Packages
     Name        : zip
     Version     : 3.0   <---\
-    Release     : 5.cm1 <---|--- Your Version+Release will be greater than or equal to this version
+    Release     : 5.cm2 <---|--- Your Version+Release will be greater than or equal to this version
     
 ```
 
@@ -622,7 +622,7 @@ After the build completes, boot your image and log in.  Next, verify that you ha
 ```bash
     # Verify your kernel's version and release number (this may vary)
     root@demo [~]# uname -r
-    5.4.91-100.cm1
+    5.4.91-100.cm2
 
     # Verify that sysrq functionality is enabled in the kernel.  
     # There are several ways to do this, but we'll directly write the
