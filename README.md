@@ -31,7 +31,7 @@ Before starting this tutorial, you will need to setup your development machine. 
 
 ## Install Tools
 
-These tools are required for building both the toolkit and the images built from the toolkit.  These are the same [prerequisites needed for building CBL-Mariner](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/prerequisites.md).
+These tools are required for building both the toolkit and the images built from the toolkit.  These are the same [prerequisites needed for building CBL-Mariner](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/prerequisites.md).
 
 ```bash
 # Add a backports repo in order to install the necessary version of Go.
@@ -68,7 +68,7 @@ git checkout 1.0-stable
 sudo make package-toolkit REBUILD_TOOLS=y
 popd
 ```
-### Example for CBL-Mariner 2.0 Preview Toolkit 
+### Example for CBL-Mariner 2.0 Toolkit 
 ```bash
 git clone https://github.com/microsoft/CBL-Mariner.git
 pushd CBL-Mariner/toolkit
@@ -92,7 +92,7 @@ The toolkit folder now contains the makefile, support scripts and the go tools c
 
 # Working with Preview Releases
 
-The remainder of this tutorial assumes you are using CBL-Mariner 1.0.  However, it is possible to build this Demo using the CBL-Mariner 2.0 Preview Release as well.  Note that preview builds are fluid and subject to change at any time without notice.  To build against a preview release, add `USE_PREVIEW_REPO=y` to all "sudo make" commands in the tutorial.
+The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build this Demo using the CBL-Mariner 1.0 Release as well.  
 
 For example:
 ```bash
@@ -298,56 +298,29 @@ Boot the image and verify that the latest version of zip is now provided:
 
 By default the _latest_ version of any package specified in a package list will be included in your image.  It is important to note that each time you rebuild your image it may differ from your previous build as the packages on packages.microsoft.com are periodically updated to resolve security vulernabilities. This behavior may or may not be desired, but you can always be assured that the most recent build is also the most up to date with respect to CVE's. 
 
-If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerDemo/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
+If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerDemo/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
 
 The next section also describes a technique for pinning specific package versions.
-
-## Adding packages from other RPM repositories
-
-It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
-
-Example:
-
-Let's say your image requires the `libX11` package. This package is available inside the [CBL-MarinerCoreUI repository](https://github.com/microsoft/CBL-MarinerCoreUI) and the corresponding .repo file pointing to Mariner's official RPM repository hosting its packages is available in the toolkit under `toolkit/repos/mariner-ui.repo`. With that you'll be able to build your image by first adding `libX11` to your package list:
-
-```json
- {
-    "packages": [
-        "core-packages-base-image",
-        "zip",
-        "libX11",                   <----- added libX11 here
-        "initramfs"
-    ],
-}
-```
-
-and then by running the following command:
-
-```bash
-sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/mariner-ui.repo
-```
-
-CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/building/building.md#repo_list) for more details.
 
 ## Add Specific Pre-Built Package Version
 
 Occassionally you may need to install a very specific version of a package in your image at build time, rather than the latest version. CBL-Mariner supports this capability.
 
-This time let's add `unzip` version 6.0, release 16.cm1, and the latest release for `etcd` version 3.4.3 to our demo image.  You do this in the following way:
+This time let's add `unzip` version 6.0-19, and the latest dash release for `etcd` version 3.5.1 to our demo image.  You do this in the following way:
 
 ```json
 {
     "packages": [
         "core-packages-base-image",
-        "etcd=3.4.3",         <---- add specific 'etcd' version
+        "etcd=3.5.1",         <---- add specific 'etcd' version
         "zip",
-        "unzip=6.0-16.cm1",   <---- add specific 'unzip' version and release
+        "unzip=6.0-19.cm2",   <---- add specific 'unzip' version and release
         "initramfs"
     ],
 }
 ```
 
-**NOTE**: Release fields always have the `.[mariner_release]` suffix (`.cm1` in our case). Specifying only the version without the release number will always get you the latest release for the chosen version.
+**NOTE**: Release fields always have the `.[mariner_release]` suffix (`.cm2` in our case). Specifying only the version without the release number will always get you the latest release for the chosen version.
 
 Save the file and rebuild your image.
 
@@ -356,33 +329,59 @@ cd CBL-MarinerDemo/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 
-Boot the image and verify that `unzip` in now provided, _and_ it is the 6.0-16 version.
-Similarly, `etcd` is version 3.4.3, latest release.
+Boot the image and verify that `unzip` in now provided, _and_ it is the 6.0-19 version.
+Similarly, `etcd` is version 3.5.1, latest release.
 
 ```bash
     root@demo [~]# dnf info -y unzip
     Installed Packages
     Name        : unzip
     Version     : 6.0
-    Release     : 16.cm1
+    Release     : 19.cm2
     (...)
     Available Packages
     Name        : unzip
     Version     : 6.0     <--- this field may vary
-    Release     : 18.cm1  <--- this field may vary
+    Release     : 20.cm2  <--- this field may vary
     (...)
     root@demo [~]# dnf info -y etcd
     Installed Packages
     Name        : etcd
-    Version     : 3.4.3
-    Release     : 2.cm1   <--- this field may vary
+    Version     : 3.5.1
+    Release     : 3.cm2   <--- this field may vary, but should be the latest release version available
     (...)
     Available Packages
     Name        : etcd
-    Version     : 3.4.13  <--- this field may vary
-    Release     : 2.cm1   <--- this field may vary
+    Version     : 3.5.1  <--- this field may vary
+    Release     : 2.cm2   <--- this field may vary
     ...
 ```
+## Adding packages from other RPM repositories
+
+It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
+
+Example:
+
+Let's say your CBL-Mariner 2.0 image requires the `indent` package.  This package is available inside the [CBL-Mariner Extended Repository](http://packages.microsoft.com/cbl-mariner/2.0/prod/extended/x86_64/) and the corresponding .repo file pointing to Mariner's official RPM repository hosting its packages is available in the toolkit under `toolkit/repos/mariner-extended.repo`. With that you'll be able to build your image by first adding `indent` to your package list:
+
+```json
+ {
+    "packages": [
+        "core-packages-base-image",
+        "zip",
+        "indent",                   <----- added indent here
+        "initramfs"
+    ],
+}
+```
+
+and then by running the following command:
+
+```bash
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/mariner-extended.repo
+```
+
+CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) for more details.
 
 # Customize Demo Image with New Packages
 
