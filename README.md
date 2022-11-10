@@ -90,14 +90,7 @@ tar -xzvf toolkit-*.tar.gz
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build).
 
-# Working with Preview Releases
-
 The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build this Demo using the CBL-Mariner 1.0 Release as well.  
-
-For example:
-```bash
-sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json USE_PREVIEW_REPO=y
-```
 
 # Build Demo VHD or VHDX
 
