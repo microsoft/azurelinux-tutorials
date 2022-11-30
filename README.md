@@ -9,17 +9,17 @@ The following tutorial guides you through the process of building and running th
 
 # Table of Contents
 
-[Prequisites: Prepare your Environment](#Prequisites-Prepare-your-Environment)
+[Prerequisites: Prepare your Environment](#Prerequisites-Prepare-your-Environment)
 
-[Build a Demo VHD or VHDX Image](#build-demo-vhd-or-vhdx)
+[Build a Demo VHD or VHDX Image](#build-a-demo-vhd-or-vhdx)
 
-[Build a Demo ISO Image](#build-demo-iso)
+[Build a Demo ISO Image](#build-a-demo-iso)
 
 [Image config file](#image-config-file)
 
-[Customize the Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
+[Customize the Demo Image with Pre-built Packages](#customize-the-demo-image-with-pre-built-packages)
 
-[Customize the Demo Image with New Packages](#customize-demo-image-with-new-packages)
+[Customize the Demo Image with New Packages](#customize-the-demo-image-with-new-packages)
 
 [Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
 
@@ -90,7 +90,7 @@ tar -xzvf toolkit-*.tar.gz
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build).
 
-The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build this tutorial using the CBL-Mariner 1.0 Release as well.  
+The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build the same from this tutorial using the CBL-Mariner 1.0 release as well.  
 
 # Build a Demo VHD or VHDX
 
