@@ -1,25 +1,25 @@
 
 # Introduction
 
-The [CBL-Mariner](https://github.com/microsoft/CBL-Mariner) repository provides detailed instructions for building CBL-Mariner from end-to-end.  While it is possible to clone CBL-Mariner and build packages or images from that environment, for most users, it is _not the recommended approach_.  Usually it is best to work in a smaller, problem focused environment where you can quickly build just what you need, and rely on the fact that the curated CBL-Mariner packages are already available in the cloud. In this way, you can customize an image with your preferred disk layout or adding supplemental packages that CBL-Mariner may not provide.  If you are building a product based on CBL-Mariner, you may want your own repository with just the minimal set of packages for your business needs.  This repo, the CBL-MarinerDemo repo, provides a basic template for getting started.  From here you can create a CBL-Mariner based product (aka a Derivative Image) or you may generate quick experimental or debug builds to try out new ideas.
+The [CBL-Mariner](https://github.com/microsoft/CBL-Mariner) repository provides detailed instructions for building CBL-Mariner from end-to-end.  While it is possible to clone CBL-Mariner and build packages or images from that environment, for most users, it is _not the recommended approach_.  Usually it is best to work in a smaller, problem focused environment where you can quickly build just what you need, and rely on the fact that the curated CBL-Mariner packages are already available in the cloud. In this way, you can customize an image with your preferred disk layout or adding supplemental packages that CBL-Mariner may not provide.  If you are building a product based on CBL-Mariner, you may want your own repository with just the minimal set of packages for your business needs.  This repo, the CBL-MarinerTutorials repo, provides a basic template for getting started.  From here you can create a CBL-Mariner based product (aka a Derivative Image) or you may generate quick experimental or debug builds to try out new ideas.
 
-When you build an ISO, VHD or VHDX image from this repository,  the resulting image will contain additional content unavailable in the CBL-Mariner repo.  The CBL-MarinerDemo repository demonstrates how you can augment CBL-Mariner without forking the CBL-Mariner repository.  This repository contains the SPEC file and source for building a simple "Hello World" application.  This repository also includes a simple "os-subrelease" package that allows you to add identifying information about your derivative to an /etc/os-subrelease file.  
+When you build an ISO, VHD or VHDX image from this repository,  the resulting image will contain additional content unavailable in the CBL-Mariner repo.  The CBL-MarinerTutorials repository demonstrates how you can augment CBL-Mariner without forking the CBL-Mariner repository.  This repository contains the SPEC file and source for building a simple "Hello World" application.  This repository also includes a simple "os-subrelease" package that allows you to add identifying information about your derivative to an /etc/os-subrelease file.  
 
-The following tutorial guides you through the process of building and running the basic CBL-MarinerDemo image.  These instructions also describe how to customize or extend the basic CBL-MarinerDemo image.
+The following tutorial guides you through the process of building and running the basic CBL-MarinerTutorials image.  These instructions also describe how to customize or extend the basic CBL-MarinerTutorials image.
 
 # Table of Contents
 
-[Prequisites: Prepare your Environment](#Prequisites-Prepare-your-Environment)
+[Prerequisites: Prepare your Environment](#Prerequisites-Prepare-your-Environment)
 
-[Build Demo VHD or VHDX Image](#build-demo-vhd-or-vhdx)
+[Build a Demo VHD or VHDX Image](#build-a-demo-vhd-or-vhdx)
 
-[Build Demo ISO Image](#build-demo-iso)
+[Build a Demo ISO Image](#build-a-demo-iso)
 
 [Image config file](#image-config-file)
 
-[Customize Demo Image with Pre-built Packages](#customize-demo-image-with-pre-built-packages)
+[Customize the Demo Image with Pre-built Packages](#customize-the-demo-image-with-pre-built-packages)
 
-[Customize Demo Image with New Packages](#customize-demo-image-with-new-packages)
+[Customize the Demo Image with New Packages](#customize-the-demo-image-with-new-packages)
 
 [Modify the Demo Image Kernel](#modify-the-demo-image-kernel)
 
@@ -58,7 +58,7 @@ sudo usermod -aG docker $USER
 
 ## Clone CBL-Mariner and Build the Toolkit
 
-To build the CBL-MarinerDemo repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner, and then checkout the stable release of interest (e.g. 1.0-stable or 2.0-stable), then build the toolkit.
+To build the CBL-MarinerTutorials repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner, and then checkout the stable release of interest (e.g. 1.0-stable or 2.0-stable), then build the toolkit.
 
 ### Example for CBL-Mariner 1.0 Toolkit
 ```bash
@@ -77,40 +77,40 @@ sudo make package-toolkit REBUILD_TOOLS=y
 popd
 ```
 
-## Clone CBL-MarinerDemo Repo and Extract the Toolkit
+## Clone CBL-MarinerTutorials Repo and Extract the Toolkit
 
-Now clone the CBL-MarinerDemo repo and extract the toolkit to the CBL-MarinerDemo repository.  
+Now clone the CBL-MarinerTutorials repo and extract the toolkit to the CBL-MarinerTutorials repository.  
 
 ```bash
-git clone https://github.com/microsoft/CBL-MarinerDemo.git
-pushd CBL-MarinerDemo
+git clone https://github.com/microsoft/CBL-MarinerTutorials.git
+pushd CBL-MarinerTutorials
 cp ../CBL-Mariner/out/toolkit-*.tar.gz ./
 tar -xzvf toolkit-*.tar.gz
 ```
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build).
 
-The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build this Demo using the CBL-Mariner 1.0 Release as well.  
+The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build the same from this tutorial using the CBL-Mariner 1.0 release as well.  
 
-# Build Demo VHD or VHDX
+# Build a Demo VHD or VHDX
 
 In the previous section we configured your build machine.  In this section we will build a VHD or VHD(X) image.  
 
 ## Build Derivate VHD or VHDX
 
-Choose an image to build by invoking one of the following build commands from the _CBL-MarinerDemo/toolkit_ folder.
+Choose an image to build by invoking one of the following build commands from the _CBL-MarinerTutorials/toolkit_ folder.
 
 ```bash
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json 
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhdx.json
 ```
 
-The first time make image is invoked the toolkit downloads the necessary toolchain packages from the CBL-Mariner repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the CBL-MarinerDemo repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the [Hello World](./SPECS/hello_world_demo/hello_world_demo.spec) and [OS-Subrelease](./SPECS/os-subrelease/os-subrelease.spec) packages will be compiled.  After all local packages are built, make will assemble the packages to build an image.
-The resulting binaries (images and rpms) are placed in the CBL-MarinerDemo/out folder
+The first time make image is invoked the toolkit downloads the necessary toolchain packages from the CBL-Mariner repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the CBL-MarinerTutorials repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the [Hello World](./SPECS/hello_world_demo/hello_world_demo.spec) and [OS-Subrelease](./SPECS/os-subrelease/os-subrelease.spec) packages will be compiled.  After all local packages are built, make will assemble the packages to build an image.
+The resulting binaries (images and rpms) are placed in the CBL-MarinerTutorials/out folder
 
-    VHDX:       `CBL-MarinerDemo/out/images/demo_vhdx/`
-    VHD:        `CBL-MarinerDemo/out/images/demo_vhd/`
-    PACKAGES:   `CBL-MarinerDemo/out/RPMS/x86_64/`
+    VHDX:       `CBL-MarinerTutorials/out/images/demo_vhdx/`
+    VHD:        `CBL-MarinerTutorials/out/images/demo_vhd/`
+    PACKAGES:   `CBL-MarinerTutorials/out/RPMS/x86_64/`
 
 
 ## Use Hyper-V to Boot Your Demo Image
@@ -161,14 +161,14 @@ Now show the contents of the os-subrelease file
     ```
 Congratulations you've built and launched your first CBL-Mariner derivative image.
 
-# Build Demo ISO
+# Build a Demo ISO
 
 In the previous section we learned how to create a simple VHD(X) image. In this section we will turn our attention to creating a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive. 
 
-Let's jump right in.  Run the following command to build the demo ISO:
+Let's jump right in.  Run the following command to build a demo ISO:
 
 ```bash
-cd CBL-MarinerDemo/toolkit
+cd CBL-MarinerTutorials/toolkit
 sudo make iso CONFIG_FILE=../imageconfigs/demo_iso.json
 ```
 
@@ -184,7 +184,7 @@ Copy your binary image(s) to your VM Host Machine using your preferred technique
 1. Change Memory size if desired, then press _Next >_.
 1. Select a virtual switch, then press _Next >_.
 1. Select _Create a virtual hard disk_, choose a location for your VHD(X) and set your desired disk Size.  Then press _Next >_.
-1. Select _Install an operating system from a bootable image file_ and browse to your Demo ISO. 
+1. Select _Install an operating system from a bootable image file_ and browse to your demo ISO. 
 1. Press _Finish_.
 
 **[Gen2/VHDX Only] Fix Boot Options**
@@ -227,7 +227,7 @@ The complete package set of an image is defined in the "PackageLists" array of e
             ],
    ```
 
-Each package list defines the set of packages to include in the final image. In this example, there are two, so the resuling demo VHD contains the union of the two package lists.  While it is possible to combine both package lists into a single JSON file, the separation adds clarity by grouping related content.  In this case, packages originating from packages.microsoft.com are in the core-packages set, and packages built from the local repository are specified in the demo-packages set.
+Each package list defines the set of packages to include in the final image. In this example, there are two, so the resulting demo VHD contains the union of the two package lists.  While it is possible to combine both package lists into a single JSON file, the separation adds clarity by grouping related content.  In this case, packages originating from packages.microsoft.com are in the core-packages set, and packages built from the local repository are specified in the demo-packages set.
 
 The first package list, core-packages.json, includes a superset-package called [core-packages-base-image](https://github.com/microsoft/CBL-Mariner/blob/1.0/SPECS/core-packages/core-packages.spec).  Core-packages-base-image is common to most derivatives as it contains the common set of packages used in Mariner Core.  This bundling is a convenience.  It is possible to list each package individually instead.  The second package, initramfs, is used for booting CBL-Mariner in either a virtualized or physical hardware environment.  Not every image needs it, so it's not included in the `core-packages-base-image` superset.  Instead, it's specified separately.
 
@@ -240,7 +240,7 @@ The first package list, core-packages.json, includes a superset-package called [
     }
    ```
 
-The second package list, demo-packages.json, contains the Hello World and os-subrelease packages that are unique to the CBL-MarinerDemo repository:
+The second package list, demo-packages.json, contains the Hello World and os-subrelease packages that are unique to the CBL-MarinerTutorials repository:
 
    ```json
    {
@@ -251,13 +251,13 @@ The second package list, demo-packages.json, contains the Hello World and os-sub
    }
    ```
 
-# Customize Demo Image with Pre-built Packages
+# Customize the Demo Image with Pre-built Packages
 
 In the previous section we described how the package lists are defined.  In this section we will add a pre-built package to the core-packages.json file.
 
 ## Add Latest Pre-Built Package
 
-The Zip package is not included in the demo image by default.  Because Zip is already released for CBL-Mariner lets add it to your demo image.  Open the [core-packages.json](./imageconfigs/demo_package_lists/core-packages.json) file with your favorite editor,  Add zip to the packages array before initramfs.  While it's possible to add zip after initramfs, it is currently recommended to insert new packages before initramfs due to a performance quirk in the build system.
+The Zip package is not included in your demo image by default.  Because Zip is already released for CBL-Mariner lets add it to your demo image.  Open the [core-packages.json](./imageconfigs/demo_package_lists/core-packages.json) file with your favorite editor,  Add zip to the packages array before initramfs.  While it's possible to add zip after initramfs, it is currently recommended to insert new packages before initramfs due to a performance quirk in the build system.
 
 ```json
  {
@@ -271,7 +271,7 @@ The Zip package is not included in the demo image by default.  Because Zip is al
 Save the file.  For this tutorial we will continue building the VHD image, but you may rebuild the image of your choice because the ISO, VHD and VHDX all share the same core package list file.
 
 ```bash
-cd CBL-MarinerDemo/toolkit
+cd CBL-MarinerTutorials/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 Boot the image and verify that the latest version of zip is now provided:
@@ -291,7 +291,7 @@ Boot the image and verify that the latest version of zip is now provided:
 
 By default the _latest_ version of any package specified in a package list will be included in your image.  It is important to note that each time you rebuild your image it may differ from your previous build as the packages on packages.microsoft.com are periodically updated to resolve security vulernabilities. This behavior may or may not be desired, but you can always be assured that the most recent build is also the most up to date with respect to CVE's. 
 
-If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerDemo/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
+If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerTutorials/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
 
 The next section also describes a technique for pinning specific package versions.
 
@@ -299,7 +299,7 @@ The next section also describes a technique for pinning specific package version
 
 Occassionally you may need to install a very specific version of a package in your image at build time, rather than the latest version. CBL-Mariner supports this capability.
 
-This time let's add `unzip` version 6.0-19, and the latest dash release for `etcd` version 3.5.1 to our demo image.  You do this in the following way:
+This time let's add `unzip` version 6.0-19, and the latest dash release for `etcd` version 3.5.1 to your demo image.  You do this in the following way:
 
 ```json
 {
@@ -318,7 +318,7 @@ This time let's add `unzip` version 6.0-19, and the latest dash release for `etc
 Save the file and rebuild your image.
 
 ```bash
-cd CBL-MarinerDemo/toolkit
+cd CBL-MarinerTutorials/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 
@@ -376,26 +376,26 @@ sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/marine
 
 CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) for more details.
 
-# Customize Demo Image with New Packages
+# Customize the Demo Image with New Packages
 
-In the previous section we described how pre-existing packages can be added to the Demo image.  In this section we will walk through the process of adding a new package.  
+In the previous section we described how pre-existing packages can be added to your demo image.  In this section we will walk through the process of adding a new package.  
 
-Packages are defined by RPM SPEC files. At its core, a SPEC file contains the instructions for building and installing a package.  Most SPEC files contain a pointer to one or more compressed source files, pointers to patch files, and the name, version and licensing information associated with the package.  SPEC files also contain references to build and runtime dependencies. The goal of this tutorial is to show the process for adding a spec file to the demo repo, not to delve into the details of creating a spec file.  For detailed information on SPEC file syntax and features refer to the [RPM Packaging Guide](https://rpm-packaging-guide.github.io/) or search the web as needed.
+Packages are defined by RPM SPEC files. At its core, a SPEC file contains the instructions for building and installing a package.  Most SPEC files contain a pointer to one or more compressed source files, pointers to patch files, and the name, version and licensing information associated with the package.  SPEC files also contain references to build and runtime dependencies. The goal of this tutorial is to show the process for adding a spec file to the tutorial repo, not to delve into the details of creating a spec file.  For detailed information on SPEC file syntax and features refer to the [RPM Packaging Guide](https://rpm-packaging-guide.github.io/) or search the web as needed.
 
-To add a new package to the CBL-MarinerDemo repo you must take the following actions:
+To add a new package to the CBL-MarinerTutorials repo you must take the following actions:
 - Acquire the compressed source file (the tarball) you want to build
 - Create a signature meta-data file (a SHA-256 hash of the tarball)
 - Create a .spec file.  
 
-For this tutorial we will add the "gnuchess" package to your CBL-MarinerDemo image.
+For this tutorial we will add the "gnuchess" package to your CBL-MarinerTutorials image.
 
-First, download the source code for gnuchess 6.2.7 [here](https://ftp.gnu.org/gnu/chess/gnuchess-6.2.7.tar.gz).  And save it in a new CBL-MarinerDemo/SPECS/gnuchess folder.  Also, download and save the [game data file](http://ftp.gnu.org/pub/gnu/chess/book_1.01.pgn.gz) to the gnuchess folder.
+First, download the source code for gnuchess 6.2.7 [here](https://ftp.gnu.org/gnu/chess/gnuchess-6.2.7.tar.gz).  And save it in a new CBL-MarinerTutorials/SPECS/gnuchess folder.  Also, download and save the [game data file](http://ftp.gnu.org/pub/gnu/chess/book_1.01.pgn.gz) to the gnuchess folder.
 
 Next, create the spec file for gnuchess.  This may be created from scratch, but in many cases it's easiest to leverage an open source version as a template.  Since the focus of this tutorial is to demonstrate how to quickly add a new package, we will obtain an existing spec file [Fedora source rpm for gnuchess](https://src.fedoraproject.org/rpms/gnuchess/blob/master/f/gnuchess.spec).
 
 Clone the Fedora gnuchess repo and copy the spec and patch files into your gnuchess folder:
 ```bash
-cd CBL-MarinerDemo/SPECS/gnuchess
+cd CBL-MarinerTutorials/SPECS/gnuchess
 git clone https://src.fedoraproject.org/rpms/gnuchess.git /tmp/gnuchess
 pushd /tmp/gnuchess
 git checkout 03a6481
@@ -407,7 +407,7 @@ Now calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn
 
 Calculate the new checksum:
 ```bash
-$ cd CBL-MarinerDemo/SPECS/gnuchess
+$ cd CBL-MarinerTutorials/SPECS/gnuchess
 $ sha256sum gnuchess-6.2.7.tar.gz
 e536675a61abe82e61b919f6b786755441d9fcd4c21e1c82fb9e5340dd229846  gnuchess-6.2.7.tar.gz
 $ sha256sum book_1.01.pgn.gz
@@ -425,10 +425,10 @@ Using your favorite editor create and save a gnuchess.signatures.json file with 
 }
 ```
 
-At this point your CBL-MarinerDemo/SPECS/gnuchess folder should alook similar to this:
+At this point your CBL-MarinerTutorials/SPECS/gnuchess folder should alook similar to this:
 
 ```bash
-~/CBL-MarinerDemo/SPECS/gnuchess$ ls -la
+~/CBL-MarinerTutorials/SPECS/gnuchess$ ls -la
 total 816
 drwxr-xr-x 2 jon jon   4096 Jan 22 14:23 .
 drwxr-xr-x 5 jon jon   4096 Jan 22 13:43 ..
@@ -480,12 +480,12 @@ Also, modify the changelog by adding a new entry similar to the one below.
 At this point, we can use a shortcut to verify that the gnu chess package compiles by issuing the following command.  It will build any packages not already built, but not build the image itself.
 
 ```bash
-$ cd CBL-MarinerDemo/toolkit
+$ cd CBL-MarinerTutorials/toolkit
 $ sudo make build-packages CONFIG_FILE=
 ```
 
 If the build fails, inspect the build output for clues and repair any issues.  The default location for build logs is in the 
-_CBL-MarinerDemo/build/logs/pkggen/rpmbuilding/_ folder.  There should be one log for each package.
+_CBL-MarinerTutorials/build/logs/pkggen/rpmbuilding/_ folder.  There should be one log for each package.
 
 Finally, we need to add gnuchess to the demo-packages.json file.
 
@@ -502,7 +502,7 @@ Finally, we need to add gnuchess to the demo-packages.json file.
 Save your demo-packages.json file and rebuild your image.
 
 ```bash
-cd CBL-MarinerDemo/toolkit
+cd CBL-MarinerTutorials/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 
@@ -522,16 +522,16 @@ Boot your image, log in and verify that gnuchess is now available:
 
 In some situations you may want to build and test variations of the default CBL-Mariner Kernel.  Because the kernel is also a package, the process is similar to adding a new package as discussed in the previous section.  
 
-To begin, copy the complete contents of the CBL-Mariner kernel spec folder into your clone of the CBL-MarinerDemo repo.  The following assumes you have already cloned CBL-Mariner and the CBL-MarinerDemo demo repo and both are nested under a git folder:
+To begin, copy the complete contents of the CBL-Mariner kernel spec folder into your clone of the CBL-MarinerTutorials repo.  The following assumes you have already cloned CBL-Mariner and the CBL-MarinerTutorials repo and both are nested under a git folder:
 
 ```bash
-user@machine:~/git$ cp -r CBL-Mariner/SPECS/kernel/ CBL-MarinerDemo/SPECS/kernel/ 
+user@machine:~/git$ cp -r CBL-Mariner/SPECS/kernel/ CBL-MarinerTutorials/SPECS/kernel/ 
 ```
 Next, we will need to download a source tarball from github that matches the kernel version in the kernel.spec file.
 
 ```bash
 # Switch to the kernel folder
-$ cd CBL-MarinerDemo/SPECS/kernel/ 
+$ cd CBL-MarinerTutorials/SPECS/kernel/ 
 
 # Determine the kernel version you are using (yours may vary)
 $ grep Version: kernel.spec
@@ -605,7 +605,7 @@ Distribution:   Mariner
 After saving your file, rebuild your demo image.  The kernel will take some time to build.
 
 ```bash
-cd CBL-MarinerDemo/toolkit
+cd CBL-MarinerTutorials/toolkit
 sudo make clean
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
