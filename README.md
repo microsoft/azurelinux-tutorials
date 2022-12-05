@@ -13,10 +13,10 @@ The following tutorial guides you through the process of building and running th
     - Prerequisites: Prepare your Environment
 - [Working with Packages](docs/packages/working_with_packages.md)
     - Image Config File
-    - Customize the Demo Image with Pre-built Packages
-    - Customize the Demo Image with New Packages
+    - Tutorial: Customize your Image with Pre-built Packages
+    - Tutorial: Customize your Image with Unsupported Packages
 - [Modify the Kernel](docs/kernel/modify_kernel.md)
-    - Modify the Demo Image Kernel
+    - Tutorial: Modify the Image Kernel
 - [Building an Image](docs/building/building.md)
     - Build a Demo VHD or VHDX Image
     - Build a Demo ISO Image

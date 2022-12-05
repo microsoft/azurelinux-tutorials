@@ -3,11 +3,11 @@
 - [Image Config File](#image-config-file)
     - [File Paths](#file-paths)
     - [Package Lists](#package-lists)
-- [Customize the Demo Image with Pre-built Packages](#customize-the-demo-image-with-pre-built-packages)
+- [Tutorial: Customize your Image with Pre-built Packages](#tutorial-customize-your-image-with-pre-built-packages)
     - [Add Latest Pre-Built Package](#add-latest-pre-built-package)
     - [Add Specific Pre-Built Package Version](#add-specific-pre-built-package-version)
     - [Add Packages from Other RPM Repositories](#add-packages-from-other-rpm-repositories)
-- [Customize the Demo Image with New Packages](#customize-the-demo-image-with-new-packages)
+- [Tutorial: Customize your Image with Unsupported Packages](#tutorial-customize-your-image-with-unsupported-packages)
 
 ## Image Config File
 
@@ -58,7 +58,7 @@ The second package list, demo-packages.json, contains the Hello World and os-sub
    }
    ```
 
-## Customize the Demo Image with Pre-built Packages
+## Tutorial: Customize your Image with Pre-built Packages
 
 In the previous section we described how the package lists are defined.  In this section we will add a pre-built package to the core-packages.json file.
 
@@ -183,7 +183,7 @@ sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/marine
 
 CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) for more details.
 
-## Customize the Demo Image with New Packages
+## Tutorial: Customize your Image with Unsupported Packages
 
 In the previous section we described how pre-existing packages can be added to your demo image.  In this section we will walk through the process of adding a new package.  
 

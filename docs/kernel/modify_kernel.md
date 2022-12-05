@@ -1,6 +1,6 @@
 # Modifying the Kernel
 
-## Modify the Demo Image Kernel
+## Tutorial: Modify the Image Kernel
 
 In some situations you may want to build and test variations of the default CBL-Mariner Kernel.  Because the kernel is also a package, the process is similar to adding a new package as discussed in the previous section.  
 
