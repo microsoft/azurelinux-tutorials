@@ -88,7 +88,7 @@ Boot the image and verify that the latest version of zip is now provided:
     Copyright (c) 1990-2008 Info-ZIP - Type 'zip -"L"' for software license.
     Zip 3.0 (July 5th 2008). Usage:
     (...)
-    root@demo [~]# dnf info -y zip
+    root@demo [~]# tdnf info -y zip
     Installed Packages
     Name        : zip
     Version     : 3.0   <---\
@@ -133,7 +133,7 @@ Boot the image and verify that `unzip` in now provided, _and_ it is the 6.0-19 v
 Similarly, `etcd` is version 3.5.1, latest release.
 
 ```bash
-    root@demo [~]# dnf info -y unzip
+    root@demo [~]# tdnf info -y unzip
     Installed Packages
     Name        : unzip
     Version     : 6.0
@@ -144,7 +144,7 @@ Similarly, `etcd` is version 3.5.1, latest release.
     Version     : 6.0     <--- this field may vary
     Release     : 20.cm2  <--- this field may vary
     (...)
-    root@demo [~]# dnf info -y etcd
+    root@demo [~]# tdnf info -y etcd
     Installed Packages
     Name        : etcd
     Version     : 3.5.1

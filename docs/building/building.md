@@ -7,7 +7,7 @@
 
 ## Build a Demo VHD or VHDX
 
-In the previous section we configured your build machine.  In this section we will build a VHD or VHD(X) image.  
+In the previous section we configured your build machine, walked through how to add packages, and described how to modify the kernel.  In this section we will put it altogether and build a VHD or VHD(X) image.  
 
 ### Build Derivate VHD or VHDX
 
@@ -44,6 +44,8 @@ Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings...._
 1. Select Security and under _Template:_ select _Microsoft UEFI Certificate Authority_.
+
+*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 **Boot and Sign-In to Your VHD(X) Image**
 
@@ -107,6 +109,8 @@ Copy your binary image(s) to your VM Host Machine using your preferred technique
 1. Select Security and under _Template:_ select _Microsoft UEFI Certificate Authority_.
 1. Select Firmware and adjust the boot order so DVD is first and Hard Drive is second.
 1. Select _Apply_ to apply all changes.
+
+*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 **Boot ISO**
 1. Right click your VM and select _Connect..._.
