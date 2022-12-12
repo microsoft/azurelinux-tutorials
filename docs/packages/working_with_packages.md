@@ -195,6 +195,8 @@ To add a new package to the CBL-MarinerTutorials repo you must take the followin
 - [Acquire the compressed source file (the tarball) you want to build](#acquire-the-compressed-source-file)
 - [Create a signature meta-data file (a SHA-256 hash of the tarball)](#create-a-signature-meta-data-file)
 - [Create a .spec file](#create-a-spec-file)
+- [Check your .spec file to ensure it is correct](#check-your-spec-file)
+- [Add your package to the .json file](#add-your-package)
 
 For this tutorial we will add the "gnuchess" package to your CBL-MarinerTutorials image.
 
@@ -293,6 +295,8 @@ Also, modify the %changelog by adding a new entry similar to the one below.
 ```
 For more information on editing SPEC files, refer to RPM's [Spec file format](https://rpm-software-management.github.io/rpm/manual/spec.html) guide and the RPM packaging guide on [SPEC files][https://rpm-packaging-guide.github.io/#what-is-a-spec-file].
 
+### Check your .spec File
+
 Next, you can check your SPEC file to ensure that it conforms with RPM design rules. See the RPM packaging guide on [Checking RPMs](https://rpm-packaging-guide.github.io/#checking-rpms-for-sanity) for how to use the *rpmlint* tool.
 
 At this point, we can use a shortcut to verify that the gnu chess package compiles by issuing the following command.  It will build any packages not already built, but not build the image itself.
@@ -304,6 +308,8 @@ $ sudo make build-packages CONFIG_FILE=
 
 If the build fails, inspect the build output for clues and repair any issues.  The default location for build logs is in the 
 _CBL-MarinerTutorials/build/logs/pkggen/rpmbuilding/_ folder.  There should be one log for each package.
+
+### Add your Package
 
 Finally, we need to add gnuchess to the demo-packages.json file.
 
