@@ -23,7 +23,7 @@ Any file paths on the **built image** should always be absolute. Refer to the `A
 
 ### Package Lists
 
-In the previous sections, we learned how to build a specific image or iso by passing a CONFIG_FILE argument to make. Each CONFIG_FILE specifies how the image should be built and what contents should be added to it.  In this section we will focus on how the image content is defined.  
+In this section we will focus on how the image content is defined. In later sections, we will learn how to build a specific image or iso by passing a CONFIG_FILE argument to make. Each CONFIG_FILE specifies how the image should be built and what contents should be added to it.
 
 The complete package set of an image is defined in the "PackageLists" array of each image's configuration file.  For example, the demo_vhd.json file includes these package lists:
 
@@ -88,7 +88,7 @@ Boot the image and verify that the latest version of zip is now provided:
     Copyright (c) 1990-2008 Info-ZIP - Type 'zip -"L"' for software license.
     Zip 3.0 (July 5th 2008). Usage:
     (...)
-    root@demo [~]# dnf info -y zip
+    root@demo [~]# tdnf info -y zip
     Installed Packages
     Name        : zip
     Version     : 3.0   <---\
@@ -133,7 +133,7 @@ Boot the image and verify that `unzip` in now provided, _and_ it is the 6.0-19 v
 Similarly, `etcd` is version 3.5.1, latest release.
 
 ```bash
-    root@demo [~]# dnf info -y unzip
+    root@demo [~]# tdnf info -y unzip
     Installed Packages
     Name        : unzip
     Version     : 6.0
@@ -144,7 +144,7 @@ Similarly, `etcd` is version 3.5.1, latest release.
     Version     : 6.0     <--- this field may vary
     Release     : 20.cm2  <--- this field may vary
     (...)
-    root@demo [~]# dnf info -y etcd
+    root@demo [~]# tdnf info -y etcd
     Installed Packages
     Name        : etcd
     Version     : 3.5.1
