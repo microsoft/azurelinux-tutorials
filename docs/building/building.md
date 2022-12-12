@@ -45,9 +45,9 @@ Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-
 1. Select _Settings..._
 1. Select Security and under _Template:_ select _Microsoft UEFI Certificate Authority_.
 
-*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
-
 **Disable Secure Boot**
+
+*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._
@@ -116,9 +116,9 @@ Copy your binary image(s) to your VM Host Machine using your preferred technique
 1. Select Firmware and adjust the boot order so DVD is first and Hard Drive is second.
 1. Select _Apply_ to apply all changes.
 
-*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
-
 **Disable Secure Boot**
+
+*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._
