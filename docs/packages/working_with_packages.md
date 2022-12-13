@@ -221,7 +221,7 @@ cp /tmp/gnuchess/gnuchess.spec .
 
 ### Create a Signature Meta-data File
 
-Now, calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one.
+Now, calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one. The signature meta-data file can also be automatically created using a specific argument in the command line as seen in the [CBL-Mariner documentation](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#source-hashes).
 
 Calculate the new checksum:
 
