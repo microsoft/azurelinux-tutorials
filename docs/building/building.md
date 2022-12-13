@@ -1,13 +1,13 @@
-# Building 
+# Building
 
-- [Build a Demo VHD or VHDX](#build-a-demo-vhd-or-vhdx)
+- [Tutorial: Build a Demo VHD or VHDX](#tutorial-build-a-demo-vhd-or-vhdx)
     - [Build Derivate VHD or VHDX](#build-derivate-vhd-or-vhdx)
     - [Use Hyper-V to Boot Your Demo Image](#use-hyper-v-to-boot-your-demo-image)
-- [Build a Demo ISO](#build-a-demo-iso)
+- [Tutorial: Build a Demo ISO](#tutorial-build-a-demo-iso)
 
-## Build a Demo VHD or VHDX
+## Tutorial: Build a Demo VHD or VHDX
 
-In the previous section we configured your build machine, walked through how to add packages, and described how to modify the kernel.  In this section we will put it altogether and build a VHD or VHD(X) image.  
+In the previous tutorials, we configured your build machine, walked through how to add packages, and described how to modify the kernel.  In this tutorial, we will put it altogether and build a VHD or VHD(X) image.  
 
 ### Build Derivate VHD or VHDX
 
@@ -25,9 +25,9 @@ The resulting binaries (images and rpms) are placed in the CBL-MarinerTutorials/
     VHD:        `CBL-MarinerTutorials/out/images/demo_vhd/`
     PACKAGES:   `CBL-MarinerTutorials/out/RPMS/x86_64/`
 
-
 ### Use Hyper-V to Boot Your Demo Image
-Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-V.    
+
+Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-V.
 
 **Create VHD(X) Virtual Machine with Hyper-V**
 
@@ -47,7 +47,7 @@ Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-
 
 **Disable Secure Boot**
 
-*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
+_Note:_ If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._
@@ -58,10 +58,12 @@ Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-
 1. Right click your VM and select _Connect..._.
 1. Select _Start_.
 1. Wait for CBL-Mariner to boot to the login prompt, then sign in with:
+
 ```bash
     root
     p@ssw0rd
 ```
+
 **Verify your Derivate Packages are Installed**
 From the command line run the helloworld program
 
@@ -80,11 +82,11 @@ Now show the contents of the os-subrelease file
     NAME="My Product Name"
     VERSION="my-version-id"
     ```
-Congratulations you've built and launched your first CBL-Mariner derivative image.
+Congratulations you've built and launched your first CBL-Mariner derivative image!
 
-## Build a Demo ISO
+## Tutorial: Build a Demo ISO
 
-In the previous section we learned how to create a simple VHD(X) image. In this section we will turn our attention to creating a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive. 
+In the previous tutorial, we learned how to create a simple VHD(X) image. In this tutorial, we will turn our attention to creating a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive.
 
 Let's jump right in.  Run the following command to build a demo ISO:
 
@@ -118,13 +120,14 @@ Copy your binary image(s) to your VM Host Machine using your preferred technique
 
 **Disable Secure Boot**
 
-*Note:* If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
+_Note:_ If you followed any of the previous tutorials in [Working with packages](docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._
 1. Select Security and uncheck the "Enable Secure Boot" box
 
 **Boot ISO**
+
 1. Right click your VM and select _Connect..._.
 1. Select _Start_.
 1. Follow the Installer Prompts to Install your image
