@@ -104,7 +104,7 @@ The next section also describes a technique for pinning specific package version
 
 ### Add Specific Pre-Built Package Version
 
-Occassionally you may need to install a very specific version of a package in your image at build time, rather than the latest version. CBL-Mariner supports this capability.
+Occasionally you may need to install a very specific version of a package in your image at build time, rather than the latest version. CBL-Mariner supports this capability.
 
 This time let's add `unzip` version 6.0-19, and the latest dash release for `etcd` version 3.5.1 to your demo image.  You do this in the following way:
 
@@ -156,6 +156,7 @@ Similarly, `etcd` is version 3.5.1, latest release.
     Release     : 2.cm2   <--- this field may vary
     ...
 ```
+
 ### Add Packages from Other RPM Repositories
 
 It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
@@ -187,16 +188,17 @@ CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to
 
 In the previous tutorial we described how pre-existing packages can be added to your demo image.  In this tutorial we will walk through the process of adding a new package that Mariner does not formally support through the addition of a SPEC file.  
 
-Packages are defined by RPM SPEC files. At its core, a SPEC file contains the instructions for building and installing a package.  Most SPEC files contain a pointer to one or more compressed source files, pointers to patch files, and the name, version and licensing information associated with the package.  SPEC files also contain references to build and runtime dependencies. 
+Packages are defined by RPM SPEC files. At its core, a SPEC file contains the instructions for building and installing a package.  Most SPEC files contain a pointer to one or more compressed source files, pointers to patch files, and the name, version and licensing information associated with the package.  SPEC files also contain references to build and runtime dependencies.
 
 The goal of this tutorial is to show the process for adding a SPEC file to the tutorial repo, not to delve into the details of creating a SPEC file.  For detailed information on SPEC file syntax and features refer to the [RPM Packaging Guide](https://rpm-packaging-guide.github.io/), the [RPM Reference Manual](https://rpm-software-management.github.io/rpm/manual/), or search the web as needed.
 
 To add a new package to the CBL-MarinerTutorials repo you must take the following actions:
-- [Acquire the compressed source file (the tarball) you want to build](#acquire-the-compressed-source-file)
-- [Create a signature meta-data file (a SHA-256 hash of the tarball)](#create-a-signature-meta-data-file)
-- [Create a .spec file](#create-a-spec-file)
-- [Check your .spec file to ensure it is correct](#check-your-spec-file)
-- [Add your package to the .json file](#add-your-package)
+
+1. [Acquire the compressed source file (the tarball) you want to build](#acquire-the-compressed-source-file)
+1. [Create a signature meta-data file (a SHA-256 hash of the tarball)](#create-a-signature-meta-data-file)
+1. [Create a .spec file](#create-a-spec-file)
+1. [Check your .spec file to ensure it is correct](#check-your-spec-file)
+1. [Add your package to the .json file](#add-your-package)
 
 For this tutorial we will add the "gnuchess" package to your CBL-MarinerTutorials image.
 
@@ -207,6 +209,7 @@ First, download the source code for gnuchess 6.2.7 [here](https://ftp.gnu.org/gn
 Next, create the SPEC file for gnuchess.  This may be created from scratch, but in many cases it's easiest to leverage an open source version as a template.  Since the focus of this tutorial is to demonstrate how to quickly add a new package, we will obtain an existing SPEC file [Fedora source rpm for gnuchess](https://src.fedoraproject.org/rpms/gnuchess/blob/master/f/gnuchess.spec).
 
 Clone the Fedora gnuchess repo and copy the SPEC and patch files into your gnuchess folder:
+
 ```bash
 cd CBL-MarinerTutorials/SPECS/gnuchess
 git clone https://src.fedoraproject.org/rpms/gnuchess.git /tmp/gnuchess
@@ -218,17 +221,18 @@ cp /tmp/gnuchess/gnuchess.spec .
 
 ### Create a Signature Meta-data File
 
-Now calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one.
+Now, calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one.
 
 Calculate the new checksum:
+
 ```bash
 $ cd CBL-MarinerTutorials/SPECS/gnuchess
 $ sha256sum gnuchess-6.2.7.tar.gz
 e536675a61abe82e61b919f6b786755441d9fcd4c21e1c82fb9e5340dd229846  gnuchess-6.2.7.tar.gz
 $ sha256sum book_1.01.pgn.gz
 35df43a342c73e6624e8dbfed78d588c2085208168c3cd3300295e3c57981be0  book_1.01.pgn.gz
-
 ```
+
 Using your favorite editor create and save a gnuchess.signatures.json file with the following content.
 
 ```json
@@ -256,10 +260,11 @@ drwxr-xr-x 5 jon jon   4096 Jan 22 13:43 ..
 ### Create a .spec File
 
 Now, we need to modify the gnuchess.spec file slightly to build properly for CBL-Mariner by:
-- bumping the release number
-- selecting the non-precompiled book
-- patching the BuildRequires for c++ to use the CBL-Mariner package name
-- updating the %changelog and professionally show gratitude to Fedora
+
+1. bumping the release number
+1. selecting the non-precompiled book
+1. patching the BuildRequires for c++ to use the CBL-Mariner package name
+1. updating the %changelog and professionally show gratitude to Fedora
 
 Your SPEC file should appear similar to this:
 
@@ -293,11 +298,12 @@ Also, modify the %changelog by adding a new entry similar to the one below.
 - Second attempt - Rebuilt for
   https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 ```
-For more information on editing SPEC files, refer to RPM's [Spec file format](https://rpm-software-management.github.io/rpm/manual/spec.html) guide and the RPM packaging guide on [SPEC files][https://rpm-packaging-guide.github.io/#what-is-a-spec-file].
+
+For more information on editing SPEC files, refer to RPM's [Spec file format](https://rpm-software-management.github.io/rpm/manual/spec.html) guide and the RPM packaging guide on [SPEC files](https://rpm-packaging-guide.github.io/#what-is-a-spec-file).
 
 ### Check your .spec File
 
-Next, you can check your SPEC file to ensure that it conforms with RPM design rules. See the RPM packaging guide on [Checking RPMs](https://rpm-packaging-guide.github.io/#checking-rpms-for-sanity) for how to use the *rpmlint* tool.
+Next, you can check your SPEC file to ensure that it conforms with RPM design rules. See the RPM packaging guide on [Checking RPMs](https://rpm-packaging-guide.github.io/#checking-rpms-for-sanity) for how to use the _rpmlint_ tool.
 
 At this point, we can use a shortcut to verify that the gnu chess package compiles by issuing the following command.  It will build any packages not already built, but not build the image itself.
 
@@ -306,8 +312,7 @@ $ cd CBL-MarinerTutorials/toolkit
 $ sudo make build-packages CONFIG_FILE=
 ```
 
-If the build fails, inspect the build output for clues and repair any issues.  The default location for build logs is in the 
-_CBL-MarinerTutorials/build/logs/pkggen/rpmbuilding/_ folder.  There should be one log for each package.
+If the build fails, inspect the build output for clues and repair any issues.  The default location for build logs is in the _CBL-MarinerTutorials/build/logs/pkggen/rpmbuilding/_ folder.  There should be one log for each package.
 
 ### Add your Package
 

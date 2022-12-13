@@ -1,6 +1,7 @@
-# Prerequisites: Prepare your Environment
+# Tutorial: Prepare your Environment
 
 Before starting this tutorial, you will need to setup your development machine.  These instructions were tested on an x86_64 based machine using Ubuntu 20.04.
+
 - [Install Tools](#install-tools)
 - [Clone CBL-Mariner](#clone-cbl-mariner-and-build-the-toolkit)
 - [Clone CBL-MarinerTutorials](#clone-cbl-marinertutorials-repo-and-extract-the-toolkit)
@@ -31,12 +32,12 @@ sudo usermod -aG docker $USER
 
 **You will need to log out and lock back in** for user changes to take effect.
 
-
 ## Clone CBL-Mariner and Build the Toolkit
 
 To build the CBL-MarinerTutorials repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner, and then checkout the stable release of interest (e.g. 1.0-stable or 2.0-stable), then build the toolkit.
 
 ### Example for CBL-Mariner 1.0 Toolkit
+
 ```bash
 git clone https://github.com/microsoft/CBL-Mariner.git
 pushd CBL-Mariner/toolkit
@@ -44,7 +45,9 @@ git checkout 1.0-stable
 sudo make package-toolkit REBUILD_TOOLS=y
 popd
 ```
-### Example for CBL-Mariner 2.0 Toolkit 
+
+### Example for CBL-Mariner 2.0 Toolkit
+
 ```bash
 git clone https://github.com/microsoft/CBL-Mariner.git
 pushd CBL-Mariner/toolkit
@@ -66,4 +69,4 @@ tar -xzvf toolkit-*.tar.gz
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build). For more information on our toolkit see [How The Build System Works](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/how_it_works/0_intro.md) in the CBL-Mariner repo.  
 
-The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build the same from this tutorial using the CBL-Mariner 1.0 release as well. 
+The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build the same from this tutorial using the CBL-Mariner 1.0 release as well.

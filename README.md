@@ -5,23 +5,16 @@ The [CBL-Mariner](https://github.com/microsoft/CBL-Mariner) repository provides 
 
 When you build an ISO, VHD or VHDX image from this repository,  the resulting image will contain additional content unavailable in the CBL-Mariner repo.  The CBL-MarinerTutorials repository demonstrates how you can augment CBL-Mariner without forking the CBL-Mariner repository.  This repository contains the SPEC file and source for building a simple "Hello World" application.  This repository also includes a simple "os-subrelease" package that allows you to add identifying information about your derivative to an /etc/os-subrelease file.  
 
-Follow this decision tree to ensure you are using the correct repository: 
+Follow this decision tree to ensure you are using the correct repository for your use case:
 
-```mermaid
-graph TD
-    A-->B;
-        click A "https://github.com/microsoft/CBL-Mariner"
-    A-->C;
-    B-->D;
-    C-->D;
-```
+![Repo Decision Tree](./docs/images/decisionTree.jpg)
 
-The following tutorial guides you through the process of building and running the basic CBL-MarinerTutorials image.  These instructions also describe how to customize or extend the basic CBL-MarinerTutorials image.
+The following tutorials guide you through the process of building and running the basic CBL-MarinerTutorials image.  These instructions also describe how to customize or extend the basic CBL-MarinerTutorials image.
 
 # Tutorial Table of Contents
 
 - [Getting Started](docs/getting_started/prepare_environment.md)
-    - Prerequisites: Prepare your Environment
+    - Tutorial: Prepare your Environment
 - [Working with Packages](docs/packages/working_with_packages.md)
     - Image Config File
     - Tutorial: Customize your Image with Pre-built Packages
@@ -29,6 +22,6 @@ The following tutorial guides you through the process of building and running th
 - [Modify the Kernel](docs/kernel/modify_kernel.md)
     - Tutorial: Modify the Image Kernel
 - [Building an Image](docs/building/building.md)
-    - Build a Demo VHD or VHDX Image
-    - Build a Demo ISO Image
+    - Tutorial: Build a Demo VHD or VHDX Image
+    - Tutorial: Build a Demo ISO Image
     - [Automate VHD or VHDX Creation 'packer'](imaging-from-packer/Readme.md)
