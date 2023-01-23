@@ -28,9 +28,10 @@ sudo ln -vsf /usr/lib/go-1.17/bin/go /usr/bin/go
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker $USER
-```
 
-**You will need to log out and lock back in** for user changes to take effect.
+# Refresh docker group settings for current user
+newgrp docker
+```
 
 ## Clone CBL-Mariner and Build the Toolkit
 
