@@ -42,6 +42,7 @@
       "http_port_min": "8000",
       "http_port_max": "9000",
 
+      "boot_wait": "10s",
       "boot_command": [
         "<esc><wait>",
         "<rightCtrlOn>c<rightCtrlOff><tab><enter><wait>",
@@ -52,6 +53,7 @@
         " mkdir -p $HOME/config/postinstallscripts <enter><wait>",
         " curl http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `postinstall_script`}} -o $HOME/config/postinstallscripts/{{user `postinstall_script`}} <enter><wait>",
         " chmod 755 $HOME/config/postinstallscripts/{{user `postinstall_script`}} <enter><wait>",
+        " systemctl stop espeakup <enter><wait>",
         " $HOME/runliveinstaller -u $HOME/{{user `mariner_config_file`}} -c $HOME/config <enter><wait>",
         " <wait3m>"
       ]
