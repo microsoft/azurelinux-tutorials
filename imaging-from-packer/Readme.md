@@ -9,7 +9,8 @@ This tooling relies on two configuration files: 'packer' configuration [packer_c
 Notes:
 - this sample relies on the http server 'packer' will set up to provision the configuration files on the target. Consequently the virtual network switch provided by Hyper-V and that you will instruct 'packer' to use should be configured in such a way that communication between 'packer' http server and the target is possible. If not possible, packer offers other way to provision file onto the target, e.g.: secondary iso, (see 'packer' documentation).
 - depending on the hardware it run against, the virtual machine Packer creates might be slow to boot and makes Packer injecting its "boot_command" before the virtual machine is ready to accept them. In such a case, use "boot_wait" in Packer config to delay injection of commands indicated in "boot_command".
-- *<esc><wait>* and *<rightCtrlOn>c<rightCtrlOff><tab><enter><wait>* commands at the beggining of the "boot_command" section will exit CBL-Mariner attended configuration.
+- ``"<esc><wait>",
+"<rightCtrlOn>c<rightCtrlOff><tab><enter><wait>",`` commands at the beggining of the "boot_command" section will exit CBL-Mariner attended configuration.
 
 ###### Prerequisits
 - enable Hyper-V feature on your Windows machine
