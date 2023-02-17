@@ -1,5 +1,5 @@
 # Automate VHD or VHDX creation from CBL-Mariner ISO image using ['packer']( https://www.packer.io/) (1)
-This set of scripts and configuration files can be used to automate VHDX (2) creation and customization from an initial CBL-Mariner ISO image. These scripts are designed to run on Windows using the Hyper-V builder Packer provides. They will need to be adapted if another builder is used (e.g. qemu builder).
+This set of scripts and configuration files can be used to automate VHDX (2) creation and customization from an initial CBL-Mariner ISO image. These scripts are designed to <u>run on Windows using the Hyper-V builder Packer provides</u>. They will need to be adapted if another builder is used (e.g. qemu builder).
 The ISO image can be local or fetched from a server. The ++original ISO image must contains 'openssh-server' packages++, because 'packer' relies on ssh to communicate with the VM once it has been programmatically configured and booted.
 
 ![](PackerFlow.png)

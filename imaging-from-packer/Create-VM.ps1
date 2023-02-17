@@ -1,13 +1,15 @@
 param (
-   # path to the iso file (could also be a URL)
+   # path to the iso file (path to local file or URL)
+   #   - URL like https://osrelease.download.prss.microsoft.com/pr/download/Mariner-2.0-x86_64.iso
+   #   - C:\MyFolder\Mariner-2.0-x86_64.iso
    [string]
-   $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso",
+   $isoFile = "https://osrelease.download.prss.microsoft.com/pr/download/Mariner-2.0-x86_64.iso",
 
    # ISO file checksum, could be either:
-   #   - URL like file:https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256
+   #   - URL like file:https://osrelease.download.prss.microsoft.com/pr/download/Mariner-2.0-x86_64.iso.sha256
    #   - text [checksum type]:[value], e.g.: sha256:246F000F1C493E5A8F78D13D4503DDB4BE5A77A5418A42809CC3CA5B8111931A
    [string]
-   $isoChecksum = "file:https://osrelease.download.prss.microsoft.com/pr/download/Mariner-1.0-x86_64.iso.sha256",
+   $isoChecksum = "file:https://osrelease.download.prss.microsoft.com/pr/download/Mariner-2.0-x86_64.iso.sha256",
 
    # Name of the CBL-Mariner configuration in the ISO
    # Note that default config name for CBL-Mariner ISO is "CBL-Mariner Full"
