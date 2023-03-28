@@ -7,9 +7,35 @@ When you build an ISO, VHD or VHDX image from this repository,  the resulting im
 
 Follow this decision tree to ensure you are using the correct repository for your use case:
 
-![Repo Decision Tree](./docs/images/decisionTree.jpg)
+```mermaid
+---
+title: Repo decision tree
+---
+flowchart TD
+    id1{{Do you want to experiment with Mariner or contribute to Mariner?}}
 
-The following tutorials guide you through the process of building and running the basic CBL-MarinerTutorials image.  These instructions also describe how to customize or extend the basic CBL-MarinerTutorials image.
+    id2A[Do you want to build locally with Mariner?]
+    id2B[Do you want to add an unsupported package? \n either a package Mariner has never supported \nor an updated major/minor version of a package Mariner supports]
+    id2C[Do you want to use Mariner for your project? \n ex. bare metal, IoT, embedded devices, etc.]
+    id2D[Use the CBL-MarinerTutorials repo]
+    id1 -->|experiment| id2A
+    id2A -.-|or| id2B
+    id2B -.-|or| id2C
+    id2C -->|yes to any of the above| id2D
+    
+
+    id3[Do you want to fix an issue in Mariner?]
+    id3B[Do you want to add a common package? \n either a package supported by another major distro \nor a package used widely across popular open-source projects]
+    id3C[Do you want to modify a supported Mariner package?]
+    id3D[Do you want to rebuild Mariner from end-to-end?]
+    id3E[Use the CBL-Mariner repo]
+    id1 --> |contribute|id3
+    id3 -.-|or| id3B
+    id3B -.-|or| id3C
+    id3C -.-|or| id3D
+    id3D-->|yes to any of the above|id3E
+
+```
 
 # Tutorial Table of Contents
 
