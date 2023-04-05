@@ -37,17 +37,10 @@ You can also setup this environment on CBL-Mariner
 # Install required dependencies.
 sudo dnf -y install git make tar wget curl rpm golang genisoimage python bison gawk glibc-devel binutils kernel-headers
 ```
-You may want to install rpmlint, in this case you need to add the extended repo in /etc/yum.repos.d/ as mariner-extended.repo
+You may want to install rpmlint, in this case you first need to add the extended repo
 ```bash
-[mariner-official-extended]
-name=CBL-Mariner Official Extended $releasever $basearch
-baseurl=https://packages.microsoft.com/cbl-mariner/$releasever/prod/extended/$basearch
-gpgkey=file:///etc/pki/rpm-gpg/MICROSOFT-RPM-GPG-KEY file:///etc/pki/rpm-gpg/MICROSOFT-METADATA-GPG-KEY
-gpgcheck=1
-repo_gpgcheck=1
-enabled=1
-skip_if_unavailable=True
-sslverify=1
+sudo tdnf -y install mariner-repos-extended
+sudo dnf -y install rpmlint
 ```
 
 At the moment docker does not support Mariner.
