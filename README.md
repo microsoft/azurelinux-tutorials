@@ -40,14 +40,16 @@ flowchart TD
 # Tutorial Table of Contents
 
 - [Getting Started](docs/getting_started/prepare_environment.md)
-    - Tutorial: Prepare your Environment
+  - Tutorial: Prepare your Environment
+- [Build a default image](docs/getting_started/default_images.md)
+  - Tutorial: Build one of our default images as-is
 - [Working with Packages](docs/packages/working_with_packages.md)
-    - Image Config File
-    - Tutorial: Customize your Image with Pre-built Packages
-    - Tutorial: Customize your Image with Unsupported Packages
+  - Image Config File
+  - Tutorial: Customize your Image with Pre-built Packages
+  - Tutorial: Customize your Image with Unsupported Packages
 - [Modify the Kernel](docs/kernel/modify_kernel.md)
-    - Tutorial: Modify the Image Kernel
+  - Tutorial: Modify the Image Kernel
 - [Building an Image](docs/building/building.md)
-    - Tutorial: Build a Demo VHD or VHDX Image
-    - Tutorial: Build a Demo ISO Image
-    - [Automate VHD or VHDX Creation 'packer'](imaging-from-packer/Readme.md)
+  - Tutorial: Build a Demo VHD or VHDX Image
+  - Tutorial: Build a Demo ISO Image
+  - [Automate VHD or VHDX Creation 'packer'](imaging-from-packer/Readme.md)
