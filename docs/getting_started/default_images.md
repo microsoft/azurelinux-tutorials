@@ -20,7 +20,7 @@ sudo make image CONFIG_FILE=./imageconfigs/core-efi.json
 sudo make image CONFIG_FILE=./imageconfigs/core-legacy.json
 ```
 
-The first time make image is invoked the toolkit downloads the necessary toolchain packages from the CBL-Mariner repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the CBL-MarinerTutorials repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutoria repo so nothing will be built. Make will then assemble the packages gathered from the package server to build an image.
+The first time make image is invoked the toolkit downloads the necessary toolchain packages from the CBL-Mariner repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the CBL-MarinerTutorials repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. Make will then assemble the packages gathered from the package server to build an image.
 The resulting images are placed in the CBL-MarinerTutorials/out folder
 
 > VHDX:       `CBL-MarinerTutorials/out/images/core-efi/`

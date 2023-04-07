@@ -184,6 +184,8 @@ sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/marine
 
 CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) for more details.
 
+> **NOTE:** The core repo contains these repo files in [SPECS/mariner-repos/](https://github.com/microsoft/CBL-Mariner/blob/2.0/SPECS/mariner-repos/).
+
 ## Tutorial: Customize your Image with Unsupported Packages
 
 In the previous tutorial we described how pre-existing packages can be added to your demo image.  In this tutorial we will walk through the process of adding a new package that Mariner does not formally support through the addition of a SPEC file.  
