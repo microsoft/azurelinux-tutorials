@@ -21,7 +21,7 @@ user@machine:~/git$ cp -r CBL-Mariner/SPECS/kernel/ CBL-MarinerTutorials/SPECS/k
 user@machine:~/git$ rsync -a  --exclude 'CVE*' CBL-Mariner/SPECS/kernel CBL-MarinerTutorials/SPECS/ 
 ```
 
-Next, we will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). We will choose the tag which matches the `kernel` version in the `kernel.spec` file.
+Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). You should choose the tag which matches the kernel version in the `kernel.spec` file as shown below.
 
 ```bash
 # Switch to the kernel folder
@@ -47,17 +47,18 @@ sed -i 's/    "kernel-5.15.102.1.tar.gz": .*/    "kernel-5.15.102.1.tar.gz": "'"
 
 ### Customize a Kernel
 
-Now you can  make your modifications to the necessary config files.  
-* For AMD64, modify the `config` file.  
-* For AARCH64, modify the `config_aarch64` file.  
+Once your environment is prepared and the sources are present, you can  make your modifications to the relevant config files.  
+* For `x86_64`, modify the `config` file.  
+* For `AARCH64`, modify the `config_aarch64` file.  
 
-At the time of writing this tutorial, the CONFIG_BLK_WBT setting is disabled by default. For this tutorial, we will enable it. 
+Currently, the `CONFIG_BLK_WBT` setting is disabled by default. For this tutorial, you will enable it. Run the following command to set `CONFIG_BLK_WBT` or manually edit the `config` file. 
 
 ```bash
+# Enable CONFIG_BLK_WBT
 sed -i 's/# CONFIG_BLK_WBT is not set/CONFIG_BLK_WBT=y/' config
 ```
 
-After editing your config file, save it and update the signature.
+Ensure your change is in config and saved. Next, update the signature for `config`.
 
 ```bash
 # Get the hash for the config file
@@ -67,7 +68,7 @@ CONFIGHASH=$(sha256sum config | awk '{print $1}')
 sed -i 's/    "config": .*/    "config": "'"$CONFIGHASH"'",/' kernel.signatures.json
 ```
 
-One last step before building.  When there is a conflict, the build system will make a best-effort attempt at prioritizing the local version of a package over the version on packages.microsoft.com.  However, to ensure we can differentiate our new custom kernel from the default kernel, and to guarantee the local version will be consumed, bump the release number in the kernel release spec. In this case, use your favorite editor and change the release number to 100 as shown below and save the file.
+When there is a conflict, the build system will make a best-effort attempt at prioritizing the local version of a package over the version on [packages.microsoft.com](http://packages.microsoft.com/).  However to ensure you can differentiate your new custom kernel from the default kernel and to guarantee the local version will be consumed, bump the release number in the kernel release spec. In this case, use your favorite editor and change the release number to 100 as shown below and save the file.
 
 ```bash
 Summary:        Linux Kernel
@@ -79,7 +80,7 @@ Vendor:         Microsoft Corporation
 Distribution:   Mariner
 ```
 
-### Build a Custom Kernel
+### Build a Custom Kernel RPM
 Let's build the new kernel RPM.
 
 ```bash
@@ -98,7 +99,7 @@ INFO[0068] Failed SRPMs:
 INFO[0068] --> kernel-5.15.102.1-100.cm2.src.rpm , error: exit status 2, for details see: /home/user/repos/CBL-MarinerDemo/build/logs/pkggen/rpmbuilding/kernel-5.15.102.1-100.cm2.src.rpm.log 
 ```
 
-Looking at the log `CBL-MarinerDemo/build/logs/pkggen/rpmbuilding/kernel-5.15.102.1-100.cm2.src.rpm.log` we see:
+Looking at the log `CBL-MarinerDemo/build/logs/pkggen/rpmbuilding/kernel-5.15.102.1-100.cm2.src.rpm.log`, you should see:
 
 ```bash
 # For readability, time stamps removed
@@ -119,11 +120,11 @@ Looking at the log `CBL-MarinerDemo/build/logs/pkggen/rpmbuilding/kernel-5.15.10
 "Update config file to set changed values explicitly"
 ```
 
-We see the error message `"Config file has unexpected changes... Update config file to set changed values explicitly"`. This is a common error when editing configs. CBL-Mariner's `kernel` requires implicitly enabled settings to be explicitly set. In this case, enabling only `CONFIG_BLK_WBT` is insufficient. We also need `CONFIG_BLK_WBT_MQ` to be explicitly set. The logs show that the `kernel` spec (specifically `make oldconfig`) has noted that `CONFIG_BLK_WBT_MQ` is missing. Because `CONFIG_BLK_WBT_MQ` is missing, compilation of the kernel fails.  In general, when an error of this nature occurs, the build log file for the kernel will indicate what needs to be changed.  
+The log contains the error message `"Config file has unexpected changes... Update config file to set changed values explicitly"`. This is a common error when editing configs. CBL-Mariner's kernel requires implicitly enabled settings to be explicitly set. In this case, enabling only `CONFIG_BLK_WBT` is insufficient. The logs show that the kernel spec (specifically `make oldconfig`) has flagged that `CONFIG_BLK_WBT_MQ` is missing (`"-CONFIG_BLK_WBT_MQ=y"`). Because `CONFIG_BLK_WBT_MQ` is missing, compilation of the kernel fails. Looking at the [kconfig](https://github.com/microsoft/CBL-Mariner-Linux-Kernel/blob/rolling-lts/mariner-2/5.15.102.1/block/Kconfig#L106) for `CONFIG_BLK_WBT_MQ`, you can see this option is dependent on `BLK_WBT` and therefore needs to be explicilty set. Adding this option to `config` should progress compilation to the `%build` phase. In general when an error of this nature occurs, the build log file for the kernel will indicate what needs to be changed.
 
 </br>
 
-Let's fix this build error and rebuild.
+Let's add `CONFIG_BLK_WBT_MQ` and rebuild.
 
 ```bash
 # Enter kernel spec folder
@@ -158,11 +159,11 @@ INFO[2416] Built SRPMs:
 INFO[2416] --> kernel-5.15.102.1-100.cm2.src.rpm   
 ```
 
-You can also see the built RPM in `CBL-MarinerTutorials/out/RPMS/`. This RPM can be `scp`'d to a running image and installed via `sudo rpm -ihv kernel-5.15.102.1-100.cm2.rpm`.
+You can also see the built kernel RPM in `CBL-MarinerTutorials/out/RPMS/`. This RPM can be `scp`'d to a running image and installed via `sudo rpm -ihv kernel-5.15.102.1-100.cm2.rpm` .
 
 ### Build an Image with a Custom Kernel
 
-We can also build an image with our new kernel. Note that even if we hadn't prebuilt the kernel in the previous steps, this step would also rebuild the kernel RPM.
+You can also build an image with our new kernel. Note that even if you hadn't prebuilt the kernel in the previous steps, this step would also rebuild the kernel RPM.
 
 ```bash
 # Enter the toolkit
