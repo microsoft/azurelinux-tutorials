@@ -7,7 +7,7 @@
 
 ## Tutorial: Build a Default VHD or VHDX
 
-The toolkit ships with several image configurations. These can be build using the tools outside the core repo.
+The toolkit ships with several image configurations. These can be built using the tools outside the core repo.
 
 ### Build VHD or VHDX
 
@@ -20,8 +20,8 @@ sudo make image CONFIG_FILE=./imageconfigs/core-efi.json
 sudo make image CONFIG_FILE=./imageconfigs/core-legacy.json
 ```
 
-The first time make image is invoked the toolkit downloads the necessary toolchain packages from the CBL-Mariner repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the CBL-MarinerTutorials repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. Make will then assemble the packages gathered from the package server to build an image.
-The resulting images are placed in the CBL-MarinerTutorials/out folder
+The first time `make image` is invoked, the toolkit downloads the necessary toolchain packages from the CBL-Mariner package repo at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages.  Once the toolchain is ready, `make` automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. `make` will then assemble the packages gathered from the package server to build the specified image.
+The resulting images are placed in the `CBL-MarinerTutorials/out` folder
 
 > VHDX:       `CBL-MarinerTutorials/out/images/core-efi/`
 > VHD:        `CBL-MarinerTutorials/out/images/core-legacy/`
@@ -67,13 +67,13 @@ _Note:_ If you followed any of the previous tutorials in [Working with packages]
 
 ## Tutorial: Build the Default ISO
 
-In the previous tutorial, we learned how to create a simple VHD(X) image. In this tutorial, we will turn our attention to creating a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive.
+In this tutorial, we will turn our attention to creating a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive.
 
-Let's jump right in.  Run the following command to build a demo ISO:
+Run the following command to build an ISO:
 
 ```bash
 cd CBL-MarinerTutorials/toolkit
-sudo make iso CONFIG_FILE=../imageconfigs/demo_iso.json
+sudo make iso CONFIG_FILE=./imageconfigs/full.json
 ```
 
 **Copy ISO Image to Your VM Host Machine**
