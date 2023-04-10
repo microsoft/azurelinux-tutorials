@@ -11,17 +11,15 @@ The following assumes you have already completed the [Prepare your Environment](
 #
 # The following assumes CBL-Mariner and CBL-MarinerTutorials were cloned under a folder named `git`
 #
-
-# Copy all the kernel contents to CBL-MarinerTutorials
-user@machine:~/git$ cp -r CBL-Mariner/SPECS/kernel/ CBL-MarinerTutorials/SPECS/kernel/
-#
-# ---or---
-#
 # Copy only the kernel building components to CBL-MarinerTutorials
 user@machine:~/git$ rsync -a  --exclude 'CVE*' CBL-Mariner/SPECS/kernel CBL-MarinerTutorials/SPECS/ 
 ```
 
-Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). You should choose the tag which matches the kernel version in the `kernel.spec` file as shown below.
+Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). The tags on this repo have the follow the format `/rolling-lts/mariner<-2>/<kernel version>`. This translates to
+* For 1.0 kernels: `/rolling-lts/mariner/5.10.X.1`
+* For 2.0 kernels: `/rolling-lts/mariner-2/5.15.X.1`
+
+You should choose the tag which matches the `Version` in the `kernel.spec` file.
 
 ```bash
 # Switch to the kernel folder
@@ -31,7 +29,7 @@ $ cd CBL-MarinerTutorials/SPECS/kernel/
 $ grep Version: kernel.spec
 Version:        5.15.102.1
 
-# Download the associated tar.gz file from https://github.com/microsoft/CBL-Mariner-Linux-Kernel. Be sure to substitute your Mariner version and kernel version numbers.
+# Download the associated tar.gz file from https://github.com/microsoft/CBL-Mariner-Linux-Kernel. Be sure to substitute your Mariner version and kernel version.
 $ wget -O kernel-5.15.102.1.tar.gz https://github.com/microsoft/CBL-Mariner-Linux-Kernel/archive/refs/tags/rolling-lts/mariner-2/5.15.102.1.tar.gz
 ```
 
@@ -51,14 +49,16 @@ Once your environment is prepared and the sources are present, you can make your
 * For `x86_64`, modify the `config` file.  
 * For `AARCH64`, modify the `config_aarch64` file.  
 
-Currently, the `CONFIG_BLK_WBT` setting is disabled by default. For this tutorial, you will enable it. Run the following command to set `CONFIG_BLK_WBT` or manually edit the `config` file. 
+Currently, the `CONFIG_BLK_WBT` setting is disabled by default. For this tutorial, you will enable it. Run the following command to set `CONFIG_BLK_WBT` in `config`. 
 
 ```bash
 # Enable CONFIG_BLK_WBT
 sed -i 's/# CONFIG_BLK_WBT is not set/CONFIG_BLK_WBT=y/' config
 ```
 
-Ensure your change is in config and saved. Next, update the signature for `config`.
+Confirm your change is in `config` and saved. 
+
+Next, update the signature for `config`.
 
 ```bash
 # Get the hash for the config file
@@ -68,19 +68,26 @@ CONFIGHASH=$(sha256sum config | awk '{print $1}')
 sed -i 's/    "config": .*/    "config": "'"$CONFIGHASH"'",/' kernel.signatures.json
 ```
 
-When there is a conflict, the build system will make a best-effort attempt at prioritizing the local version of a package over the version on [packages.microsoft.com](http://packages.microsoft.com/).  However to ensure you can differentiate your new custom kernel from the default kernel and to guarantee the local version will be consumed, bump the release number in the kernel release spec. In this case, use your favorite editor and change the release number to 100 as shown below and save the file.
+To ensure you can differentiate your new custom kernel from the default kernel and to guarantee the local version will be consumed, bump the release number in the kernel release spec. Note that the build system should prioritize the local version of a package over the version on [packages.microsoft.com](http://packages.microsoft.com/). Any other behavior is likely a bug.
+
+```bash
+# Update the Release number. Be sure not to remove the {?dist} tag
+sed -i 's/Release: .*/Release:        100%{?dist}/' kernel.spec
+```
+Confirm that your `kernel.spec` matches the following:
 
 ```bash
 Summary:        Linux Kernel
 Name:           kernel
 Version:        5.15.102.1
-Release:        100%{?dist}               <------------------ set this value to 100 (for example)
+Release:        100%{?dist}               <------------------ this value to 100 (for example)
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 ```
 
 ### Build a Custom Kernel RPM
+
 Let's build the new kernel RPM.
 
 ```bash
