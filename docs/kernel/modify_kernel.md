@@ -47,7 +47,7 @@ sed -i 's/    "kernel-5.15.102.1.tar.gz": .*/    "kernel-5.15.102.1.tar.gz": "'"
 
 ### Customize a Kernel
 
-Once your environment is prepared and the sources are present, you can  make your modifications to the relevant config files.  
+Once your environment is prepared and the sources are present, you can make your modifications to the relevant config files.  
 * For `x86_64`, modify the `config` file.  
 * For `AARCH64`, modify the `config_aarch64` file.  
 
