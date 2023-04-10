@@ -13,6 +13,8 @@ The toolkit ships with several image configurations. These can be built using th
 
 Choose an image to build by invoking one of the following build commands from the _CBL-MarinerTutorials/toolkit_ folder.
 
+The [image config files](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/formats/imageconfig.md) references here define how a CBL-Mariner image is layed out once built or installed. Each image config will also include a list of packages to install.
+
 ```bash
 # VHDX
 sudo make image CONFIG_FILE=./imageconfigs/core-efi.json 
@@ -20,8 +22,8 @@ sudo make image CONFIG_FILE=./imageconfigs/core-efi.json
 sudo make image CONFIG_FILE=./imageconfigs/core-legacy.json
 ```
 
-The first time `make image` is invoked, the toolkit downloads the necessary toolchain packages from the CBL-Mariner package repo at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages.  Once the toolchain is ready, `make` automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. `make` will then assemble the packages gathered from the package server to build the specified image.
-The resulting images are placed in the `CBL-MarinerTutorials/out` folder
+The first time `make image` is invoked, the toolkit downloads the necessary toolchain packages from the CBL-Mariner package repo at [packages.microsoft.com](packages.microsoft.com).  These toolchain packages are the standard set needed to build any local packages.  Once the toolchain is ready, `make` automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. `make` will then assemble the packages gathered from the package server to build the specified image.
+The resulting images are placed in the `CBL-MarinerTutorials/out` folder:
 
 > VHDX:       `CBL-MarinerTutorials/out/images/core-efi/`
 > VHD:        `CBL-MarinerTutorials/out/images/core-legacy/`
