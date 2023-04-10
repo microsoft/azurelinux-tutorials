@@ -68,7 +68,7 @@ CONFIGHASH=$(sha256sum config | awk '{print $1}')
 sed -i 's/    "config": .*/    "config": "'"$CONFIGHASH"'",/' kernel.signatures.json
 ```
 
-To ensure you can differentiate your new custom kernel from the default kernel and to guarantee the local version will be consumed, bump the release number in the kernel release spec. Note that the build system should prioritize the local version of a package over the version on [packages.microsoft.com](http://packages.microsoft.com/). Any other behavior is likely a bug.
+To ensure you can differentiate your new custom kernel from the default kernel and to guarantee the local version will be consumed, bump the release number in the kernel release spec. Note that the build system will prioritize the local version of a package over the version on [packages.microsoft.com](http://packages.microsoft.com/).
 
 ```bash
 # Update the Release number. Be sure not to remove the {?dist} tag
