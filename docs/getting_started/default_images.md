@@ -1,15 +1,19 @@
 # Building
 
+- [Tutorial: Build the default ISO](#tutorial-build-the-default-iso)
+  - [Build ISO](#build-iso)
+  - [Use Hyper-V to Boot Your ISO Installer](#use-hyper-v-to-boot-your-iso-installer)
 - [Tutorial: Build a Default VHD or VHDX](#tutorial-build-a-default-vhd-or-vhdx)
   - [Build VHD or VHDX](#build-vhd-or-vhdx)
   - [Use Hyper-V to Boot Your Image](#use-hyper-v-to-boot-your-image)
-- [Tutorial: Build the default ISO](#tutorial-build-the-default-iso)
 
 ## Tutorial: Build the Default ISO
 
 In this tutorial, we will create a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive.
 
-The toolkit ships with several image configurations. The [image config files](https://github.com/microsoft/CBL-Mariner/blob/1.0/toolkit/docs/formats/imageconfig.md) define how a CBL-Mariner image is layed out once built or installed.  Each image config will also include a list of packages to install.
+The toolkit ships with several image configurations. The [image config files](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/formats/imageconfig.md) define how a CBL-Mariner image is layed out once built or installed.  Each image config will also include a list of packages to install.
+
+### Build ISO
 
 These can be built using the tools outside the core repo. Build the default ISO by invoking the following build command from the _CBL-MarinerTutorials/toolkit_ folder.
 

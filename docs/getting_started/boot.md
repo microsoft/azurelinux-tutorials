@@ -32,7 +32,7 @@ Copy your binary image(s) to your VM Host Machine using your preferred technique
 
 ### Disable Secure Boot
 
-_Note:_ If you followed any of the previous tutorials in [Working with packages](../docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
+_Note:_ If you followed any of the previous tutorials in [Working with packages](/docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._
@@ -68,7 +68,7 @@ Copy your demo VHD or VHDX image to your Windows Machine and boot it with Hyper-
 
 ### Disable Secure Boot
 
-_Note:_ If you followed any of the previous tutorials in [Working with packages](../docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
+_Note:_ If you followed any of the previous tutorials in [Working with packages](/docs/packages/working_with_packages.md), the kernel is no longer signed and secure boot must be disabled in order to boot your VHD(X) image.
 
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._
@@ -76,7 +76,9 @@ _Note:_ If you followed any of the previous tutorials in [Working with packages]
 
 ### [Images Without Pre-Set Users Only] Build and Mount the Meta-User-Data.Iso Image
 
-1. Build `the meta-user.iso` file via the [instructions for using the meta-user.iso cloud init image](../getting_started/default_images.md#build-the-cloud-init-configuration-image)
+_Note:_ If you followed any of the previous tutorials to build custom images in [Working with packages](/docs/packages/working_with_packages.md), your image will have a user provisioned. This step is only needed if you are booting an image **without a pre-defined user**.
+
+1. Build `the meta-user.iso` file via the [instructions for using the meta-user.iso cloud init image](/docs/getting_started/default_images.md#build-the-cloud-init-configuration-image)
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._.
 choose DVD Drive and press Add.
