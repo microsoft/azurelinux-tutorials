@@ -27,7 +27,7 @@ The resulting binaries (images and rpms) are placed in the CBL-MarinerTutorials/
 
 ### Use Hyper-V to Boot Your Demo Image
 
-See [Use Hyper-V to Boot Your Offline Image](boot.md#use-hyper-v-to-boot-your-offline-image) for instructions on using Hyper-V to boot the image and add a user profile with the `meta-user.iso` file.
+See [Use Hyper-V to Boot Your Offline Image](../getting_started/boot.md#use-hyper-v-to-boot-your-offline-image) for instructions on using Hyper-V to boot the image and add a user profile with the `meta-user.iso` file.
 
 **Verify your Derivate Packages are Installed**
 From the command line run the helloworld program
@@ -62,4 +62,4 @@ sudo make iso CONFIG_FILE=../imageconfigs/demo_iso.json
 
 ### Use Hyper-V to Boot Your ISO Installer
 
-See [Use Hyper-V to Boot Your ISO Installer](boot.md#use-hyper-v-to-boot-your-iso-installer) for instructions on using Hyper-V to boot the ISO.
+See [Use Hyper-V to Boot Your ISO Installer](../getting_started/boot.md#use-hyper-v-to-boot-your-iso-installer) for instructions on using Hyper-V to boot the ISO.
