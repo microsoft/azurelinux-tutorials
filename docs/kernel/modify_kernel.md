@@ -15,7 +15,7 @@ The following assumes you have already completed the [Prepare your Environment](
 user@machine:~/git$ rsync -a  --exclude 'CVE*' CBL-Mariner/SPECS/kernel CBL-MarinerTutorials/SPECS/ 
 ```
 
-Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). The tags on this repo have the follow the format `/rolling-lts/mariner<-2>/<kernel version>`. This translates to
+Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). The tags on this repo follow the format `/rolling-lts/mariner<-2>/<kernel version>`. This translates to
 * For 1.0 kernels: `/rolling-lts/mariner/5.10.X.1`
 * For 2.0 kernels: `/rolling-lts/mariner-2/5.15.X.1`
 
