@@ -38,6 +38,14 @@ _Note:_ If you followed any of the previous tutorials in [Working with packages]
 1. Select _Settings..._
 1. Select Security and uncheck the "Enable Secure Boot" box
 
+### Disable Dynamic Memory**
+
+_Note:_ Having Dynamic Memory enabled may lead your app to crash due to integration with the Hyper-V Memory Ballooning driver. To avoid this, dynamic memory must be disabled.
+
+1. Right click your virtual machine from Hyper-V Manager
+1. Select _Settings..._
+1. Select Memory and uncheck the "Enable Dynamic Memory" box
+
 ### Boot ISO
 
 1. Right click your VM and select _Connect..._.
@@ -73,6 +81,14 @@ _Note:_ If you followed any of the previous tutorials in [Working with packages]
 1. Right click your virtual machine from Hyper-V Manager
 1. Select _Settings..._
 1. Select Security and uncheck the "Enable Secure Boot" box
+
+### Disable Dynamic Memory**
+
+_Note:_ Having Dynamic Memory enabled may lead your app to crash due to integration with the Hyper-V Memory Ballooning driver. To avoid this, dynamic memory must be disabled.
+
+1. Right click your virtual machine from Hyper-V Manager
+1. Select _Settings..._
+1. Select Memory and uncheck the "Enable Dynamic Memory" box
 
 ### [Images Without Pre-Set Users Only] Build and Mount the Meta-User-Data.Iso Image
 
