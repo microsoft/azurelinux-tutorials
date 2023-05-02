@@ -29,7 +29,7 @@ The resulting binaries (images and rpms) are placed in the CBL-MarinerTutorials/
 
 See [Use Hyper-V to Boot Your Offline Image](../getting_started/boot.md#use-hyper-v-to-boot-your-offline-image) for instructions on using Hyper-V to boot the image and add a user profile with the `meta-user.iso` file.
 
-**Verify your Derivate Packages are Installed**
+**Verify your Packages are Installed**
 From the command line run the helloworld program
 
     ```

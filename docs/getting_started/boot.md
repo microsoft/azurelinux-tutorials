@@ -3,7 +3,7 @@
 - [Use Hyper-V to Boot Your ISO Installer](#use-hyper-v-to-boot-your-iso-installer)
 - [Use Hyper-V to Boot Your Offline Image](#use-hyper-v-to-boot-your-offline-image)
 
-The following guild walks through booting images and ISOs on Windows using Hyper-V.
+The following guide walks through booting images and ISOs on Windows using Hyper-V.
 
 ## Use Hyper-V to Boot Your ISO Installer
 
