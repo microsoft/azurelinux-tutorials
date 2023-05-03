@@ -36,7 +36,7 @@ The complete package set of an image is defined in the "PackageLists" array of e
 
 Each package list defines the set of packages to include in the final image. In this example, there are two, so the resulting demo VHD contains the union of the two package lists.  While it is possible to combine both package lists into a single JSON file, the separation adds clarity by grouping related content.  In this case, packages originating from packages.microsoft.com are in the core-packages set, and packages built from the local repository are specified in the demo-packages set.
 
-The first package list, core-packages.json, includes a superset-package called [core-packages-base-image](https://github.com/microsoft/CBL-Mariner/blob/1.0/SPECS/core-packages/core-packages.spec).  Core-packages-base-image is common to most derivatives as it contains the common set of packages used in Mariner Core.  This bundling is a convenience.  It is possible to list each package individually instead.  The second package, initramfs, is used for booting CBL-Mariner in either a virtualized or physical hardware environment.  Not every image needs it, so it's not included in the `core-packages-base-image` superset.  Instead, it's specified separately.
+The first package list, core-packages.json, includes a superset-package called [core-packages-base-image](https://github.com/microsoft/CBL-Mariner/blob/-/SPECS/core-packages/core-packages.spec).  Core-packages-base-image is common to most derivatives as it contains the common set of packages used in Mariner Core.  This bundling is a convenience.  It is possible to list each package individually instead.  The second package, initramfs, is used for booting CBL-Mariner in either a virtualized or physical hardware environment.  Not every image needs it, so it's not included in the `core-packages-base-image` superset.  Instead, it's specified separately.
 
    ```json
     {
@@ -98,7 +98,7 @@ Boot the image and verify that the latest version of zip is now provided:
 
 By default the _latest_ version of any package specified in a package list will be included in your image.  It is important to note that each time you rebuild your image it may differ from your previous build as the packages on packages.microsoft.com are periodically updated to resolve security vulnerabilities. This behavior may or may not be desired, but you can always be assured that the most recent build is also the most up to date with respect to CVE's. 
 
-If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerTutorials/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
+If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerTutorials/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
 
 The next section also describes a technique for pinning specific package versions.
 
@@ -159,7 +159,7 @@ Similarly, `etcd` is version 3.5.1, latest release.
 
 ### Add Packages from Other RPM Repositories
 
-It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
+It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
 
 Example:
 
@@ -182,7 +182,9 @@ and then by running the following command:
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/mariner-extended.repo
 ```
 
-CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#repo_list) for more details.
+CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#repo_list) for more details.
+
+> **NOTE:** The core repo contains these repo files in [SPECS/mariner-repos/](https://github.com/microsoft/CBL-Mariner/blob/-/SPECS/mariner-repos/).
 
 ## Tutorial: Customize your Image with Unsupported Packages
 
@@ -221,7 +223,7 @@ cp /tmp/gnuchess/gnuchess.spec .
 
 ### Create a Signature Meta-data File
 
-Now, calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one. The signature meta-data file can also be automatically created using a specific argument in the command line as seen in the [CBL-Mariner documentation](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md#source-hashes).
+Now, calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one. The signature meta-data file can also be automatically created using a specific argument in the command line as seen in the [CBL-Mariner documentation](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#source-hashes).
 
 Calculate the new checksum:
 

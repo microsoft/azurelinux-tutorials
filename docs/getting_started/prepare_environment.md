@@ -8,7 +8,7 @@ Before starting this tutorial, you will need to setup your development machine. 
 
 ## Install Tools
 
-These tools are required for building both the toolkit and the images built from the toolkit.  These are the same [prerequisites needed for building CBL-Mariner](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/prerequisites.md).
+These tools are required for building both the toolkit and the images built from the toolkit.  These are the same [prerequisites needed for building CBL-Mariner](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/prerequisites.md).
 
 ```bash
 # Add a backports repo in order to install the necessary version of Go.
@@ -67,6 +67,6 @@ cp ../CBL-Mariner/out/toolkit-*.tar.gz ./
 tar -xzvf toolkit-*.tar.gz
 ```
 
-The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build). For more information on our toolkit see [How The Build System Works](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/how_it_works/0_intro.md) in the CBL-Mariner repo.  
+The toolkit folder now contains the makefile, support scripts and the go tools compiled from the section.  The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build). For more information on our toolkit see [How The Build System Works](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/how_it_works/0_intro.md) in the CBL-Mariner repo.  
 
 The remainder of this tutorial assumes you are using CBL-Mariner 2.0.  However, it is possible to build the same from this tutorial using the CBL-Mariner 1.0 release as well.
