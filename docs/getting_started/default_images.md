@@ -23,7 +23,7 @@ sudo make iso CONFIG_FILE=./imageconfigs/full.json
 
 The first time `make image` is invoked, the toolkit downloads the necessary toolchain packages from the CBL-Mariner package repo at [packages.microsoft.com](packages.microsoft.com).  These toolchain packages are the standard set needed to build any local packages.  Once the toolchain is ready, `make` automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. `make` will then assemble the packages gathered from the package server to build the specified image.
 
-The resulting ISO is placed in the `CBL-MarinerTutorials/out/full` folder.
+The resulting ISO is placed in the `CBL-MarinerTutorials/out/images/full` folder.
 
 ### Use Hyper-V to Boot Your ISO Installer
 
