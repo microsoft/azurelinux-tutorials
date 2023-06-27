@@ -2,9 +2,6 @@
 
 docker run \
     -v $(pwd):/sources \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-1/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-1/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-1/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-1/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-1/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-1/dev:ro \
@@ -12,9 +9,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-1/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-1/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-1/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-2/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-2/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-2/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-2/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-2/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-2/dev:ro \
@@ -22,9 +16,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-2/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-2/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-2/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-3/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-3/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-3/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-3/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-3/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-3/dev:ro \
@@ -32,9 +23,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-3/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-3/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-3/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-4/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-4/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-4/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-4/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-4/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-4/dev:ro \
@@ -42,9 +30,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-4/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-4/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-4/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-5/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-5/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-5/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-5/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-5/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-5/dev:ro \
@@ -52,9 +37,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-5/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-5/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-5/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-6/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-6/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-6/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-6/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-6/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-6/dev:ro \
@@ -62,9 +44,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-6/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-6/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-6/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-7/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-7/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-7/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-7/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-7/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-7/dev:ro \
@@ -72,9 +51,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-7/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-7/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-7/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-8/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-8/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-8/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-8/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-8/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-8/dev:ro \
@@ -82,9 +58,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-8/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-8/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-8/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-9/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-9/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-9/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-9/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-9/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-9/dev:ro \
@@ -92,9 +65,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-9/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-9/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-9/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-10/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-10/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-10/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-10/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-10/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-10/dev:ro \
@@ -102,9 +72,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-10/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-10/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-10/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-11/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-11/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-11/localrpms/x86_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-11/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-11/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-11/dev:ro \
@@ -112,9 +79,6 @@ docker run \
     -v devpts:/temp/DockerStage/docker-chroot-11/dev/pts:ro \
     -v sysfs:/temp/DockerStage/docker-chroot-11/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-11/run:ro \
-    -v $(pwd)/out/RPMS/noarch:/temp/DockerStage/docker-chroot-12/localrpms/noarch:rw \
-    -v $(pwd)/out/RPMS/aarch64:/temp/DockerStage/docker-chroot-12/localrpms/aarch64:rw \
-    -v $(pwd)/out/RPMS/x86_64:/temp/DockerStage/docker-chroot-12/localrpms/x86_64_64:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-12/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-12/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-12/dev:ro \
@@ -123,7 +87,7 @@ docker run \
     -v sysfs:/temp/DockerStage/docker-chroot-12/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-12/run:ro \
     -v $(pwd)/build/rpm_cache/cache:/tmp/mariner/build/rpm_cache/cache:rw \
+    -v $(pwd)/out:/tmp/mariner/out:rw \
     --privileged \
     --cap-add SYS_PTRACE \
     -it msft/mariner-toolchain:2.0 /bin/bash
-

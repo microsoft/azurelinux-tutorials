@@ -3,10 +3,9 @@ set -exuo pipefail
 
 # sanity check and initialization
 #--------------------------------
-BUILD_OUT_BASE_DIR="/tmp/mariner"
+#BUILD_OUT_BASE_DIR="/tmp/mariner"
 CHROOT_BASE_DIR="/temp/DockerStage"
-PREREQ_INSTALL="true"
-VERBOSE=1
+#PREREQ_INSTALL="true"
 
 # verify mount points for chroots and create chroot lock
 pushd $CHROOT_BASE_DIR
@@ -23,8 +22,7 @@ echo ""
 #----------------------
 echo "-- Install build host prerequisites."
 
-if [[ "${SKIP_INSTALL_PREREQ:-0}" != "1" ]]; then
-    tdnf -y install \
+tdnf -y install \
         binutils \
         bison \
         cdrkit \
@@ -49,6 +47,5 @@ if [[ "${SKIP_INSTALL_PREREQ:-0}" != "1" ]]; then
         sudo \
         tar \
         wget
-fi
 
 go version

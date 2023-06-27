@@ -1,21 +1,19 @@
 #!/bin/bash
 set -euo pipefail
-shopt -s extglob  # required by rm !
+# shopt -s extglob  # required by rm !
 
 SOURCE_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 
 CBL_MARINER_GIT_URL="https://github.com/microsoft/CBL-Mariner.git"
 
 VERBOSE=1
-LOG_LEVEL=trace
-#BUILD_ARTIFACTS_FOLDER_NAME="DockerStage"
+LOG_LEVEL=info
 #BUILD_OUT_BASE_DIR=$SOURCE_FOLDER/CBL-Mariner
 #BUILD_DIR=$BUILD_OUT_BASE_DIR/build
 CCACHE_DIR=$BUILD_OUT_BASE_DIR/ccache
 USE_CCACHE="n" #n
 #OUT_DIR=$BUILD_OUT_BASE_DIR/out
 #CHROOT_BASE_DIR="/temp/DockerStage" #$BUILD_DIR/worker/chroot
-#CHROOT_NB=0
 ARTIFACT_PUBLISH_DIR=""
 LOG_PUBLISH_DIR=""
 ERRORS_OCCURRED=0
@@ -243,9 +241,8 @@ build_specs() {
         BUILD_DIR="$BUILD_DIR" \
         CCACHE_DIR="$CCACHE_DIR" \
         OUT_DIR="$OUT_DIR" \
-        LOG_LEVEL="$LOG_LEVEL"
-
-#        REPO_LIST="repos/mariner-extended.repo" #temporary for dependency packages
+        LOG_LEVEL="$LOG_LEVEL" \
+        REPO_LIST="repos/mariner-extended.repo" #temporary for dependency packages
 }
 
 # Package build artifacts and place in build artifact publishing directory

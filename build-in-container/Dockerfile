@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/onebranch/cbl-mariner/build:2.0
 
 RUN mkdir -m 777 -p /sources && \
-    ln -s /usr/src/linux /sources && \
+#    ln -s /usr/src/linux /sources && \
     for i in $(seq 1 12); do \
                 mkdir -m 777 -p /temp/DockerStage/docker-chroot-$i/dev/pts; \
                 mkdir -m 777 -p /temp/DockerStage/docker-chroot-$i/dev/null; \
@@ -14,11 +14,8 @@ RUN mkdir -m 777 -p /sources && \
                 mkdir -m 777 -p /temp/DockerStage/docker-chroot-$i/localrpms/upstream-cached-rpms; \
     done
 
- 
-
-ENV TZ=America/Los_Angeles
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
- 
+#ENV TZ=America/Los_Angeles
+#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN tdnf update -qy tdnf && \
         tdnf -y install \
