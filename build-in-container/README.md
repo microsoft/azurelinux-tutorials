@@ -17,6 +17,7 @@ The run.sh script presents these options
 - 'mariner-docker-run.sh' starts a docker container using the image produced in Step(1), setup the Mariner build system inside the container, and build Mariner packages. 
 
 **Place specs to build under SPECS/**
+
 **The output from the build will be available under out/ (RPMS and SRPMS)**
 
 - The container installs the necessary packages required for the build setup, and sets up the directory structure for build. This is achieved by 'setup.sh' under scripts/
