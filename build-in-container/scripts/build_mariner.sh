@@ -11,8 +11,6 @@ VERBOSE=0
 CHROOT_NB=${CHROOT_NB:=0}
 
 mkdir -p $SRC_ROOT/out
-#mkdir -p $SRC_ROOT/out/RPMS/aarch64
-#mkdir -p $SRC_ROOT/out/RPMS/x86_64
 mkdir -p $SRC_ROOT/build/rpm_cache/cache
 mkdir -p $SRC_ROOT/ccache
 

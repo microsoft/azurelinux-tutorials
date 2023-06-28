@@ -1,6 +1,5 @@
 #!/bin/bash
 set -euo pipefail
-# shopt -s extglob  # required by rm !
 
 SOURCE_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 
@@ -11,7 +10,7 @@ LOG_LEVEL=info
 #BUILD_OUT_BASE_DIR=$SOURCE_FOLDER/CBL-Mariner
 #BUILD_DIR=$BUILD_OUT_BASE_DIR/build
 CCACHE_DIR=$BUILD_OUT_BASE_DIR/ccache
-USE_CCACHE="n" #n
+USE_CCACHE="y"
 #OUT_DIR=$BUILD_OUT_BASE_DIR/out
 #CHROOT_BASE_DIR="/temp/DockerStage" #$BUILD_DIR/worker/chroot
 ARTIFACT_PUBLISH_DIR=""

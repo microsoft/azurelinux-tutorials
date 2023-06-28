@@ -1,13 +1,9 @@
 #!/bin/bash
 set -exuo pipefail
 
-# sanity check and initialization
-#--------------------------------
-#BUILD_OUT_BASE_DIR="/tmp/mariner"
 CHROOT_BASE_DIR="/temp/DockerStage"
-#PREREQ_INSTALL="true"
 
-# verify mount points for chroots and create chroot lock
+# create chroot lock
 pushd $CHROOT_BASE_DIR
 touch chroot-pool.lock
 CHROOT_NB=$(find . -maxdepth 1 -type d -name "docker-chroot-*" | wc -l)

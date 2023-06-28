@@ -1,7 +1,11 @@
 #! /bin/bash
 
+mkdir -p build/rpm_cache/cache
+mkdir -p out
+mkdir -p ccache
+
 docker run \
-    -v $(pwd):/sources \
+    -v $(pwd):/sources:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-1/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-1/ccache-dir:rw \
     -v /dev:/temp/DockerStage/docker-chroot-1/dev:ro \
