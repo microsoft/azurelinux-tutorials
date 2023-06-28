@@ -7,12 +7,9 @@ CBL_MARINER_GIT_URL="https://github.com/microsoft/CBL-Mariner.git"
 
 VERBOSE=1
 LOG_LEVEL=info
-#BUILD_OUT_BASE_DIR=$SOURCE_FOLDER/CBL-Mariner
-#BUILD_DIR=$BUILD_OUT_BASE_DIR/build
 CCACHE_DIR=$BUILD_OUT_BASE_DIR/ccache
+SPECS_DIR=$SOURCE_FOLDER/SPECS
 USE_CCACHE="y"
-#OUT_DIR=$BUILD_OUT_BASE_DIR/out
-#CHROOT_BASE_DIR="/temp/DockerStage" #$BUILD_DIR/worker/chroot
 ARTIFACT_PUBLISH_DIR=""
 LOG_PUBLISH_DIR=""
 ERRORS_OCCURRED=0
@@ -79,7 +76,7 @@ ensure_submodule_was_cloned() {
 prepare_sources_for_spec() {
     local spec_dir="$1"
     local spec_dir_name="$(basename ${spec_dir})"
-    local sources_dir="${spec_dir}/sources"
+    local sources_dir="${spec_dir}/SOURCES"
 
     # If there's a 'sources' subdir under the spec's dir, then let's capture
     # its contents into a well-named tarball and auto-generate a .signatures.json
@@ -203,10 +200,8 @@ prepare_sources_for_spec() {
 }
 
 prepare_sources_for_specs() {
-    local specs_dir="$1"
-
     ERRORS_OCCURRED=0
-    for spec_dir in ${specs_dir}/*; do
+    for spec_dir in $SPECS_DIR/*; do
         prepare_sources_for_spec $spec_dir
     done
 
@@ -216,25 +211,16 @@ prepare_sources_for_specs() {
     fi
 }
 
-# Notes:
-# - this script cannot be invoke using 'source' bash command because it needs to use its own set of parameters
-#   and not to inherit the ones of its caller.
-#   Consequently it cannot export variables (this script executes in its own bash context)
-#   and will use 'local' files to return value to the caller (in case vso variables cannot be accessed)
-
 # Build a list of specs in a spec folder with a list of remote repos
 # Expects toolchain and worker chroot to be present before being called.
 #
-# Arguments:
-#  $1: Path of the specs directory
-# Global variables expected to be defined: CHROOT_NB, CHROOT_BASE_DIR, BUILD_DIR, OUT_DIR
+# No arguments
+# Global variables expected to be defined: BUILD_DIR, CCACHE_DIR, CHROOT_BASE_DIR, CHROOT_NB, LOG_LEVEL, OUT_DIR, SPECS_DIR
 build_specs() {
-    local SPECS_DIR="$1"
-
     sudo make -C toolkit build-packages \
         CONFIG_FILE="" \
         REBUILD_TOOLS=y \
-        SPECS_DIR="../../$SPECS_DIR" \
+        SPECS_DIR="$SPECS_DIR" \
         CHROOT_DIR="$CHROOT_BASE_DIR" \
         CONCURRENT_PACKAGE_BUILDS="$CHROOT_NB" \
         BUILD_DIR="$BUILD_DIR" \
@@ -361,8 +347,8 @@ if [[ "${USE_CCACHE}"=="y" ]]; then
     fi
 fi
 
-log "-- Prepare sources for core specs"
-prepare_sources_for_specs SPECS
+#log "-- Prepare sources for core specs"
+#prepare_sources_for_specs SPECS
 
 log "-- Build core specs"
 build_specs SPECS

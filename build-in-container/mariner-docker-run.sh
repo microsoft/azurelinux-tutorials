@@ -1,10 +1,25 @@
 #! /bin/bash
 
 mkdir -p build/rpm_cache/cache
+mkdir -p build/toolchain_rpms
 mkdir -p out
 mkdir -p ccache
 
-docker run \
+create_build_container() {
+    docker run \
+        ${mount_pts} \
+        --privileged \
+        msft/mariner-toolchain:2.0 sources/scripts/build_mariner.sh
+}
+
+create_interactive_container() {
+    docker run \
+        ${mount_pts} \
+        --privileged \
+        -it msft/mariner-toolchain:2.0 /bin/bash
+}
+
+mount_pts="
     -v $(pwd):/sources:rw \
     -v $(pwd)/build/rpm_cache/cache:/temp/DockerStage/docker-chroot-1/upstream-cached-rpms:rw \
     -v $(pwd)/ccache:/temp/DockerStage/docker-chroot-1/ccache-dir:rw \
@@ -91,7 +106,10 @@ docker run \
     -v sysfs:/temp/DockerStage/docker-chroot-12/sys:ro \
     -v tmpfs:/temp/DockerStage/docker-chroot-12/run:ro \
     -v $(pwd)/build/rpm_cache/cache:/tmp/mariner/build/rpm_cache/cache:rw \
+    -v $(pwd)/build/toolchain_rpms:/tmp/mariner/build/toolchain_rpms:rw \
     -v $(pwd)/out:/tmp/mariner/out:rw \
-    --privileged \
-    --cap-add SYS_PTRACE \
-    -it msft/mariner-toolchain:2.0 /bin/bash
+    "
+
+local container_type=("$@")
+if [ "$container_type" == "build" ]; then create_build_container; return; fi
+if [ "$container_type" == "interactive" ]; then create_interactive_container; return; fi
