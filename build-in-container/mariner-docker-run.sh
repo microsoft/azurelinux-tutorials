@@ -9,7 +9,7 @@ create_build_container() {
     docker run \
         ${mount_pts} \
         --privileged \
-        msft/mariner-toolchain:2.0 sources/scripts/build_mariner.sh
+        msft/mariner-toolchain:2.0 sources/scripts/build-mariner.sh
 }
 
 create_interactive_container() {
