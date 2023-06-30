@@ -4,6 +4,7 @@ mkdir -p build/rpm_cache/cache
 mkdir -p build/toolchain_rpms
 mkdir -p out
 mkdir -p ccache
+mkdir -p logs
 
 create_build_container() {
     docker run \
@@ -108,6 +109,7 @@ mount_pts="
     -v $(pwd)/build/rpm_cache/cache:/tmp/mariner/build/rpm_cache/cache:rw \
     -v $(pwd)/build/toolchain_rpms:/tmp/mariner/build/toolchain_rpms:rw \
     -v $(pwd)/out:/tmp/mariner/out:rw \
+    -v $(pwd)/logs:/tmp/mariner/logs:rw \
     "
 
 local container_type=("$@")

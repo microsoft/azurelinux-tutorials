@@ -1,20 +1,12 @@
 #!/bin/bash
-set -euo pipefail
-
-SOURCE_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+set -euo
 
 CBL_MARINER_GIT_URL="https://github.com/microsoft/CBL-Mariner.git"
+readonly MARINER_RELEASE_TAG="2.0-stable"
 
 VERBOSE=1
-LOG_LEVEL=info
-CCACHE_DIR=$BUILD_OUT_BASE_DIR/ccache
-SPECS_DIR=$SOURCE_FOLDER/SPECS
 USE_CCACHE="y"
-ARTIFACT_PUBLISH_DIR=""
-LOG_PUBLISH_DIR=""
-ERRORS_OCCURRED=0
-
-readonly MARINER_RELEASE_TAG="2.0-stable"
+LOG_PUBLISH_DIR="/tmp/mariner/logs"
 
 if [ -t 1 ]; then
     CYAN="\e[36m"
@@ -37,7 +29,11 @@ function cleanup() {
     fi
 }
 
-function download_mariner_toolkit() {
+# Build Mariner toolkit if not present, by cloning Mariner GitHub repo
+#
+# No arguments
+# Global variables expected to be defined: BUILD_DIR, CHROOT_DIR, CHROOT_NB, OUT_DIR
+download_mariner_toolkit() {
     if [ ! -d toolkit ]; then
         if [ ! -d CBL-Mariner ]; then
             log " -- Clone CBL-Mariner toolkit from github"
@@ -47,11 +43,11 @@ function download_mariner_toolkit() {
                 ${CBL_MARINER_GIT_URL}
         fi
         log " -- Build CBL-Mariner toolkit"
-        sudo make \
+        sudo make -j$(nproc) \
             -C CBL-Mariner/toolkit \
             package-toolkit \
             BUILD_DIR="$BUILD_DIR" \
-            CHROOT_DIR="$CHROOT_BASE_DIR" \
+            CHROOT_DIR="$CHROOT_DIR" \
             CONCURRENT_PACKAGE_BUILDS="$CHROOT_NB" \
             CONFIG_FILE= \
             LOG_LEVEL=info \
@@ -66,38 +62,41 @@ function download_mariner_toolkit() {
 # Expects toolchain and worker chroot to be present before being called.
 #
 # No arguments
-# Global variables expected to be defined: BUILD_DIR, CCACHE_DIR, CHROOT_BASE_DIR, CHROOT_NB, LOG_LEVEL, OUT_DIR, SPECS_DIR
+# Global variables expected to be defined: BUILD_DIR, CCACHE_DIR, CHROOT_DIR, CHROOT_NB, LOG_LEVEL, OUT_DIR, SPECS_DIR
 build_specs() {
-    sudo make -C toolkit build-packages \
+    sudo make -j$(nproc) -C toolkit build-packages \
         CONFIG_FILE="" \
         REBUILD_TOOLS=y \
         SPECS_DIR="$SPECS_DIR" \
-        CHROOT_DIR="$CHROOT_BASE_DIR" \
+        CHROOT_DIR="$CHROOT_DIR" \
         CONCURRENT_PACKAGE_BUILDS="$CHROOT_NB" \
         BUILD_DIR="$BUILD_DIR" \
         CCACHE_DIR="$CCACHE_DIR" \
         OUT_DIR="$OUT_DIR" \
-        LOG_LEVEL="$LOG_LEVEL" \
-        REPO_LIST="repos/mariner-extended.repo" #temporary for dependency packages
+        LOG_LEVEL="$LOG_LEVEL"
 }
 
-# Package build artifacts and place in build artifact publishing directory
-# This overwrites packaged artifacts from previous calls to this function
-# The SRPMs and RPMs from previous calls are preserved and packaged as long as
-#  `make clean` has not been called between builds of separate repos
+# Build a list of images in a image config folder with a list of remote repos
+# Expects toolchain and worker chroot to be present before being called.
 #
 # No arguments
-# Global variables expected to be defined: BUILD_DIR, OUT_DIR, $ARTIFACT_PUBLISH_DIR
-publish_build_artifacts() {
-    log "-- pack built RPMs and SRPMs"
-    sudo make -C CBL-Mariner/toolkit compress-srpms compress-rpms \
+# Global variables expected to be defined: BUILD_DIR, CCACHE_DIR, CHROOT_DIR, CHROOT_NB, LOG_LEVEL, OUT_DIR
+build_images() {
+    configfiles=$(ls $IMAGE_CONFIG_DIR/| grep json)
+    for config_file in $configfiles
+    do
+        sudo make -j$(nproc) -C toolkit image \
+        REBUILD_TOOLS=y \
+        CONFIG_FILE="$IMAGE_CONFIG_DIR/$config_file" \
+        SPECS_DIR="$SPECS_DIR" \
+        REBUILD_PACKAGES=n \
+        CHROOT_DIR="$CHROOT_DIR" \
+        CONCURRENT_PACKAGE_BUILDS="$CHROOT_NB" \
         BUILD_DIR="$BUILD_DIR" \
-        OUT_DIR="$OUT_DIR"
-
-    log "-- pack built RPMs and SRPMs"
-    mkdir -p "$ARTIFACT_PUBLISH_DIR"
-    sudo mv "$OUT_DIR/srpms.tar.gz" "$ARTIFACT_PUBLISH_DIR"
-    sudo mv "$OUT_DIR/rpms.tar.gz" "$ARTIFACT_PUBLISH_DIR"
+        CCACHE_DIR="$CCACHE_DIR" \
+        OUT_DIR="$OUT_DIR" \
+        LOG_LEVEL="$LOG_LEVEL"
+    done
 }
 
 # Package log artifacts and place in log artifact publishing directory
@@ -129,60 +128,18 @@ publish_build_logs() {
 
 trap cleanup EXIT
 
-echo "============================"
-echo "Building overlake-packages  "
-echo "============================"
-
-# parse script parameters:
-#
-# -a -> build artifacts folder name
-# -c -> chroot base dir
-# -o -> root folder for out and build dir
-# -p -> folder where built RPMs/SRPMs should be published
-# -n -> nb of chroots (this will be used to parallelize the build, 0 means as many as machine supports)
-# -d -> enable development mode (ccache, etc).
-
-while getopts ":a:c:o:p:q:n:dv" OPTIONS; do
-  case "${OPTIONS}" in
-    a ) BUILD_ARTIFACTS_FOLDER_NAME=$OPTARG ;;
-    c ) CHROOT_BASE_DIR=$OPTARG ;;
-    o ) BUILD_OUT_BASE_DIR=$OPTARG
-        BUILD_DIR=$BUILD_OUT_BASE_DIR/build
-        CCACHE_DIR=$BUILD_OUT_BASE_DIR/ccache
-        OUT_DIR=$BUILD_OUT_BASE_DIR/out ;;
-    p ) ARTIFACT_PUBLISH_DIR=$OPTARG ;;
-    q ) LOG_PUBLISH_DIR=$OPTARG ;;
-    n ) CHROOT_NB=$OPTARG ;;
-    d ) USE_CCACHE=y ;;
-    v ) VERBOSE=1
-        if [[ "$LOG_LEVEL" == "info" ]]; then
-            LOG_LEVEL="debug"
-        else
-            LOG_LEVEL="info"
-        fi
-        set -x ;;
-    \? )
-        echo "Error - Invalid Option: -$OPTARG" 1>&2
-        exit 1
-        ;;
-    : )
-        echo "Error - Invalid Option: -$OPTARG requires an argument" 1>&2
-        exit 1
-        ;;
-  esac
-done
-
-echo "-- BUILD_ARTIFACTS_FOLDER_NAME        -> $BUILD_ARTIFACTS_FOLDER_NAME"
-echo "-- BUILD_OUT_BASE_DIR                 -> $BUILD_OUT_BASE_DIR"
 echo "-- BUILD_DIR                          -> $BUILD_DIR"
 echo "-- OUT_DIR                            -> $OUT_DIR"
-echo "-- CHROOT_BASE_DIR                    -> $CHROOT_BASE_DIR"
+echo "-- CHROOT_DIR                         -> $CHROOT_DIR"
 echo "-- CHROOT_NB (0 = max)                -> $CHROOT_NB"
-echo "-- ARTIFACT_PUBLISH_DIR               -> $ARTIFACT_PUBLISH_DIR"
 echo "-- LOG_PUBLISH_DIR                    -> $LOG_PUBLISH_DIR"
 echo "-- USE_CCACHE                         -> $USE_CCACHE"
+echo "-- SPECS_DIR                          -> $SPECS_DIR"
 echo ""
 
+pushd /sources/scripts/
+
+echo "------------ Setting up Mariner Toolkit ------------"
 download_mariner_toolkit
 
 if [[ "${USE_CCACHE}"=="y" ]]; then
@@ -198,10 +155,17 @@ if [[ "${USE_CCACHE}"=="y" ]]; then
     fi
 fi
 
+echo "------------ Building Specs in Mariner ------------"
 log "-- Build core specs"
-build_specs SPECS
+build_specs
 
-if [[ -n $ARTIFACT_PUBLISH_DIR ]]; then
-    log "-- Publish build artifacts"
-    publish_build_artifacts
-fi
+
+echo "------------ Building Images in Mariner ------------"
+log "-- Build images"
+build_images
+
+echo "------------ Publishing Logs ------------"
+log "-- Publish build logs"
+publish_build_logs
+
+popd

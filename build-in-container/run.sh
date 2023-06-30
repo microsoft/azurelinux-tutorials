@@ -8,9 +8,9 @@ help() {
     -b      creates container, 
             builds the specs under $(pwd)/SPECS/ 
             and places the output under $(pwd)/out/
-    -i      create interactive Mariner build container
+    -i      create an interactive Mariner build container
     -c      cleans up the current workspace, container images and instances
-    --help  shows help
+    --help  shows help on usage
     "
     echo "----------------------------------------------------"
 }

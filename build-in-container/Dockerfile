@@ -26,7 +26,7 @@ RUN tdnf update -qy tdnf && \
                 gcc \
                 git \
                 glibc-devel \
-                golang-1.17.13-1.cm2 \
+                golang \
                 kernel-headers \
                 make \
                 parted \
@@ -39,3 +39,5 @@ RUN tdnf update -qy tdnf && \
                 sudo \
                 tar \
                 wget
+
+RUN echo "source /sources/scripts/setup.sh" >> /root/.bashrc
