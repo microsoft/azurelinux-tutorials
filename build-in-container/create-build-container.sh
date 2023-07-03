@@ -1,4 +1,4 @@
 #! /bin/bash
 set -e
 
-docker build -t 'msft/mariner-toolchain:2.0' .
+docker build -t 'msft/mariner-container-build:2.0' .

@@ -4,22 +4,20 @@ The build-in-container tool provides a developer tool to quickly build Mariner p
 Please install docker on your system before using the tool.
 
 ## Usage
-The run.sh script presents these options
--t      creates container image
--b      creates container, builds Mariner and outputs to out/
--i      create an interactive Mariner build container
--c      cleans up the current workspace
---help  shows help on usage
+The run.sh script presents these options <br />
+-t      creates container image <br />
+-b      creates container, builds Mariner and outputs to out/ <br />
+-i      create an interactive Mariner build container <br />
+-c      cleans up the current workspace <br />
+--help  shows help on usage <br /> <br />
 
-**Place specs to build under SPECS/**
-
-**The output from the build will be available under out/ (RPMS, SRPMS and images)**
-
-**Logs are published under logs/**
+- Place specs to build under SPECS/  <br />
+- The output from the build will be available under out/ (RPMS, SRPMS and images)  <br />
+- Logs are published under logs/  <br />
 
 ## Details on what goes on inside the container:
 ### Creating container image
-'create-build-container.sh' creates an image that the docker can use to launch the Mariner build container. It downloads a Mariner2.0 container image, and makes suitable modifications to it. The output image is tagged as 'msft/mariner-toolchain:2.0'
+'create-build-container.sh' creates an image that the docker can use to launch the Mariner build container. It downloads a Mariner2.0 container image, and makes suitable modifications to it. The output image is tagged as 'msft/mariner-container-build:2.0'
 
 ### Running container in the specified mode
 'mariner-docker-run.sh' starts a docker container using the image produced in Step(1). 

@@ -71,6 +71,7 @@ echo "------------ Installing Build Prerequisites ------------"
 tdnf -y install \
         binutils \
         bison \
+        ca-certificates \
         cdrkit \
         curl \
         dnf \

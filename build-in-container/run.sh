@@ -33,10 +33,10 @@ interactive_container() {
 cleanup() {
     echo "Cleaning up ....."
     rm -rf build ccache out scripts/toolkit scripts/out
-    # remove Mariner dockers
-    docker rm -f $(docker ps -a | grep mariner |tr -s " "| cut -d ' ' -f 1)
+    # remove Mariner docker containers
+    docker rm -f $(docker ps -aq --filter ancestor="msft/mariner-container-build:2.0")
     # remove Mariner docker images
-    docker rmi -f $(docker image ls | grep mariner |tr -s " "| cut -d ' ' -f 3)
+    docker rmi -f $(docker images -aq --filter reference="msft/mariner-container-build")
 }
 
 while (( "$#")); do
