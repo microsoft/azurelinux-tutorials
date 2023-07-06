@@ -74,6 +74,7 @@ tdnf -y install \
         ca-certificates \
         cdrkit \
         curl \
+        dracut \
         dnf \
         dnf-utils \
         dosfstools \
@@ -83,6 +84,7 @@ tdnf -y install \
         glibc-devel \
         golang \
         kernel-headers \
+        lvm2 \
         make \
         parted \
         pigz \
@@ -92,6 +94,7 @@ tdnf -y install \
         rpm-build \
         rsync \
         sudo \
+        tdnf-plugin-repogpgcheck \
         tar \
         wget
 

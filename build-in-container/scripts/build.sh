@@ -82,7 +82,7 @@ build_specs() {
 # No arguments
 # Global variables expected to be defined: BUILD_DIR, CCACHE_DIR, CHROOT_DIR, CHROOT_NB, LOG_LEVEL, OUT_DIR
 build_images() {
-    configfiles=$(ls $IMAGE_CONFIG_DIR/| grep json)
+    configfiles=$(ls $IMAGE_CONFIG_DIR/| grep marketplace-gen2.json)
     for config_file in $configfiles
     do
         sudo make -j$(nproc) -C toolkit image \

@@ -10,6 +10,7 @@ create_build_container() {
     docker run \
         ${mount_pts} \
         --privileged \
+        --cap-add SYS_ADMIN \
         msft/mariner-container-build:2.0 sources/scripts/build-mariner.sh
 }
 
@@ -17,6 +18,7 @@ create_interactive_container() {
     docker run \
         ${mount_pts} \
         --privileged \
+        --cap-add SYS_ADMIN \
         -it msft/mariner-container-build:2.0 /bin/bash
 }
 
@@ -110,6 +112,9 @@ mount_pts="
     -v $(pwd)/build/toolchain_rpms:/tmp/mariner/build/toolchain_rpms:rw \
     -v $(pwd)/out:/tmp/mariner/out:rw \
     -v $(pwd)/logs:/tmp/mariner/logs:rw \
+    -v /dev:/dev:ro \
+    -v /var/run:/var/run:rw \
+    -v /sys:/sys:ro
     "
 
 local container_type=("$@")

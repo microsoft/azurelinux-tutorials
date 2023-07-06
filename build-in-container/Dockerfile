@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/cbl-mariner/base/core:2.0
+FROM mcr.microsoft.com/onebranch/cbl-mariner/build:2.0
 
 RUN mkdir -m 777 -p /sources && \
     for i in $(seq 1 12); do \
@@ -20,6 +20,7 @@ RUN tdnf update -qy tdnf && \
                 ca-certificates \
                 cdrkit \
                 curl \
+                dracut \
                 dnf \
                 dnf-utils \
                 dosfstools \
@@ -29,6 +30,7 @@ RUN tdnf update -qy tdnf && \
                 glibc-devel \
                 golang \
                 kernel-headers \
+                lvm2 \
                 make \
                 parted \
                 pigz \
@@ -38,6 +40,7 @@ RUN tdnf update -qy tdnf && \
                 rpm-build \
                 rsync \
                 sudo \
+                tdnf-plugin-repogpgcheck \
                 tar \
                 wget
 
