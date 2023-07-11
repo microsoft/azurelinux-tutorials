@@ -1,5 +1,5 @@
 # Build-in-container
-The build-in-container tool provides a developer tool to quickly build Mariner packages and images. It is easy-to-use, and distribution and platform agnostic. It sets up a build environment in an expedient manner using a container.
+The build-in-container tool provides a developer tool to quickly build Mariner packages. It is easy-to-use, and distribution and platform agnostic. It sets up a build environment in an expedient manner using a container.
 
 Please install docker on your system before using the tool.
 
@@ -12,7 +12,7 @@ The run.sh script presents these options <br />
 --help  shows help on usage <br /> <br />
 
 - Place specs to build under SPECS/  <br />
-- The output from the build will be available under out/ (RPMS, SRPMS and images)  <br />
+- The output from the build will be available under out/ (RPMS and SRPMS)  <br />
 - Logs are published under logs/  <br />
 
 ## Details on what goes on inside the container:
@@ -22,7 +22,7 @@ The run.sh script presents these options <br />
 ### Running container in the specified mode
 'mariner-docker-run.sh' starts a docker container using the image produced in Step(1). 
 
-In the _build_ mode, it sets up the Mariner build system inside the container, builds all the specs under SPECS/ and all the images under toolkit/imageconfigs/, and outputs to out/.
+In the _build_ mode, it sets up the Mariner build system inside the container, builds all the specs under SPECS/ and outputs to out/.
 
 In the _interactive_ mode, it sets up the Mariner build system inside the container, and starts the container at /sources/scripts/toolkit/. The user can invoke Mariner `make` commands to build packages, images and more. Please see the [section](https://github.com/microsoft/CBL-MarinerTutorials/tree/main/buildInContainer/build-in-container#sample-make-commands) for sample `make` commands, and visit [Mariner Docs](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md) for the complete set of commands. 
 
@@ -42,5 +42,3 @@ In the _interactive_ mode, it sets up the Mariner build system inside the contai
 
 ## Sample make commands:
 `make build-packages -j$(nproc)` would build specs under SPECS/ and populate out/ with the built SRPMs and RPMs
-
-`make image -j$(nproc) REBUILD_TOOLS=n REBUILD_PACKAGES=n CONFIG_FILE=imageconfigs/image-config.json` would build image config under scripts/toolkit/imageconfigs/ and place it under out/

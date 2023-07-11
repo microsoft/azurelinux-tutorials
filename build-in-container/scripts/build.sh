@@ -160,9 +160,9 @@ log "-- Build core specs"
 build_specs
 
 
-echo "------------ Building Images in Mariner ------------"
-log "-- Build images"
-build_images
+#echo "------------ Building Images in Mariner ------------"
+#log "-- Build images"
+#build_images
 
 echo "------------ Publishing Logs ------------"
 log "-- Publish build logs"
