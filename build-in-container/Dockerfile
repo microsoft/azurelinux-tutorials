@@ -15,6 +15,7 @@ RUN mkdir -m 777 -p /sources && \
 
 RUN tdnf update -qy tdnf && \
         tdnf -y install \
+                tdnf-plugin-repogpgcheck \
                 binutils \
                 bison \
                 ca-certificates \
@@ -40,7 +41,6 @@ RUN tdnf update -qy tdnf && \
                 rpm-build \
                 rsync \
                 sudo \
-                tdnf-plugin-repogpgcheck \
                 tar \
                 wget
 

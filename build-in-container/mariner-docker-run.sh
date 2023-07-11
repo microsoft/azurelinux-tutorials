@@ -113,7 +113,6 @@ mount_pts="
     -v $(pwd)/out:/tmp/mariner/out:rw \
     -v $(pwd)/logs:/tmp/mariner/logs:rw \
     -v /dev:/dev:ro \
-    -v /var/run:/var/run:rw \
     -v /sys:/sys:ro
     "
 
