@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/onebranch/cbl-mariner/build:2.0
+FROM mcr.microsoft.com/cbl-mariner/base/core:2.0
 
 RUN mkdir -m 777 -p /sources && \
     for i in $(seq 1 12); do \

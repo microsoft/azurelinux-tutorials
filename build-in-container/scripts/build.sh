@@ -142,19 +142,6 @@ pushd /sources/scripts/
 echo "------------ Setting up Mariner Toolkit ------------"
 download_mariner_toolkit
 
-if [[ "${USE_CCACHE}"=="y" ]]; then
-    log "-- Apply workaround for ccache"
-    # WORKAROUND: The Mariner toolkit is having trouble downloading the ccache
-    # RPM in our container-based build environment; let's pre-download it.
-    if compgen -G "${OUT_DIR}/RPMS/$(uname -p)/ccache-*.rpm" > /dev/null; then
-        echo "ccache RPM already exists; using cached copy."
-    else
-        log "Downloading ccache RPM..."
-        sudo mkdir -p "${OUT_DIR}/RPMS/$(uname -p)"
-        sudo dnf download -y ccache --destdir out/RPMS/$(uname -p)
-    fi
-fi
-
 echo "------------ Building Specs in Mariner ------------"
 log "-- Build core specs"
 build_specs
