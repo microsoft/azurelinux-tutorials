@@ -5,32 +5,33 @@ Please install docker on your system before using the tool.
 
 ## Usage
 The run.sh script presents these options <br />
--t      creates container image <br />
--b      creates container, builds Mariner and outputs to out/ <br />
--i      create an interactive Mariner build container <br />
--c      cleans up the current workspace <br />
---help  shows help on usage <br /> <br />
+-t                 creates container image <br />
+-b [repo_dir]      creates container, builds Mariner and outputs to out/ <br />
+-i [repo_dir]      create an interactive Mariner build container <br />
+-c [repo_dir]      cleans up the current workspace <br />
+--help             shows help on usage <br /> <br />
 
-- Place specs to build under SPECS/  <br />
-- The output from the build will be available under out/ (RPMS and SRPMS)  <br />
-- Logs are published under logs/  <br />
+- Unless provided, repo_dir defaults to the directory containing build-in-container tool <br />
+- Place specs to build under $repo_dir/SPECS/ <br />
+- The output from the build will be available under $repo_dir/out/ (RPMS and SRPMS) <br />
+- Logs are published under $repo_dir/logs/ <br />
 
 ## Details on what goes on inside the container:
 ### Creating container image
-'create-build-container.sh' creates an image that the docker can use to launch the Mariner build container. It downloads a Mariner2.0 container image, and makes suitable modifications to it. The output image is tagged as 'msft/mariner-container-build:2.0'
+'create-build-container.sh' creates an image that the docker can use to launch the Mariner build container. It downloads a Mariner2.0 container image, and makes suitable modifications to it. The output image is tagged as 'mcr.microsoft.com/mariner-container-build:2.0'
 
 ### Running container in the specified mode
 'mariner-docker-run.sh' starts a docker container using the image produced in Step(1). 
 
-In the _build_ mode, it sets up the Mariner build system inside the container, builds all the specs under SPECS/ and outputs to out/.
+In the _build_ mode, it sets up the Mariner build system inside the container, builds all the specs under $repo_dir/SPECS/ and outputs to $repo_dir/out/.
 
-In the _interactive_ mode, it sets up the Mariner build system inside the container, and starts the container at /sources/scripts/toolkit/. The user can invoke Mariner `make` commands to build packages, images and more. Please see the [section](https://github.com/microsoft/CBL-MarinerTutorials/tree/main/buildInContainer/build-in-container#sample-make-commands) for sample `make` commands, and visit [Mariner Docs](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md) for the complete set of commands. 
+In the _interactive_ mode, it sets up the Mariner build system inside the container, and starts the container at /mariner/toolkit/. The user can invoke Mariner `make` commands to build packages, images and more. Please see the [section](https://github.com/microsoft/CBL-MarinerTutorials/tree/main/buildInContainer/build-in-container#sample-make-commands) for sample `make` commands, and visit [Mariner Docs](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md) for the complete set of commands. 
 
 ### Helper scripts
 
 - 'scripts/setup.sh' installs the required pacakges, downloads the Mariner toolkit from GitHub (if missing), downloads Mariner2.0 toolchain RPMs, and sets up the environment variables required for Mariner builds.
 
-- 'scripts/build.sh' The build starts with cloning the Mariner GitHub repository, and downloading the toolchain. Using the tools from Mariner toolkit, it reads the spec files under SPECS/, installs the build dependepdencies, builds the specs and packages them into an RPM. Each pacakge is built inside a chroot environment. This is achieved by the '
+- 'scripts/build.sh' The build starts with cloning the Mariner GitHub repository, and downloading the toolchain. Using the tools from Mariner toolkit, it reads the spec files under SPECS/, installs the build dependepdencies, builds the specs and packages them into an RPM. Each pacakge is built inside a chroot environment.
 
 ## Advantages:
 - It is convenient and fast for developement environment
