@@ -3,5 +3,5 @@
 set -e
 set -x
 
-source /sources/scripts/setup.sh
-source /sources/scripts/build.sh
+source /mariner/scripts/setup.sh
+source /mariner/scripts/build.sh

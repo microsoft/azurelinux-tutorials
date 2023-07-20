@@ -3,21 +3,28 @@
 echo "------------ Setting up Mariner Build Environment ------------"
 
 # build variables
-BUILD_DIR="/tmp/mariner/build"
-CCACHE_DIR="/tmp/mariner/ccache"
+MARINER_BASE_DIR=/mariner
+BUILD_DIR="$MARINER_BASE_DIR/build"
+CCACHE_DIR="$MARINER_BASE_DIR/ccache"
 CBL_MARINER_GIT_URL="https://github.com/microsoft/CBL-Mariner.git"
 CHROOT_DIR="/temp/DockerStage/"
 DISABLE_UPSTREAM_REPOS="n"
-IMAGE_CONFIG_DIR="/sources/scripts/toolkit/imageconfigs"
-MARINER_RELEASE_TAG="2.0-stable"
+IMAGE_CONFIG_DIR="$MARINER_BASE_DIR/toolkit/imageconfigs"
 LOG_LEVEL="info"
-OUT_DIR="/tmp/mariner/out"
+LOG_PUBLISH_DIR="$MARINER_BASE_DIR/logs"
+MARINER_RELEASE_TAG="2.0-stable"
+OUT_DIR="$MARINER_BASE_DIR/out"
 RUN_CHECK="y"
 SOURCE_URL="https://cblmarinerstorage.blob.core.windows.net/sources/core"
-SPECS_DIR="/sources/SPECS"
+SPECS_DIR="$MARINER_BASE_DIR/SPECS"
+USE_CCACHE="y"
 
+# Build Mariner toolkit if not present, by cloning Mariner GitHub repo
+#
+# No arguments
+# Global variables expected to be defined: BUILD_DIR, CHROOT_DIR, CHROOT_NB, OUT_DIR
 download_mariner_toolkit() {
-    if [ ! -d toolkit ]; then
+    if [ ! "$(ls -A toolkit)" ]; then
     echo "------------ Preparing Mariner toolkit ------------"
         if [ ! -d CBL-Mariner ]; then
             echo "------------ Cloning Mariner toolkit from github ------------"
@@ -27,7 +34,7 @@ download_mariner_toolkit() {
                 ${CBL_MARINER_GIT_URL}
         fi
         echo "------------ Building Mariner toolkit ------------"
-        sudo make -j$(nproc) \
+        make -j$(nproc) \
             -C CBL-Mariner/toolkit \
             package-toolkit \
             BUILD_DIR="$BUILD_DIR" \
@@ -51,6 +58,7 @@ popd
 
 # export build variables
 export BUILD_DIR
+export CBL_MARINER_GIT_URL
 export CCACHE_DIR
 export CHROOT_BASE_DIR
 export CHROOT_DIR
@@ -59,10 +67,14 @@ export CONCURRENT_PACKAGE_BUILDS
 export DISABLE_UPSTREAM_REPOS
 export IMAGE_CONFIG_DIR
 export LOG_LEVEL
+export LOG_PUBLISH_DIR
+export MARINER_BASE_DIR
+export MARINER_RELEASE_TAG
 export OUT_DIR
 export RUN_CHECK
 export SOURCE_URL
 export SPECS_DIR
+export USE_CCACHE
 
 # install prerequisites
 #----------------------
@@ -93,7 +105,6 @@ tdnf -y install \
         rpm \
         rpm-build \
         rsync \
-        sudo \
         tdnf-plugin-repogpgcheck \
         tar \
         wget
@@ -101,8 +112,8 @@ tdnf -y install \
 go version
 
 # clone toolkit from github and set up for Mariner build
-pushd /sources/scripts/
+pushd /mariner/
 download_mariner_toolkit
 popd
 
-cd /sources/scripts/toolkit/
+cd /mariner/toolkit/

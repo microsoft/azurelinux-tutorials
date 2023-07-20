@@ -1,13 +1,6 @@
 #!/bin/bash
 set -euo
 
-CBL_MARINER_GIT_URL="https://github.com/microsoft/CBL-Mariner.git"
-readonly MARINER_RELEASE_TAG="2.0-stable"
-
-VERBOSE=1
-USE_CCACHE="y"
-LOG_PUBLISH_DIR="/tmp/mariner/logs"
-
 if [ -t 1 ]; then
     CYAN="\e[36m"
     RESET="\e[0m"
@@ -23,38 +16,8 @@ function log() {
 
 function cleanup() {
     log "Cleaning up..."
-
     if [[ -n $LOG_PUBLISH_DIR ]]; then
         publish_build_logs
-    fi
-}
-
-# Build Mariner toolkit if not present, by cloning Mariner GitHub repo
-#
-# No arguments
-# Global variables expected to be defined: BUILD_DIR, CHROOT_DIR, CHROOT_NB, OUT_DIR
-download_mariner_toolkit() {
-    if [ ! -d toolkit ]; then
-        if [ ! -d CBL-Mariner ]; then
-            log " -- Clone CBL-Mariner toolkit from github"
-            git clone \
-                --branch ${MARINER_RELEASE_TAG} \
-                --depth 1 \
-                ${CBL_MARINER_GIT_URL}
-        fi
-        log " -- Build CBL-Mariner toolkit"
-        sudo make -j$(nproc) \
-            -C CBL-Mariner/toolkit \
-            package-toolkit \
-            BUILD_DIR="$BUILD_DIR" \
-            CHROOT_DIR="$CHROOT_DIR" \
-            CONCURRENT_PACKAGE_BUILDS="$CHROOT_NB" \
-            CONFIG_FILE= \
-            LOG_LEVEL=info \
-            OUT_DIR="$OUT_DIR" \
-            REBUILD_TOOLS=y && \
-        rm -rf CBL-Mariner && \
-        tar -xzvf ${OUT_DIR}/toolkit-*.tar.gz
     fi
 }
 
@@ -64,7 +27,7 @@ download_mariner_toolkit() {
 # No arguments
 # Global variables expected to be defined: BUILD_DIR, CCACHE_DIR, CHROOT_DIR, CHROOT_NB, LOG_LEVEL, OUT_DIR, SPECS_DIR
 build_specs() {
-    sudo make -j$(nproc) -C toolkit build-packages \
+    make -j$(nproc) build-packages \
         CONFIG_FILE="" \
         REBUILD_TOOLS=y \
         SPECS_DIR="$SPECS_DIR" \
@@ -85,7 +48,7 @@ build_images() {
     configfiles=$(ls $IMAGE_CONFIG_DIR/| grep marketplace-gen2.json)
     for config_file in $configfiles
     do
-        sudo make -j$(nproc) -C toolkit image \
+        make -j$(nproc) image \
         REBUILD_TOOLS=y \
         CONFIG_FILE="$IMAGE_CONFIG_DIR/$config_file" \
         SPECS_DIR="$SPECS_DIR" \
@@ -137,15 +100,11 @@ echo "-- USE_CCACHE                         -> $USE_CCACHE"
 echo "-- SPECS_DIR                          -> $SPECS_DIR"
 echo ""
 
-pushd /sources/scripts/
-
-echo "------------ Setting up Mariner Toolkit ------------"
-download_mariner_toolkit
+pushd $MARINER_BASE_DIR/toolkit/
 
 echo "------------ Building Specs in Mariner ------------"
 log "-- Build core specs"
 build_specs
-
 
 #echo "------------ Building Images in Mariner ------------"
 #log "-- Build images"

@@ -40,8 +40,7 @@ RUN tdnf update -qy tdnf && \
                 rpm \
                 rpm-build \
                 rsync \
-                sudo \
                 tar \
                 wget
 
-RUN echo "source /sources/scripts/setup.sh" >> /root/.bashrc
+RUN echo "source /mariner/scripts/setup.sh" >> /root/.bashrc
