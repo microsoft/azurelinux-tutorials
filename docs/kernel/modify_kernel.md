@@ -5,7 +5,7 @@
 In some situations, you may want to build and test variations of the default CBL-Mariner kernel.  Because the `kernel` is also a package, the process is similar to adding a new package as discussed in the previous section.  
 
 ### Prep your Kernel SPEC Environment
-The following assumes you have already completed the [Prepare your Environment](docs/getting_started/prepare_environment.md) steps. To begin creating a custom kernel, copy the contents of the CBL-Mariner `kernel` spec folder into your clone of the `CBL-MarinerTutorials` repo.
+The following assumes you have already completed the [Prepare your Environment](../../docs/getting_started/prepare_environment.md) steps. To begin creating a custom kernel, copy the contents of the CBL-Mariner `kernel` spec folder into your clone of the `CBL-MarinerTutorials` repo.
 
 ```bash
 #
