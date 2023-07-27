@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 echo "------------ Setting up Mariner Build Environment ------------"
 
 # build variables
