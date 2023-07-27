@@ -5,29 +5,34 @@ Please install docker on your system before using the tool.
 
 ## Usage
 The run.sh script presents these options <br />
--t                 creates container image <br />
--b [repo_dir]      creates container, builds Mariner and outputs to out/ <br />
--i [repo_dir]      create an interactive Mariner build container <br />
--c [repo_dir]      cleans up the current workspace <br />
---help             shows help on usage <br /> <br />
+    -t                  creates container image <br />
+    -b [repo_dir]       creates container, <br />
+                        builds the specs under [repo_dir]/SPECS/, <br />
+                        and places the output under [repo_dir]/out/ <br />
+    -i [repo_dir]       create an interactive Mariner build container <br />
+    -c [repo_dir]       cleans up Mariner workspace at [repo_dir], container images and instances
+    --help              shows help on usage <br />
 
-- Unless provided, repo_dir defaults to the directory containing build-in-container tool <br />
+- tool_dir refers to the directory of the build-in-container tool <br/>
+- repo_dir refers to the directory with Mariner artifacts (SPECS, toolkit, etc.) <br/>
+- Unless provided, repo_dir defaults to the directory of the build-in-container tool <br />
 - Place specs to build under $repo_dir/SPECS/ <br />
 - The output from the build will be available under $repo_dir/out/ (RPMS and SRPMS) <br />
 - Logs are published under $repo_dir/logs/ <br />
 
 ``` bash
 # Setup the container for 1st use
-cd ./CBL-MarinerTutorials
+cd /path/to/CBL-MarinerTutorials
 ./build-in-container/run.sh -t
 # Build `./SPECS/**/*.spec` automatically using the latest stable toolkit
 ./build-in-container/run.sh -b ./
 ls ./out/RPMS/x86_64/
 # hello_world_demo-1.0.0-2.cm2.x86_64.rpm  hello_world_demo-debuginfo-1.0.0-2.cm2.x86_64.rpm
+
 # Invoke the toolkit directly
 ./build-in-container/run.sh -i
-> #  Run the tools manually
->  make build-packages SRPM_PACK_LIST="os-subrelease"
+#  Run the tools manually
+make build-packages SRPM_PACK_LIST="hello_world_demo" -j$(nproc)
 ```
 
 ## Details on what goes on inside the container:
