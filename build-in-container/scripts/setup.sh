@@ -52,6 +52,13 @@ download_mariner_toolkit() {
     fi
 }
 
+# check if $SPECS_DIR is empty, and alert the user
+check_specs() {
+    if [ ! "$(ls -A $SPECS_DIR)" ]; then
+        echo -e "-------- \033[31m ALERT: SPECS IS EMPTY. Nothing to build \033[0m --------"
+    fi
+}
+
 # create chroot lock
 pushd $CHROOT_DIR
 touch chroot-pool.lock
@@ -115,8 +122,11 @@ tdnf -y install \
 go version
 
 # clone toolkit from github and set up for Mariner build
-pushd /mariner/
+pushd $MARINER_BASE_DIR
 download_mariner_toolkit
 popd
+
+# check if $SPECS_DIR is empty
+check_specs
 
 cd /mariner/toolkit/ || { echo "ERROR: Could not change directory to /mariner/toolkit/"; exit 1; }

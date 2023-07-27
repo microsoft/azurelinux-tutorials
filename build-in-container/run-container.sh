@@ -9,9 +9,10 @@ mkdir -p ${mariner_dir}/build/toolchain_rpms
 mkdir -p ${mariner_dir}/ccache
 mkdir -p ${mariner_dir}/logs
 mkdir -p ${mariner_dir}/out
+mkdir -p ${mariner_dir}/SPECS
 mkdir -p ${mariner_dir}/toolkit
 
-create_build_container() {
+run_build_container() {
     docker run --rm \
         ${mount_pts} \
         --privileged \
@@ -19,7 +20,7 @@ create_build_container() {
         mcr.microsoft.com/mariner-container-build:2.0 /mariner/scripts/build-mariner.sh
 }
 
-create_interactive_container() {
+run_interactive_container() {
     docker run \
         ${mount_pts} \
         --privileged \
@@ -124,5 +125,5 @@ mount_pts="
     "
 
 local container_type=("$@")
-if [ "$container_type" == "build" ]; then create_build_container; return; fi
-if [ "$container_type" == "interactive" ]; then create_interactive_container; return; fi
+if [ "$container_type" == "build" ]; then run_build_container; return; fi
+if [ "$container_type" == "interactive" ]; then run_interactive_container; return; fi

@@ -19,7 +19,7 @@ help() {
                         (default: $mariner_dir)
     --help              shows help on usage
     
-    * unless provided, mariner_dir defaults to the directory of the build-in-container tool
+    * unless provided, mariner_dir defaults to the current directory
                         (default: $mariner_dir)
     "
     echo "----------------------------------------------------"
@@ -64,7 +64,7 @@ if [ -n "$2" ]
 then
     mariner_dir="$(realpath $2)"
 else
-    mariner_dir=$( realpath "$(dirname "$0")" )
+    mariner_dir=$(realpath "$(pwd)")
 fi
 
 while (( "$#")); do

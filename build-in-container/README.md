@@ -5,17 +5,15 @@ Please install docker on your system before using the tool.
 
 ## Usage
 The mariner-docker-builder.sh script presents these options <br />
-    -t                  creates container image <br />
-    -b [mariner_dir]    creates container, <br />
-                        builds the specs under [mariner_dir]/SPECS/, <br />
-                        and places the output under [mariner_dir]/out/ <br />
-    -i [mariner_dir]    create an interactive Mariner build container <br />
-    -c [mariner_dir]    cleans up Mariner workspace at [mariner_dir], container images and instances
-    --help              shows help on usage <br />
+&emsp; -t                  creates container image <br />
+&emsp; -b [mariner_dir]    creates container, builds the specs under [mariner_dir]/SPECS/, and places the output under [mariner_dir]/out/ <br />
+&emsp; -i [mariner_dir]    creates an interactive Mariner build container <br />
+&emsp; -c [mariner_dir]    cleans up Mariner workspace at [mariner_dir], container images and instances
+&emsp; --help              shows help on usage <br />
 
 - 'tool_dir' refers to the directory of the build-in-container tool <br/>
 - 'mariner_dir' refers to the directory with Mariner artifacts (SPECS, toolkit, etc.) <br/>
-- If mariner_dir is specified, it will be used for all Mariner artifacts like toolkit, SPECS, build, out and logs. Else, mariner_dir will default to $tool_dir (i.e. directory of the build-in-container tool). <br />
+- If mariner_dir is provided, it will be used for all Mariner artifacts like toolkit, SPECS, build, out and logs. Else, current directory will be used. <br />
 - Place specs to build under $mariner_dir/SPECS/ <br />
 - Please find [SPEC sample](https://github.com/microsoft/CBL-MarinerTutorials/tree/main/SPECS) here <br />
 - The output from the build will be available under $mariner_dir/out/ (RPMS and SRPMS) <br />
@@ -23,15 +21,15 @@ The mariner-docker-builder.sh script presents these options <br />
 
 ``` bash
 # Setup the container for 1st use
-cd /path/to/CBL-MarinerTutorials/build-in-container
-./mariner-docker-builder.sh -t
+cd /path/to/CBL-MarinerTutorials/
+./build-in-container/mariner-docker-builder.sh -t
 # Build `SPECS/**/*.spec` automatically
-./mariner-docker-builder.sh -b
+./build-in-container/mariner-docker-builder.sh -b
 ls out/RPMS/x86_64/
 # hello_world_demo-1.0.0-2.cm2.x86_64.rpm  hello_world_demo-debuginfo-1.0.0-2.cm2.x86_64.rpm
 
 # Invoke the toolkit directly
-./mariner-docker-builder.sh -i
+./CBL-MarinerTutorials/mariner-docker-builder.sh -i
 #  Run the tools manually
 make build-packages SRPM_PACK_LIST="hello_world_demo" -j$(nproc)
 ```
