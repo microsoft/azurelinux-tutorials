@@ -116,4 +116,4 @@ pushd /mariner/
 download_mariner_toolkit
 popd
 
-cd /mariner/toolkit/
+cd /mariner/toolkit/ || { echo "ERROR: Could not change directory to /mariner/toolkit/"; exit 1; }

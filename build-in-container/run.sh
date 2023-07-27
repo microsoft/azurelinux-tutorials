@@ -6,13 +6,15 @@ help() {
     The run.sh script presents these options
     -t                  creates container image
     -b [repo_dir]       creates container,
-                        builds the specs under $repo_dir/SPECS/
-                        and places the output under $repo_dir/out/
+                        builds the specs under [repo_dir]/SPECS/,
+                        and places the output under [repo_dir]/out/
+                        (default: $repo_dir/{SPECS,out})
     -i [repo_dir]       create an interactive Mariner build container
-    -c [repo_dir]       cleans up Mariner workspace at $repo_dir, container images and instances
+    -c [repo_dir]       cleans up Mariner workspace at [repo_dir], container images and instances
+                        (default: $repo_dir)
     --help              shows help on usage
-
-    * unless provided, repo_dir defaults to the directory containing build-in-container tool
+    * unless provided, repo_dir defaults to the directory of the build-in-container tool
+                        (default: $repo_dir)
     "
     echo "----------------------------------------------------"
 }
@@ -24,27 +26,15 @@ create_container() {
 
 build_mariner() {
     echo "Creating Mariner Build Container and building Mariner SPECS"
-    if [ "$#" -ne 0 ]
-    then
-        repo_dir="$1"
-    fi
     source ${tool_dir}/mariner-docker-run.sh build
 }
 
 interactive_container() {
     echo "Creating Interactive Mariner Build Container"
-    if [ "$#" -ne 0 ]
-    then
-        repo_dir="$1"
-    fi
     source ${tool_dir}/mariner-docker-run.sh interactive
 }
 
 cleanup() {
-    if [ "$#" -ne 0 ]
-    then
-        repo_dir="$1"
-    fi
     echo "Cleaning up mariner artifacts at $repo_dir ....."
     echo "This requires running as root ...."
     sudo rm -rf ${repo_dir}/build ${repo_dir}/ccache ${repo_dir}/logs ${repo_dir}/out ${repo_dir}/toolkit
@@ -55,7 +45,6 @@ cleanup() {
 }
 
 tool_dir=$( realpath "$(dirname "$0")" )
-repo_dir=$tool_dir
 
 if [ "$#" -eq 0 ]
 then
@@ -63,14 +52,20 @@ then
     exit 1
 fi
 
+if [ -n "$2" ]
+then
+    repo_dir="$(realpath $2)"
+else
+    repo_dir=$( realpath "$(dirname "$0")" )
+fi
+
 while (( "$#")); do
   case "$1" in
     -t ) create_container; exit 0 ;;
-    -b ) build_mariner $2; exit 0 ;;
-    -i ) interactive_container $2; exit 0 ;;
-    -c ) cleanup $2; exit 0 ;;
-    --help ) help; exit 1 ;;
+    -b ) build_mariner; exit 0 ;;
+    -i ) interactive_container; exit 0 ;;
+    -c ) cleanup; exit 0 ;;
+    --help ) help; exit 0 ;;
     ?* ) echo -e "ERROR: INVALID OPTION.\n\n"; help; exit 1 ;;
   esac
 done
-

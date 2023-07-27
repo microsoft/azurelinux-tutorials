@@ -16,6 +16,20 @@ The run.sh script presents these options <br />
 - The output from the build will be available under $repo_dir/out/ (RPMS and SRPMS) <br />
 - Logs are published under $repo_dir/logs/ <br />
 
+``` bash
+# Setup the container for 1st use
+cd ./CBL-MarinerTutorials
+./build-in-container/run.sh -t
+# Build `./SPECS/**/*.spec` automatically using the latest stable toolkit
+./build-in-container/run.sh -b ./
+ls ./out/RPMS/x86_64/
+# hello_world_demo-1.0.0-2.cm2.x86_64.rpm  hello_world_demo-debuginfo-1.0.0-2.cm2.x86_64.rpm
+# Invoke the toolkit directly
+./build-in-container/run.sh -i
+> #  Run the tools manually
+>  make build-packages SRPM_PACK_LIST="os-subrelease"
+```
+
 ## Details on what goes on inside the container:
 ### Creating container image
 'create-build-container.sh' creates an image that the docker can use to launch the Mariner build container. It downloads a Mariner2.0 container image, and makes suitable modifications to it. The output image is tagged as 'mcr.microsoft.com/mariner-container-build:2.0'

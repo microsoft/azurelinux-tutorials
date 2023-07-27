@@ -2,4 +2,9 @@
 /out
 /toolkit
 /imaging-from-packer/outdir
-
+/build-in-container/build/rpm_cache/cache
+/build-in-container/build/toolchain_rpms
+/build-in-container/ccache
+/build-in-container/logs
+/build-in-container/out
+/build-in-container/toolkit
