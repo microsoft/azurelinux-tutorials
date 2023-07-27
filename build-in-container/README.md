@@ -5,11 +5,13 @@ Please install docker on your system before using the tool.
 
 ## Usage
 The mariner-docker-builder.sh script presents these options <br />
-&emsp; -t                  creates container image <br />
-&emsp; -b [mariner_dir]    creates container, builds the specs under [mariner_dir]/SPECS/, and places the output under [mariner_dir]/out/ <br />
-&emsp; -i [mariner_dir]    creates an interactive Mariner build container <br />
-&emsp; -c [mariner_dir]    cleans up Mariner workspace at [mariner_dir], container images and instances
-&emsp; --help              shows help on usage <br />
+<pre>
+  -t               creates container image <br />
+  -b [mariner_dir] creates container, builds specs under [mariner_dir]/SPECS/, & places output under [mariner_dir]/out/ <br />
+  -i [mariner_dir] creates an interactive Mariner build container <br />
+  -c [mariner_dir] cleans up Mariner workspace at [mariner_dir], container images and instances <br />
+  --help           shows help on usage <br />
+</pre>
 
 - 'tool_dir' refers to the directory of the build-in-container tool <br/>
 - 'mariner_dir' refers to the directory with Mariner artifacts (SPECS, toolkit, etc.) <br/>
