@@ -24,7 +24,7 @@ The run.sh script presents these options <br />
 # Setup the container for 1st use
 cd /path/to/CBL-MarinerTutorials
 ./build-in-container/run.sh -t
-# Build `./SPECS/**/*.spec` automatically using the latest stable toolkit
+# Build `./SPECS/**/*.spec` automatically
 ./build-in-container/run.sh -b ./
 ls ./out/RPMS/x86_64/
 # hello_world_demo-1.0.0-2.cm2.x86_64.rpm  hello_world_demo-debuginfo-1.0.0-2.cm2.x86_64.rpm
