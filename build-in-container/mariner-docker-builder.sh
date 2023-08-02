@@ -9,16 +9,16 @@ help() {
     echo "------------ Mariner Build-in-Container ------------"
     echo "
     The mariner-docker-builder.sh script presents these options
-    -t                  creates container image
-    -b [mariner_dir]    creates container,
-                        builds the specs at [mariner_dir]/SPECS/,
-                        and places the output under [mariner_dir]/out/
-                        (default: $mariner_dir/{SPECS,out})
-    -i [mariner_dir]    create an interactive Mariner build container
-    -c [mariner_dir]    cleans up Mariner workspace at [mariner_dir], container images and instances
-                        (default: $mariner_dir)
-    --help              shows help on usage
-    
+    -t                        creates container image <br />
+    -b                        creates container, builds specs under [mariner_dir]/SPECS/, & places output under [mariner_dir]/out/ <br />
+    -i                        creates an interactive Mariner build container <br />
+    -c                        cleans up Mariner workspace at [mariner_dir], container images and instances <br />
+    --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory <br />
+    --RPM_repo                URL of custom RPM repo <br />
+    --RPM_storage             URL of Azure blob storage to install RPMs from <br />
+    --disable_mariner_repo    Use only custom RPM repos. Disable default Mariner ones <br />
+    --help                    shows help on usage <br />
+
     * unless provided, mariner_dir defaults to the current directory
                         (default: $mariner_dir)
     "
@@ -30,16 +30,14 @@ create_container() {
     source ${tool_dir}/create-container.sh
 }
 
-build_mariner() {
+run_container() {
     echo "*** Mariner artifacts will be used from $mariner_dir ***"
-    echo "Creating Mariner Build Container and building Mariner SPECS"
-    source ${tool_dir}/run-container.sh build
-}
-
-interactive_container() {
-    echo "*** Mariner artifacts will be used from $mariner_dir ***"
-    echo "Creating Interactive Mariner Build Container"
-    source ${tool_dir}/run-container.sh interactive
+    if [[ "${container_type}" == "build" ]]; then
+        echo "Creating Mariner Build Container and building Mariner SPECS"
+    else
+        echo "Creating Interactive Mariner Build Container"
+    fi
+    source ${tool_dir}/run-container.sh
 }
 
 cleanup() {
@@ -53,6 +51,9 @@ cleanup() {
 }
 
 tool_dir=$( realpath "$(dirname "$0")" )
+mariner_dir=$(realpath "$(pwd)")
+disable_mariner_repo=false
+enable_custom_repo=false
 
 if [ "$#" -eq 0 ]
 then
@@ -60,20 +61,26 @@ then
     exit 1
 fi
 
-if [ -n "$2" ]
-then
-    mariner_dir="$(realpath $2)"
-else
-    mariner_dir=$(realpath "$(pwd)")
-fi
-
 while (( "$#")); do
   case "$1" in
     -t ) create_container; exit 0 ;;
-    -b ) build_mariner; exit 0 ;;
-    -i ) interactive_container; exit 0 ;;
+    -b ) container_type="build"; shift ;;
+    -i ) container_type="interactive"; shift ;;
     -c ) cleanup; exit 0 ;;
+    --mariner_dir ) mariner_dir="$(realpath $2)"; shift 2 ;;
+    --RPM_repo ) RPM_repo="$2"; enable_custom_repo=true; shift 2 ;;
+    --RPM_storage ) RPM_storage="$2"; enable_custom_repo=true; shift 2 ;;
+    --disable_mariner_repo ) disable_mariner_repo=true; shift ;;
     --help ) help; exit 0 ;;
     ?* ) echo -e "ERROR: INVALID OPTION.\n\n"; help; exit 1 ;;
   esac
 done
+
+echo "In main"
+echo "*** mariner_dir is $mariner_dir ***"
+echo "*** RPM_repo is $RPM_repo ***"
+echo "*** RPM_storage is $RPM_storage ***"
+echo "*** disable_mariner_repo is $disable_mariner_repo ***"
+echo "*** enable_custom_repo is $enable_custom_repo ***"
+
+run_container

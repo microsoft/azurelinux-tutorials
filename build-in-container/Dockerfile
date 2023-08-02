@@ -42,5 +42,3 @@ RUN tdnf update -qy tdnf && \
                 rsync \
                 tar \
                 wget
-
-RUN echo "source /mariner/scripts/setup.sh" >> /root/.bashrc

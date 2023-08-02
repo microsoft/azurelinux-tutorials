@@ -7,4 +7,5 @@
 /build-in-container/ccache
 /build-in-container/logs
 /build-in-container/out
+/build-in-container/SPECS
 /build-in-container/toolkit
