@@ -80,10 +80,6 @@ setup_custom_repo() {
         #download all RPMs from Azure $RPM_storage to $MARINER_BASE_DIR/build/rpm_cache/cache
         azcopy copy $RPM_storage/* $MARINER_BASE_DIR/build/rpm_cache/cache
     fi
-
-    if [[ -z "${RPM_repo}" ]] && [[ -z "${RPM_storage}" ]]; then
-        echo "something is wrong"
-    fi
 }
 
 # remove Mariner RPM repos

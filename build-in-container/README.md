@@ -10,11 +10,13 @@ The mariner-docker-builder.sh script presents these options <br />
   -b                        creates container, builds specs under [mariner_dir]/SPECS/, & places output under [mariner_dir]/out/ <br />
   -i                        creates an interactive Mariner build container <br />
   -c                        cleans up Mariner workspace at [mariner_dir], container images and instances <br />
+  --help                    shows help on usage <br />
+
+Optional arguments <br />
   --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory <br />
   --RPM_repo                URL of custom RPM repo <br />
   --RPM_storage             URL of Azure blob storage to install RPMs from <br />
-  --disable_mariner_repo    Use only custom RPM repos. Disable default Mariner ones <br />
-  --help                    shows help on usage <br />
+  --disable_mariner_repo    Disable default Mariner RPM repos. Default is 'false' <br />
 </pre>
 
 - 'tool_dir' refers to the directory of the build-in-container tool <br/>
@@ -40,7 +42,7 @@ ls out/RPMS/x86_64/
 make build-packages SRPM_PACK_LIST="hello_world_demo" -j$(nproc)
 
 # Provide optional arguments
-./CBL-MarinerTutorials/mariner-docker-builder.sh -i mariner_dir /path/to/CBL-Mariner/  --RPM_storage https://az-storage-account.blob.core.windows.net/az-container/ --RPM_repo https://RPM_repo_URL/
+./CBL-MarinerTutorials/mariner-docker-builder.sh -i --mariner_dir /path/to/CBL-Mariner/  --RPM_storage https://az-storage-account.blob.core.windows.net/az-container/ --RPM_repo https://RPM_repo_URL/
 ```
 
 ## Details on what goes on inside the container:

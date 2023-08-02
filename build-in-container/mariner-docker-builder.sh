@@ -9,15 +9,21 @@ help() {
     echo "------------ Mariner Build-in-Container ------------"
     echo "
     The mariner-docker-builder.sh script presents these options
-    -t                        creates container image <br />
-    -b                        creates container, builds specs under [mariner_dir]/SPECS/, & places output under [mariner_dir]/out/ <br />
-    -i                        creates an interactive Mariner build container <br />
-    -c                        cleans up Mariner workspace at [mariner_dir], container images and instances <br />
-    --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory <br />
-    --RPM_repo                URL of custom RPM repo <br />
-    --RPM_storage             URL of Azure blob storage to install RPMs from <br />
-    --disable_mariner_repo    Use only custom RPM repos. Disable default Mariner ones <br />
-    --help                    shows help on usage <br />
+    -t                        creates container image
+    -b                        creates container,
+                              builds specs under [mariner_dir]/SPECS/,
+                              & places output under [mariner_dir]/out/
+                              (default: $mariner_dir/{SPECS,out})
+    -i                        creates an interactive Mariner build container
+    -c                        cleans up Mariner workspace at [mariner_dir], container images and instances
+                              (default: $mariner_dir)
+    --help                    shows help on usage
+
+    Optional arguments:
+    --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory
+    --RPM_repo                URL of custom RPM repo.
+    --RPM_storage             URL of Azure blob storage to install RPMs from.
+    --disable_mariner_repo    Disable default Mariner RPM repos. Default is 'false'
 
     * unless provided, mariner_dir defaults to the current directory
                         (default: $mariner_dir)
