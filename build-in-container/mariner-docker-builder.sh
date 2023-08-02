@@ -76,11 +76,4 @@ while (( "$#")); do
   esac
 done
 
-echo "In main"
-echo "*** mariner_dir is $mariner_dir ***"
-echo "*** RPM_repo is $RPM_repo ***"
-echo "*** RPM_storage is $RPM_storage ***"
-echo "*** disable_mariner_repo is $disable_mariner_repo ***"
-echo "*** enable_custom_repo is $enable_custom_repo ***"
-
 run_container

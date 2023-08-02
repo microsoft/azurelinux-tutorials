@@ -64,8 +64,9 @@ setup_custom_repo() {
     echo "------------ Setting up custom repo ------------"
     if [[ ! -z "${RPM_repo}" ]]; then
         echo "------------ RPM_repo is $RPM_repo ------------"
-        sed -i "s~<CUSTOM_REPO_BASE_URL>~${RPM_repo}~" $MARINER_BASE_DIR/scripts/custom_repo.repo
-        cp $MARINER_BASE_DIR/scripts/custom_repo.repo $MARINER_BASE_DIR/toolkit/repos/
+        cp $MARINER_BASE_DIR/scripts/custom-repo.repo $MARINER_BASE_DIR/toolkit/repos/
+        sed -i "s~<CUSTOM_REPO_BASE_URL>~${RPM_repo}~" $MARINER_BASE_DIR/toolkit/repos/custom-repo.repo
+        cat $MARINER_BASE_DIR/toolkit/repos/custom-repo.repo >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
     fi
 
     if [[ ! -z "${RPM_storage}" ]]; then
@@ -87,13 +88,9 @@ setup_custom_repo() {
 
 # remove Mariner RPM repos
 remove_mariner_repo() {
-    echo "------------ Removing Mariner upstream repos ------------"
+    echo "------------ Removing Mariner default repos ------------"
     DISABLE_DEFAULT_REPOS="y"
     export DISABLE_DEFAULT_REPOS
-    rm $MARINER_BASE_DIR/toolkit/repos/mariner-*.repo
-    rm $MARINER_BASE_DIR/build/worker/worker_chroot/etc/yum.repos.d/mariner-official-base.repo
-    rm $MARINER_BASE_DIR/toolkit/docs/nvidia/mariner-nvidia.repo
-    # /temp/DockerStage/docker-chroot-5/etc/yum.repos.d/mariner-official-base.repo
 }
 
 # create chroot lock
@@ -163,20 +160,13 @@ pushd $MARINER_BASE_DIR
 download_mariner_toolkit
 popd
 
-# check if $SPECS_DIR is empty
-check_specs
-
-echo "********* in setup.sh**************"
-echo "*** RPM_repo is $RPM_repo ***"
-echo "*** RPM_storage is $RPM_storage ***"
-echo "*** disable_mariner_repo is $disable_mariner_repo ***"
-echo "*** enable_custom_repo is $enable_custom_repo ***"
-echo "*** container_type is $container_type ***"
-
 # enable custom repo if true
 if [[ "${enable_custom_repo}" == "true" ]]; then setup_custom_repo; fi
 
 # disable Mariner repos if true
 if [[ "${disable_mariner_repo}" == "true" ]]; then remove_mariner_repo; fi
+
+# check if $SPECS_DIR is empty
+check_specs
 
 cd /mariner/toolkit/ || { echo "ERROR: Could not change directory to /mariner/toolkit/"; exit 1; }
