@@ -59,27 +59,26 @@ check_specs() {
     fi
 }
 
-# setup custom repo to install RPMs from
-setup_custom_repo() {
-    echo "------------ Setting up custom repo ------------"
-    if [[ ! -z "${RPM_repo}" ]]; then
-        echo "------------ RPM_repo is $RPM_repo ------------"
-        cp $MARINER_BASE_DIR/scripts/custom-repo.repo $MARINER_BASE_DIR/toolkit/repos/
-        sed -i "s~<CUSTOM_REPO_BASE_URL>~${RPM_repo}~" $MARINER_BASE_DIR/toolkit/repos/custom-repo.repo
-        cat $MARINER_BASE_DIR/toolkit/repos/custom-repo.repo >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
-    fi
+# enable custom-repo.repo to install RPMs from
+setup_custom_repofile() {
+    echo "------------ Setting up custom repofile ------------"
+    RPM_repo_file=/mariner/scripts/custom-repo.repo
+    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+    cat $RPM_repo_file >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+}
 
-    if [[ ! -z "${RPM_storage}" ]]; then
-        echo "------------ RPM_storage is $RPM_storage ------------"
-        #install azcopy
-        wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux  || { echo "ERROR: Could not install azcopy"; exit 1; }
-        tar -xf azcopy_v10.tar.gz --strip-components=1
-        mv azcopy /bin/
-        rm -rf azcopy* NOTICE.txt
+# enable custom repo blob storage to install RPMs from
+setup_custom_repo_storage() {
+    echo "------------ Setting up custom repo storage ------------"
+    #install azcopy
+    wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux  || { echo "ERROR: Could not install azcopy"; exit 1; }
+    tar -xf azcopy_v10.tar.gz --strip-components=1
+    mv azcopy /bin/
+    rm -rf azcopy* NOTICE.txt
 
-        #download all RPMs from Azure $RPM_storage to $MARINER_BASE_DIR/build/rpm_cache/cache
-        azcopy copy $RPM_storage/* $MARINER_BASE_DIR/build/rpm_cache/cache
-    fi
+    #download all RPMs from Azure $RPM_storage to $MARINER_BASE_DIR/build/rpm_cache/cache
+    azcopy copy $RPM_storage/* $MARINER_BASE_DIR/build/rpm_cache/cache
 }
 
 # remove Mariner RPM repos
@@ -156,8 +155,11 @@ pushd $MARINER_BASE_DIR
 download_mariner_toolkit
 popd
 
-# enable custom repo if true
-if [[ "${enable_custom_repo}" == "true" ]]; then setup_custom_repo; fi
+# enable custom repo from file if true
+if [[ "${enable_custom_repofile}" == "true" ]]; then setup_custom_repofile; fi
+
+# enable custom repo from storage if true
+if [[ "${enable_custom_repo_storage}" == "true" ]]; then setup_custom_repo_storage; fi
 
 # disable Mariner repos if true
 if [[ "${disable_mariner_repo}" == "true" ]]; then remove_mariner_repo; fi

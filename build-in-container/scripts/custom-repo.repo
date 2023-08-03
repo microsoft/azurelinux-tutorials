@@ -1,9 +1,0 @@
-
-[custom-repo]
-name=Custom Repo
-baseurl=<CUSTOM_REPO_BASE_URL>
-enabled=1
-gpgcheck=0
-skip_if_unavailable=False
-sslverify=0
-

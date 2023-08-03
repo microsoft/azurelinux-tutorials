@@ -7,23 +7,67 @@ set -e
 set -x
 
 # parse args passed to container
-args=("$@")
-for ((i = 0; i < ${#args[@]}; i=i+2)); do
-    if [[ ${args[$i]} = "container_type" ]]; then
-        container_type=${args[$i+1]}
-    fi
-    if [[ ${args[$i]} = "RPM_repo" ]]; then
-        RPM_repo=${args[$i+1]}
-    fi
-    if [[ ${args[$i]} = "RPM_storage" ]]; then
-        RPM_storage=${args[$i+1]}
-    fi
-    if [[ ${args[$i]} = "enable_custom_repo" ]]; then
-        enable_custom_repo=${args[$i+1]}
-    fi
-    if [[ ${args[$i]} = "disable_mariner_repo" ]]; then
-        disable_mariner_repo=${args[$i+1]}
-    fi
+while (( "$#" )); do
+    case "$1" in
+        --container_type)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            container_type=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --RPM_repo_file)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            RPM_repo_file=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --RPM_storage)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            RPM_storage=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --enable_custom_repofile)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            enable_custom_repofile=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --enable_custom_repo_storage)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            enable_custom_repo_storage=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --disable_mariner_repo)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            disable_mariner_repo=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        -*|--*=) # unsupported flags
+        echo "Error: Unsupported flag $1" >&2
+        exit 1
+        ;;
+    esac
 done
 
 source /mariner/scripts/setup.sh
