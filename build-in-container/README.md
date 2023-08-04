@@ -20,7 +20,7 @@ Optional arguments <br />
 - 'mariner_dir' refers to the directory with Mariner artifacts (SPECS, toolkit, etc.) <br/>
 - If mariner_dir is provided, it will be used for all Mariner artifacts like toolkit, SPECS, build, out and logs. Else, current directory will be used. <br />
 - Place specs to build under $mariner_dir/SPECS/ <br />
-- Please find [SPEC sample](https://github.com/microsoft/CBL-MarinerTutorials/tree/main/SPECS) here <br />
+- Please find SPEC sample [here](./../SPECS/hello_world_demo/) <br />
 - The output from the build will be available under $mariner_dir/out/ (RPMS and SRPMS) <br />
 - Logs are published under $mariner_dir/logs/ <br />
 
@@ -51,7 +51,7 @@ make build-packages SRPM_PACK_LIST="hello_world_demo" -j$(nproc)
 
 In the _build_ mode, it sets up the Mariner build system inside the container, builds all the specs under $mariner_dir/SPECS/ and outputs to $mariner_dir/out/.
 
-In the _interactive_ mode, it sets up the Mariner build system inside the container, and starts the container at /mariner/toolkit/. The user can invoke Mariner `make` commands to build packages, images and more. Please see the [section](https://github.com/microsoft/CBL-MarinerTutorials/tree/main/buildInContainer/build-in-container#sample-make-commands) for sample `make` commands, and visit [Mariner Docs](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md) for the complete set of commands. 
+In the _interactive_ mode, it sets up the Mariner build system inside the container, and starts the container at /mariner/toolkit/. The user can invoke Mariner `make` commands to build packages, images and more. Please see the [section](README.md#sample-make-commands) for sample `make` commands, and visit [Mariner Docs](https://github.com/microsoft/CBL-Mariner/blob/2.0/toolkit/docs/building/building.md) for the complete set of commands.
 
 ### Helper scripts
 
