@@ -17,7 +17,7 @@ run_build_container() {
         ${mount_pts} \
         --privileged \
         --cap-add SYS_ADMIN \
-        mcr.microsoft.com/mariner-container-build:2.0 /mariner/scripts/build-mariner.sh
+        mcr.microsoft.com/mariner-container-build:2.0 /mariner/scripts/build-mariner.sh $container_args
 }
 
 run_interactive_container() {
@@ -25,7 +25,7 @@ run_interactive_container() {
         ${mount_pts} \
         --privileged \
         --cap-add SYS_ADMIN \
-        -it mcr.microsoft.com/mariner-container-build:2.0 /bin/bash
+        -it mcr.microsoft.com/mariner-container-build:2.0 /mariner/scripts/build-mariner.sh $container_args
 }
 
 mount_pts="
@@ -124,6 +124,6 @@ mount_pts="
     -v /sys:/sys:ro
     "
 
-local container_type=("$@")
+container_args="--container_type $container_type"
 if [ "$container_type" == "build" ]; then run_build_container; return; fi
 if [ "$container_type" == "interactive" ]; then run_interactive_container; return; fi

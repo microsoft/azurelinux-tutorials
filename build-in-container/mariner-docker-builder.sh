@@ -9,15 +9,18 @@ help() {
     echo "------------ Mariner Build-in-Container ------------"
     echo "
     The mariner-docker-builder.sh script presents these options
-    -t                  creates container image
-    -b [mariner_dir]    creates container,
-                        builds the specs at [mariner_dir]/SPECS/,
-                        and places the output under [mariner_dir]/out/
-                        (default: $mariner_dir/{SPECS,out})
-    -i [mariner_dir]    create an interactive Mariner build container
-    -c [mariner_dir]    cleans up Mariner workspace at [mariner_dir], container images and instances
-                        (default: $mariner_dir)
-    --help              shows help on usage
+    -t                        creates container image
+    -b                        creates container,
+                              builds specs under [mariner_dir]/SPECS/,
+                              & places output under [mariner_dir]/out/
+                              (default: $mariner_dir/{SPECS,out})
+    -i                        creates an interactive Mariner build container
+    -c                        cleans up Mariner workspace at [mariner_dir], container images and instances
+                              (default: $mariner_dir)
+    --help                    shows help on usage
+
+    Optional arguments:
+    --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory
     
     * unless provided, mariner_dir defaults to the current directory
                         (default: $mariner_dir)
@@ -30,16 +33,14 @@ create_container() {
     source ${tool_dir}/create-container.sh
 }
 
-build_mariner() {
+run_container() {
     echo "*** Mariner artifacts will be used from $mariner_dir ***"
-    echo "Creating Mariner Build Container and building Mariner SPECS"
-    source ${tool_dir}/run-container.sh build
-}
-
-interactive_container() {
-    echo "*** Mariner artifacts will be used from $mariner_dir ***"
-    echo "Creating Interactive Mariner Build Container"
-    source ${tool_dir}/run-container.sh interactive
+    if [[ "${container_type}" == "build" ]]; then
+        echo "Creating Mariner Build Container and building Mariner SPECS"
+    else
+        echo "Creating Interactive Mariner Build Container"
+    fi
+    source ${tool_dir}/run-container.sh
 }
 
 cleanup() {
@@ -53,6 +54,7 @@ cleanup() {
 }
 
 tool_dir=$( realpath "$(dirname "$0")" )
+mariner_dir=$(realpath "$(pwd)")
 
 if [ "$#" -eq 0 ]
 then
@@ -60,20 +62,16 @@ then
     exit 1
 fi
 
-if [ -n "$2" ]
-then
-    mariner_dir="$(realpath $2)"
-else
-    mariner_dir=$(realpath "$(pwd)")
-fi
-
 while (( "$#")); do
   case "$1" in
     -t ) create_container; exit 0 ;;
-    -b ) build_mariner; exit 0 ;;
-    -i ) interactive_container; exit 0 ;;
+    -b ) container_type="build"; shift ;;
+    -i ) container_type="interactive"; shift ;;
     -c ) cleanup; exit 0 ;;
+    --mariner_dir ) mariner_dir="$(realpath $2)"; shift 2 ;;
     --help ) help; exit 0 ;;
     ?* ) echo -e "ERROR: INVALID OPTION.\n\n"; help; exit 1 ;;
   esac
 done
+
+run_container
