@@ -22,8 +22,8 @@ help() {
     Optional arguments:
     --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory
     --RPM_repo_file           Path to a custom repo file.
-    --RPM_storage             URL of Azure blob storage to install RPMs from.
-    --disable_mariner_repo    Disable default Mariner RPM repos. They are enabled by default.
+    --RPM_container_URL       URL of Azure blob storage container to install RPMs from. Provide multiple URLs with comma (,) as delimiter.
+    --disable_mariner_repo    Disable default setting to use default Mariner package repos on packages.microsoft.com
 
     * unless provided, mariner_dir defaults to the current directory
                         (default: $mariner_dir)
@@ -77,7 +77,7 @@ while (( "$#")); do
     -c ) cleanup; exit 0 ;;
     --mariner_dir ) mariner_dir="$(realpath $2)"; shift 2 ;;
     --RPM_repo_file ) enable_custom_repofile=true; cp $(realpath $2) $custom_repo_file; shift 2 ;;
-    --RPM_storage ) enable_custom_repo_storage=true; RPM_storage="$2"; shift 2 ;;
+    --RPM_container_URL ) enable_custom_repo_storage=true; RPM_container_URL="$2"; shift 2 ;;
     --disable_mariner_repo ) disable_mariner_repo=true; shift ;;
     --help ) help; exit 0 ;;
     ?* ) echo -e "ERROR: INVALID OPTION.\n\n"; help; exit 1 ;;

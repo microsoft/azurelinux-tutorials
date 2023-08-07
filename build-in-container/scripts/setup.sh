@@ -69,19 +69,22 @@ setup_custom_repofile() {
 
 # enable custom blob storage to install RPMs from
 setup_custom_repo_storage() {
-    echo "------------ Setting up custom repo storage ------------"
+    echo "------------ Downloading RPMs from custom RPM blob storage container ------------"
     #install azcopy
     wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux  || { echo "ERROR: Could not install azcopy"; exit 1; }
     tar -xf azcopy_v10.tar.gz --strip-components=1
     mv azcopy /bin/
     rm -rf azcopy* NOTICE.txt
 
-    #download all RPMs from Azure $RPM_storage to $MARINER_BASE_DIR/build/rpm_cache/cache
-    azcopy copy $RPM_storage/* $MARINER_BASE_DIR/build/rpm_cache/cache
+    for i in $(echo $RPM_container_URL | tr "," "\n")
+    do
+        #download all RPMs from Azure $RPM_container_URL to $MARINER_BASE_DIR/build/rpm_cache/cache
+        azcopy copy $RPM_container_URL/* $MARINER_BASE_DIR/build/rpm_cache/cache
+    done
 }
 
-# remove default Mariner RPM repos
-remove_mariner_repo() {
+# disable default Mariner RPM repos
+disable_mariner_default_repos() {
     echo "------------ Removing Mariner default repos ------------"
     DISABLE_DEFAULT_REPOS="y"
     export DISABLE_DEFAULT_REPOS
@@ -161,7 +164,7 @@ if [[ "${enable_custom_repofile}" == "true" ]]; then setup_custom_repofile; fi
 if [[ "${enable_custom_repo_storage}" == "true" ]]; then setup_custom_repo_storage; fi
 
 # disable Mariner repos if true
-if [[ "${disable_mariner_repo}" == "true" ]]; then remove_mariner_repo; fi
+if [[ "${disable_mariner_repo}" == "true" ]]; then disable_mariner_default_repos; fi
 
 # check if $SPECS_DIR is empty
 check_specs

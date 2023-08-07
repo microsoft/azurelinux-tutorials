@@ -27,9 +27,9 @@ while (( "$#" )); do
             exit 1
         fi
         ;;
-        --RPM_storage)
+        --RPM_container_URL)
         if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
-            RPM_storage=$2
+            RPM_container_URL=$2
             shift 2
         else
             echo "Error: Argument for $1 is missing" >&2
