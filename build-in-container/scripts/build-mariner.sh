@@ -18,6 +18,51 @@ while (( "$#" )); do
             exit 1
         fi
         ;;
+        --RPM_repo_file)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            RPM_repo_file=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --RPM_storage)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            RPM_storage=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --enable_custom_repofile)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            enable_custom_repofile=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --enable_custom_repo_storage)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            enable_custom_repo_storage=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
+        --disable_mariner_repo)
+        if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            disable_mariner_repo=$2
+            shift 2
+        else
+            echo "Error: Argument for $1 is missing" >&2
+            exit 1
+        fi
+        ;;
         -*|--*=) # unsupported flags
         echo "Error: Unsupported flag $1" >&2
         exit 1

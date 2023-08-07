@@ -14,6 +14,9 @@ The mariner-docker-builder.sh script presents these options <br />
 
 Optional arguments <br />
   --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory <br />
+  --RPM_repo_file           Path to a custom repo file. Please see [here](./README.md#sample-custom-repo) for sample custom repo file  <br />
+  --RPM_storage             URL of Azure blob storage to install RPMs from <br />
+  --disable_mariner_repo    Disable default Mariner RPM repos. They are enabled by default <br />
 </pre>
 
 - 'tool_dir' refers to the directory of the build-in-container tool <br/>
@@ -39,7 +42,7 @@ ls out/RPMS/x86_64/
 make build-packages SRPM_PACK_LIST="hello_world_demo" -j$(nproc)
 
 # Provide optional arguments
-./CBL-MarinerTutorials/mariner-docker-builder.sh -i --mariner_dir /path/to/CBL-Mariner/
+./CBL-MarinerTutorials/mariner-docker-builder.sh -i --mariner_dir /path/to/CBL-Mariner/  --RPM_storage https://az-storage-account.blob.core.windows.net/az-container/ --RPM_repo_file path/to/custom-repo-file --disable_mariner_repo
 ```
 
 ## Details on what goes on inside the container:
@@ -69,3 +72,14 @@ In the _interactive_ mode, it sets up the Mariner build system inside the contai
 
 ## Sample make commands:
 `make build-packages -j$(nproc)` would build specs under SPECS/ and populate out/ with the built SRPMs and RPMs
+
+## Sample custom repo:
+``` bash
+[custom-repo]
+name=Custom Repo
+baseurl=https://<IP Address>
+enabled=1
+gpgcheck=0
+skip_if_unavailable=False
+sslverify=0
+```

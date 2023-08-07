@@ -59,6 +59,34 @@ check_specs() {
     fi
 }
 
+# enable custom-repo.repo to install RPMs from
+setup_custom_repofile() {
+    echo "------------ Setting up custom repofile ------------"
+    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+    cat $RPM_repo_file >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+}
+
+# enable custom blob storage to install RPMs from
+setup_custom_repo_storage() {
+    echo "------------ Setting up custom repo storage ------------"
+    #install azcopy
+    wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux  || { echo "ERROR: Could not install azcopy"; exit 1; }
+    tar -xf azcopy_v10.tar.gz --strip-components=1
+    mv azcopy /bin/
+    rm -rf azcopy* NOTICE.txt
+
+    #download all RPMs from Azure $RPM_storage to $MARINER_BASE_DIR/build/rpm_cache/cache
+    azcopy copy $RPM_storage/* $MARINER_BASE_DIR/build/rpm_cache/cache
+}
+
+# remove default Mariner RPM repos
+remove_mariner_repo() {
+    echo "------------ Removing Mariner default repos ------------"
+    DISABLE_DEFAULT_REPOS="y"
+    export DISABLE_DEFAULT_REPOS
+}
+
 # create chroot lock
 pushd $CHROOT_DIR
 touch chroot-pool.lock
@@ -125,6 +153,15 @@ go version
 pushd $MARINER_BASE_DIR
 download_mariner_toolkit
 popd
+
+# enable custom repo from file if true
+if [[ "${enable_custom_repofile}" == "true" ]]; then setup_custom_repofile; fi
+
+# enable custom repo from storage if true
+if [[ "${enable_custom_repo_storage}" == "true" ]]; then setup_custom_repo_storage; fi
+
+# disable Mariner repos if true
+if [[ "${disable_mariner_repo}" == "true" ]]; then remove_mariner_repo; fi
 
 # check if $SPECS_DIR is empty
 check_specs
