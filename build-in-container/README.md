@@ -14,6 +14,9 @@ The mariner-docker-builder.sh script presents these options <br />
 
 Optional arguments <br />
   --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory <br />
+  --RPM_repo_file           Path to a custom repo file. Please see [here](./README.md#sample-custom-repo) for sample custom repo file  <br />
+  --RPM_container_URL       URL of Azure blob storage container to install RPMs from. Provide multiple URLs with comma (,) as delimiter <br />
+  --disable_mariner_repo    disable default setting to use default Mariner package repos on packages.microsoft.com <br />
 </pre>
 
 - 'tool_dir' refers to the directory of the build-in-container tool <br/>
@@ -38,8 +41,19 @@ ls out/RPMS/x86_64/
 #  Run the tools manually
 make build-packages SRPM_PACK_LIST="hello_world_demo" -j$(nproc)
 
-# Provide optional arguments
+# Use optional arguments
+## Provide path to Mariner directory. If this option is not used, the current directory is treated as Mariner directory
 ./CBL-MarinerTutorials/mariner-docker-builder.sh -i --mariner_dir /path/to/CBL-Mariner/
+
+## Install RPMs from a custom repo, by providing path to .repo file
+./CBL-MarinerTutorials/mariner-docker-builder.sh -i --RPM_repo_file path/to/custom-repo-file
+
+## Install RPMs from an Azure blob-storage container storing custom RPMs, by providing URL of the container. Provide multiple URLs with comma (,) as delimiter
+./CBL-MarinerTutorials/mariner-docker-builder.sh -i --RPM_container_URL https://az-storage-account.blob.core.windows.net/az-container/
+
+## Disable default setting to use default Mariner package repos on packages.microsoft.com
+./CBL-MarinerTutorials/mariner-docker-builder.sh -i --disable_mariner_repo
+
 ```
 
 ## Details on what goes on inside the container:
@@ -69,3 +83,14 @@ In the _interactive_ mode, it sets up the Mariner build system inside the contai
 
 ## Sample make commands:
 `make build-packages -j$(nproc)` would build specs under SPECS/ and populate out/ with the built SRPMs and RPMs
+
+## Sample custom repo:
+``` bash
+[custom-repo]
+name=Custom Repo
+baseurl=https://<IP Address>
+enabled=1
+gpgcheck=0
+skip_if_unavailable=False
+sslverify=0
+```

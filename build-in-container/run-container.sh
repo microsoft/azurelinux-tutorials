@@ -124,6 +124,9 @@ mount_pts="
     -v /sys:/sys:ro
     "
 
-container_args="--container_type $container_type"
+container_args="--disable_mariner_repo $disable_mariner_repo --enable_custom_repofile $enable_custom_repofile --enable_custom_repo_storage $enable_custom_repo_storage --container_type $container_type"
+if [[ "${enable_custom_repofile}" == "true" ]]; then container_args+=" --RPM_repo_file /mariner/scripts/custom-repo.repo"; fi
+if [[ "${enable_custom_repo_storage}" == "true" ]]; then container_args+=" --RPM_container_URL $RPM_container_URL"; fi
+
 if [ "$container_type" == "build" ]; then run_build_container; return; fi
 if [ "$container_type" == "interactive" ]; then run_interactive_container; return; fi
