@@ -21,7 +21,7 @@ help() {
 
     Optional arguments:
     --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory
-    --RPM_repo_file           Path to a custom repo file.
+    --RPM_repo_file           Path to a custom repo file (must end in .repo). Provide multiple filepaths with comma (,) as delimiter.
     --RPM_container_URL       URL of Azure blob storage container to install RPMs from. Provide multiple URLs with comma (,) as delimiter.
     --disable_mariner_repo    Disable default setting to use default Mariner package repos on packages.microsoft.com
 
@@ -49,14 +49,28 @@ run_container() {
 cleanup() {
     echo "Cleaning up mariner artifacts at $mariner_dir ....."
     echo "This requires running as root ...."
-    sudo rm -rf ${mariner_dir}/build ${mariner_dir}/ccache ${mariner_dir}/logs ${mariner_dir}/out ${mariner_dir}/toolkit
+    #check if running as root, exit if not
+    if [ "$EUID" -ne 0 ]; then
+        echo -e "\033[31mExiting. Please run as root\033[0m "
+    exit
+    fi
+    rm -rf ${mariner_dir}/build ${mariner_dir}/ccache ${mariner_dir}/logs ${mariner_dir}/out ${mariner_dir}/toolkit
     # remove Mariner docker containers
     docker rm -f $(docker ps -aq --filter ancestor="mcr.microsoft.com/mariner-container-build:2.0")
     # remove Mariner docker images
     docker rmi -f $(docker images -aq --filter reference="mcr.microsoft.com/mariner-container-build")
 }
 
-tool_dir=$( realpath "$(dirname "$0")" )
+create_custom_repo_file() {
+    echo -e "\n" > $custom_repo_file
+    for repo_file in $(echo $1 | tr "," "\n")
+    do
+        cat $(realpath $repo_file) >> $custom_repo_file
+        echo -e "\n" >> $custom_repo_file
+    done
+}
+
+tool_dir=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 mariner_dir=$(realpath "$(pwd)")
 disable_mariner_repo=false
 enable_custom_repofile=false
@@ -76,7 +90,7 @@ while (( "$#")); do
     -i ) container_type="interactive"; shift ;;
     -c ) cleanup; exit 0 ;;
     --mariner_dir ) mariner_dir="$(realpath $2)"; shift 2 ;;
-    --RPM_repo_file ) enable_custom_repofile=true; cp $(realpath $2) $custom_repo_file; shift 2 ;;
+    --RPM_repo_file ) enable_custom_repofile=true; $(create_custom_repo_file "$2"); shift 2 ;;
     --RPM_container_URL ) enable_custom_repo_storage=true; RPM_container_URL="$2"; shift 2 ;;
     --disable_mariner_repo ) disable_mariner_repo=true; shift ;;
     --help ) help; exit 0 ;;
