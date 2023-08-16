@@ -75,8 +75,6 @@ setup_custom_repofile() {
 setup_custom_repo_storage() {
     echo "------------ Downloading RPMs from custom RPM blob storage container ------------"
     # install azcopy
-    # https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10#download-azcopy suggests taking dependency on
-    # specific version so future updates to azcopy don't break our tool
     wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux  || { echo "ERROR: Could not install azcopy"; exit 1; }
     tar -xf azcopy_v10.tar.gz --strip-components=1
     mv azcopy /bin/
