@@ -62,15 +62,19 @@ check_specs() {
 # enable custom-repo.repo to install RPMs from
 setup_custom_repofile() {
     echo "------------ Setting up custom repofile ------------"
-    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
-    cat $RPM_repo_file >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
-    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+    # append $RPM_repo_file to $REPO_LIST so it can be used as an upstream repo for package building
+    REPO_LIST+=$RPM_repo_file
+    export REPO_LIST
+
+    # append baseurl(s) from $RPM_repo_file to $PACKAGE_LIST_URL to use them for downloading toolchain RPMs
+    PACKAGE_URL_LIST+=$(cat $RPM_repo_file | grep baseurl | cut -d '=' -f 2)
+    export PACKAGE_URL_LIST
 }
 
 # enable custom blob storage to install RPMs from
 setup_custom_repo_storage() {
     echo "------------ Downloading RPMs from custom RPM blob storage container ------------"
-    #install azcopy
+    # install azcopy
     # https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10#download-azcopy suggests taking dependency on
     # specific version so future updates to azcopy don't break our tool
     wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux  || { echo "ERROR: Could not install azcopy"; exit 1; }
@@ -80,8 +84,11 @@ setup_custom_repo_storage() {
 
     for container_URL in $(echo $RPM_container_URL | tr "," "\n")
     do
-        #download all RPMs from Azure $RPM_container_URL to $MARINER_BASE_DIR/build/rpm_cache/cache
+        #download all RPMs from $container_URL to use in package building
         azcopy copy $container_URL/* $MARINER_BASE_DIR/build/rpm_cache/cache
+        #download all RPMs from $container_URL to use for toolchain
+        azcopy copy $container_URL/* $MARINER_BASE_DIR/build/toolchain_rpms/noarch
+        azcopy copy $container_URL/* $MARINER_BASE_DIR/build/toolchain_rpms/x86_64
     done
 }
 
