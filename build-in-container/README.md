@@ -14,7 +14,7 @@ The mariner-docker-builder.sh script presents these options <br />
 
 Optional arguments <br />
   --mariner_dir             directory to use for Mariner artifacts (SPECS, toolkit, ..). Default is the current directory <br />
-  --RPM_repo_file           Path to a custom repo file (must end in .repo). Please see [here](./README.md#sample-custom-repo) for sample custom repo file  <br />
+  --RPM_repo_file           Path to custom repo file(s) (must end in .repo). Please see [here](./README.md#sample-custom-repo) for sample custom repo file. Provide multiple files with comma (,) as delimiter  <br />
   --RPM_container_URL       URL of Azure blob storage container to install RPMs from. Provide multiple URLs with comma (,) as delimiter <br />
   --disable_mariner_repo    disable default setting to use default Mariner package repos on packages.microsoft.com <br />
 </pre>

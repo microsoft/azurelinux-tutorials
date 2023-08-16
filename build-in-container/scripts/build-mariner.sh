@@ -74,9 +74,7 @@ source /mariner/scripts/setup.sh
 
 if [[ "${container_type}" == "build" ]]; then
     # exit if SPECS/ is empty
-    if [ ! "$(ls -A $SPECS_DIR)" ]; then
-        exit
-    fi
+    if [ ! "$(ls -A $SPECS_DIR)" ]; then exit; fi
     source /mariner/scripts/build.sh
 else
     /bin/bash
