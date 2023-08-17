@@ -56,12 +56,31 @@ cleanup() {
     docker rmi -f $(docker images -aq --filter reference="mcr.microsoft.com/mariner-container-build")
 }
 
-create_custom_repo_file() {
-    echo -e "\n" > $custom_repo_file
-    for repo_file in $(echo $1 | tr "," "\n")
+copy_custom_repo_file() {
+    RPM_repo_file=
+    mkdir -p $tool_dir/scripts/custom_repos
+    for repo_file in $(echo $1 | tr " " "\n")
     do
-        cat $(realpath $repo_file) >> $custom_repo_file
-        echo -e "\n" >> $custom_repo_file
+        repo_file_name=${repo_file##*/} # remove prefix ending in '/'
+        cp $(realpath $repo_file) $tool_dir/scripts/custom_repos/$repo_file_name # copy repo_file inside container
+        RPM_repo_file+="/mariner/scripts/custom_repos/$repo_file_name,"
+    done
+}
+
+validate_custom_repo_file() {
+    for repo_file in $(echo $1 | tr " " "\n")
+    do
+        # exit if $repo_file doesn't exist
+        echo "repo_file is $repo_file"
+        if [[ ! -f $(realpath $repo_file) ]]; then
+            echo -e "-------- \033[31m ALERT: $repo_file doesn't exist. Exiting\033[0m --------"
+            exit
+        fi
+        # exit if $repo_file doesn't end in '.repo'
+        if [[ $repo_file != *.repo ]]; then
+            echo -e "-------- \033[31m ALERT:$repo_file name must end in '.repo'. Exiting\033[0m --------"
+            exit
+        fi
     done
 }
 
@@ -70,7 +89,6 @@ mariner_dir=$(realpath "$(pwd)")
 disable_mariner_repo=false
 enable_custom_repofile=false
 enable_custom_repo_storage=false
-custom_repo_file=$tool_dir/scripts/custom-repo.repo
 
 if [ "$#" -eq 0 ]
 then
@@ -85,7 +103,7 @@ while (( "$#")); do
     -i ) container_type="interactive"; shift ;;
     -c ) cleanup; exit 0 ;;
     --mariner_dir ) mariner_dir="$(realpath $2)"; shift 2 ;;
-    --RPM_repo_file ) enable_custom_repofile=true; $(create_custom_repo_file "$2"); shift 2 ;;
+    --RPM_repo_file ) enable_custom_repofile=true; validate_custom_repo_file "$2"; copy_custom_repo_file "$2"; shift 2 ;;
     --RPM_container_URL ) enable_custom_repo_storage=true; RPM_container_URL="$2"; shift 2 ;;
     --disable_mariner_repo ) disable_mariner_repo=true; shift ;;
     --help ) help; exit 0 ;;

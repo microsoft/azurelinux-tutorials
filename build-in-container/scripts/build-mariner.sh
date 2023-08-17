@@ -67,6 +67,10 @@ while (( "$#" )); do
         echo "Error: Unsupported flag $1" >&2
         exit 1
         ;;
+        *) # unsupported argument
+        echo "Error: Unsupported argument $1" >&2
+        exit 1
+        ;;
     esac
 done
 

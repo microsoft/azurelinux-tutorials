@@ -62,13 +62,17 @@ check_specs() {
 # enable custom-repo.repo to install RPMs from
 setup_custom_repofile() {
     echo "------------ Setting up custom repofile ------------"
-    # append $RPM_repo_file to $REPO_LIST so it can be used as an upstream repo for package building
-    REPO_LIST+=$RPM_repo_file
-    export REPO_LIST
-
-    # append baseurl(s) from $RPM_repo_file to $PACKAGE_LIST_URL to use them for downloading toolchain RPMs
-    PACKAGE_URL_LIST+=$(cat $RPM_repo_file | grep baseurl | cut -d '=' -f 2)
+    for repo_file in $(echo $RPM_repo_file | tr "," "\n")
+    do
+        # append baseurl from $repo_file to $PACKAGE_LIST_URL to use them for downloading toolchain RPMs
+        PACKAGE_URL_LIST+=" "
+        PACKAGE_URL_LIST+=$(cat $repo_file | grep baseurl | cut -d '=' -f 2)
+        # append $repo_file to $REPO_LIST so it can be used as an upstream repo for package building
+        REPO_LIST+=" "
+        REPO_LIST+=$repo_file
+    done
     export PACKAGE_URL_LIST
+    export REPO_LIST
 }
 
 # enable custom blob storage to install RPMs from
@@ -80,13 +84,15 @@ setup_custom_repo_storage() {
     mv azcopy /bin/
     rm -rf azcopy* NOTICE.txt
 
+    # get architecture of the machine this container is running on
+    arch=$(uname -m)
     for container_URL in $(echo $RPM_container_URL | tr "," "\n")
     do
         #download all RPMs from $container_URL to use in package building
         azcopy copy $container_URL/* $MARINER_BASE_DIR/build/rpm_cache/cache
         #download all RPMs from $container_URL to use for toolchain
         azcopy copy $container_URL/* $MARINER_BASE_DIR/build/toolchain_rpms/noarch
-        azcopy copy $container_URL/* $MARINER_BASE_DIR/build/toolchain_rpms/x86_64
+        azcopy copy $container_URL/* $MARINER_BASE_DIR/build/toolchain_rpms/$arch
     done
 }
 
