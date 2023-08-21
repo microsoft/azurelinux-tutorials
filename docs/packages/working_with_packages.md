@@ -307,6 +307,13 @@ For more information on editing SPEC files, refer to RPM's [Spec file format](ht
 
 Next, you can check your SPEC file to ensure that it conforms with RPM design rules. See the RPM packaging guide on [Checking RPMs](https://rpm-packaging-guide.github.io/#checking-rpms-for-sanity) for how to use the _rpmlint_ tool.
 
+If you don't have the build tooling in place, you will need to run the following step and build out the tooling required to build the packages.
+
+```
+$ cd CBL-MarinerTutorials/toolkit
+$ sudo make toolchain
+```
+
 At this point, we can use a shortcut to verify that the gnu chess package compiles by issuing the following command.  It will build any packages not already built, but not build the image itself.
 
 ```bash
