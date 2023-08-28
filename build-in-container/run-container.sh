@@ -17,7 +17,7 @@ run_build_container() {
         ${mount_pts} \
         --privileged \
         --cap-add SYS_ADMIN \
-        mcr.microsoft.com/mariner-container-build:2.0 /mariner/scripts/build-mariner.sh $container_args
+        mcr.microsoft.com/mariner-container-build:2.0 bash -c "/mariner/scripts/build-mariner.sh $container_args"
 }
 
 run_interactive_container() {
