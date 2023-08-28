@@ -62,7 +62,13 @@ check_specs() {
 # enable custom-repo.repo to install RPMs from
 setup_custom_repofile() {
     echo "------------ Setting up custom repofile ------------"
-    for repo_file in $(echo $RPM_repo_file | tr "," "\n")
+    
+    # get default value of PACKAGE_URL_LIST from Mariner Makefile
+    pushd $MARINER_BASE_DIR/toolkit 
+    PACKAGE_URL_LIST=$(make printvar-PACKAGE_URL_LIST 2>/dev/null)
+    popd
+
+    for repo_file in $RPM_repo_file
     do
         # append baseurl from $repo_file to $PACKAGE_LIST_URL to use them for downloading toolchain RPMs
         PACKAGE_URL_LIST+=" "
@@ -86,7 +92,7 @@ setup_custom_repo_storage() {
 
     # get architecture of the machine this container is running on
     arch=$(uname -m)
-    for container_URL in $(echo $RPM_container_URL | tr "," "\n")
+    for container_URL in $RPM_container_URL
     do
         #download all RPMs from $container_URL to use in package building
         azcopy copy $container_URL/* $MARINER_BASE_DIR/build/rpm_cache/cache

@@ -25,7 +25,7 @@ run_interactive_container() {
         ${mount_pts} \
         --privileged \
         --cap-add SYS_ADMIN \
-        -it mcr.microsoft.com/mariner-container-build:2.0 /mariner/scripts/build-mariner.sh $container_args
+        -it mcr.microsoft.com/mariner-container-build:2.0 bash -c "/mariner/scripts/build-mariner.sh $container_args"
 }
 
 mount_pts="
@@ -125,8 +125,8 @@ mount_pts="
     "
 
 container_args="--disable_mariner_repo $disable_mariner_repo --enable_custom_repofile $enable_custom_repofile --enable_custom_repo_storage $enable_custom_repo_storage --container_type $container_type"
-if [[ "${enable_custom_repofile}" == "true" ]]; then container_args+=" --RPM_repo_file $RPM_repo_file"; fi
-if [[ "${enable_custom_repo_storage}" == "true" ]]; then container_args+=" --RPM_container_URL $RPM_container_URL"; fi
+if [[ "${enable_custom_repofile}" == "true" ]]; then container_args+=" --RPM_repo_file '$RPM_repo_file' "; fi
+if [[ "${enable_custom_repo_storage}" == "true" ]]; then container_args+=" --RPM_container_URL '$RPM_container_URL' "; fi
 
 if [ "$container_type" == "build" ]; then run_build_container; return; fi
 if [ "$container_type" == "interactive" ]; then run_interactive_container; return; fi

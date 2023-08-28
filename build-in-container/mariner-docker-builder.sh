@@ -59,27 +59,26 @@ cleanup() {
 copy_custom_repo_file() {
     RPM_repo_file=
     mkdir -p $tool_dir/scripts/custom_repos
-    for repo_file in $(echo $1 | tr " " "\n")
+    for repo_file in $1
     do
         repo_file_name=${repo_file##*/} # remove prefix ending in '/'
         cp $(realpath $repo_file) $tool_dir/scripts/custom_repos/$repo_file_name # copy repo_file inside container
-        RPM_repo_file+="/mariner/scripts/custom_repos/$repo_file_name,"
+        RPM_repo_file+="/mariner/scripts/custom_repos/$repo_file_name "
     done
 }
 
 validate_custom_repo_file() {
-    for repo_file in $(echo $1 | tr " " "\n")
+    for repo_file in $1
     do
         # exit if $repo_file doesn't exist
-        echo "repo_file is $repo_file"
         if [[ ! -f $(realpath $repo_file) ]]; then
             echo -e "-------- \033[31m ALERT: $repo_file doesn't exist. Exiting\033[0m --------"
-            exit
+            exit 1
         fi
         # exit if $repo_file doesn't end in '.repo'
         if [[ $repo_file != *.repo ]]; then
             echo -e "-------- \033[31m ALERT:$repo_file name must end in '.repo'. Exiting\033[0m --------"
-            exit
+            exit 1
         fi
     done
 }
@@ -104,7 +103,7 @@ while (( "$#")); do
     -c ) cleanup; exit 0 ;;
     --mariner_dir ) mariner_dir="$(realpath $2)"; shift 2 ;;
     --RPM_repo_file ) enable_custom_repofile=true; validate_custom_repo_file "$2"; copy_custom_repo_file "$2"; shift 2 ;;
-    --RPM_container_URL ) enable_custom_repo_storage=true; RPM_container_URL=$(echo $2 | tr " " ","); shift 2 ;;
+    --RPM_container_URL ) enable_custom_repo_storage=true; RPM_container_URL="$2"; shift 2 ;;
     --disable_mariner_repo ) disable_mariner_repo=true; shift ;;
     --help ) help; exit 0 ;;
     ?* ) echo -e "ERROR: INVALID OPTION.\n\n"; help; exit 1 ;;
