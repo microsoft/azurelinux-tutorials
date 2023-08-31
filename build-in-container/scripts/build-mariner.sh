@@ -6,6 +6,16 @@
 set -e
 set -x
 
+# arguments:
+#
+# --container_type             : container type is either 'build' or 'interactive'
+# --RPM_repo_file              : space delimited path(s) to custom repo file(s)
+# --RPM_container_URL          : space delimited URL(s) to Azure container(s) with RPMs
+# --enable_custom_repofile     : enable installing RPMs from repo(s) listed in RPM_repo_file, if true
+# --enable_custom_repo_storage : enable installing RPMs from container(s) in RPM_container_URL, if true
+# --disable_mariner_repo       : disable installing RPMs from default Mariner PMC, if true
+#
+
 # parse args passed to container
 while (( "$#" )); do
     case "$1" in
