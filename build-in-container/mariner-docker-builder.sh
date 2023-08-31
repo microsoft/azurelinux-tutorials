@@ -88,7 +88,7 @@ validate_custom_repo_file() {
     done
 }
 
-tool_dir=$( realpath "$(dirname "$0")" )
+tool_dir=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 mariner_dir=$(realpath "$(pwd)")
 disable_mariner_repo=false
 enable_custom_repofile=false
