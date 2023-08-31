@@ -90,6 +90,7 @@ if [[ "${container_type}" == "build" ]]; then
     # exit if SPECS/ is empty && container_type is build as there is nothing to be done
     if [ ! "$(ls -A $SPECS_DIR)" ]; then
         echo -e "-------- \033[31m ALERT: Exiting the build container, found no specs to build \033[0m --------"
+        echo -e "-------- \033[31m Please add specs to \${mariner_dir}/SPECS\ \033[0m --------"
         exit 1
     fi
     source /mariner/scripts/build.sh
