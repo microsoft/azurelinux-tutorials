@@ -51,7 +51,7 @@ cleanup() {
     echo "This requires running as root ...."
     #check if running as root, exit if not
     if [ "$EUID" -ne 0 ]; then
-        echo -e "\033[31mExiting. Please run as root\033[0m "
+        echo -e "\033[31mExiting. Please run cleanup command as root\033[0m "
     exit 1
     fi
     rm -rf ${mariner_dir}/build ${mariner_dir}/ccache ${mariner_dir}/logs ${mariner_dir}/out ${mariner_dir}/toolkit
