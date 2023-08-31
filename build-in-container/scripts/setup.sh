@@ -62,24 +62,43 @@ check_specs() {
 # enable custom-repo.repo to install RPMs from
 setup_custom_repofile() {
     echo "------------ Setting up custom repofile ------------"
-    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
-    cat $RPM_repo_file >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
-    echo -e "\n" >> $MARINER_BASE_DIR/toolkit/resources/manifests/package/local.repo
+    
+    # get default value of PACKAGE_URL_LIST from Mariner Makefile
+    pushd $MARINER_BASE_DIR/toolkit 
+    PACKAGE_URL_LIST=$(make printvar-PACKAGE_URL_LIST 2>/dev/null)
+    popd
+
+    for repo_file in $RPM_repo_file
+    do
+        # append baseurl from $repo_file to $PACKAGE_LIST_URL to use them for downloading toolchain RPMs
+        PACKAGE_URL_LIST+=" "
+        PACKAGE_URL_LIST+=$(cat $repo_file | grep baseurl | cut -d '=' -f 2)
+        # append $repo_file to $REPO_LIST so it can be used as an upstream repo for package building
+        REPO_LIST+=" "
+        REPO_LIST+=$repo_file
+    done
+    export PACKAGE_URL_LIST
+    export REPO_LIST
 }
 
 # enable custom blob storage to install RPMs from
 setup_custom_repo_storage() {
     echo "------------ Downloading RPMs from custom RPM blob storage container ------------"
-    #install azcopy
+    # install azcopy
     wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux  || { echo "ERROR: Could not install azcopy"; exit 1; }
     tar -xf azcopy_v10.tar.gz --strip-components=1
     mv azcopy /bin/
     rm -rf azcopy* NOTICE.txt
 
-    for i in $(echo $RPM_container_URL | tr "," "\n")
+    # get architecture of the machine this container is running on
+    arch=$(uname -m)
+    for container_URL in $RPM_container_URL
     do
-        #download all RPMs from Azure $RPM_container_URL to $MARINER_BASE_DIR/build/rpm_cache/cache
-        azcopy copy $RPM_container_URL/* $MARINER_BASE_DIR/build/rpm_cache/cache
+        #download all RPMs from $container_URL to use in package building
+        azcopy copy $container_URL/* $MARINER_BASE_DIR/build/rpm_cache/cache
+        #download all RPMs from $container_URL to use for toolchain
+        azcopy copy $container_URL/* $MARINER_BASE_DIR/build/toolchain_rpms/noarch
+        azcopy copy $container_URL/* $MARINER_BASE_DIR/build/toolchain_rpms/$arch
     done
 }
 
