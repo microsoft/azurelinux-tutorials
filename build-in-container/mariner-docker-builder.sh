@@ -49,7 +49,12 @@ run_container() {
 cleanup() {
     echo "Cleaning up mariner artifacts at $mariner_dir ....."
     echo "This requires running as root ...."
-    sudo rm -rf ${mariner_dir}/build ${mariner_dir}/ccache ${mariner_dir}/logs ${mariner_dir}/out ${mariner_dir}/toolkit
+    #check if running as root, exit if not
+    if [ "$EUID" -ne 0 ]; then
+        echo -e "\033[31mExiting. Please run cleanup command as root\033[0m "
+        exit 1
+    fi
+    rm -rf ${mariner_dir}/build ${mariner_dir}/ccache ${mariner_dir}/logs ${mariner_dir}/out ${mariner_dir}/toolkit
     # remove Mariner docker containers
     docker rm -f $(docker ps -aq --filter ancestor="mcr.microsoft.com/mariner-container-build:2.0")
     # remove Mariner docker images
