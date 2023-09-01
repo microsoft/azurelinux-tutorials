@@ -55,7 +55,7 @@ download_mariner_toolkit() {
 # check if $SPECS_DIR is empty, and alert the user
 check_specs() {
     if [ ! "$(ls -A $SPECS_DIR)" ]; then
-        echo -e "-------- \033[31m ALERT: SPECS IS EMPTY. Nothing to build \033[0m --------"
+        echo -e "-------- \033[31m ALERT: $SPECS_DIR IS EMPTY. Nothing to build \033[0m --------"
     fi
 }
 
