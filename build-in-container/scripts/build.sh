@@ -93,6 +93,13 @@ publish_build_logs() {
 # main
 #
 
+# verify that we're running inside a container, exit if not
+if [[ ! -f /.dockerenv ]]; then
+    echo -e "\033[31mERROR: This script must be run in a container as it uses chroot. Please use mariner-docker-builder.sh\033[0m"
+    exit 1
+fi
+echo "------------ Verified that we are inside a docker container. Proceeding with build ------------"
+
 trap cleanup EXIT
 
 echo "-- BUILD_DIR                          -> $BUILD_DIR"
