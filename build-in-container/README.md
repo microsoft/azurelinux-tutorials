@@ -29,33 +29,32 @@ Optional arguments <br />
 
 ``` bash
 # Setup the container for 1st use
-cd /path/to/CBL-MarinerTutorials/
-./build-in-container/mariner-docker-builder.sh -t
+./CBL-MarinerTutorials/build-in-container/mariner-docker-builder.sh -t
 # Build `SPECS/**/*.spec` automatically
-./build-in-container/mariner-docker-builder.sh -b
-ls out/RPMS/x86_64/
+./CBL-MarinerTutorials/build-in-container/mariner-docker-builder.sh -b
+ls CBL-MarinerTutorials/build-in-container/out/RPMS/x86_64/
 # hello_world_demo-1.0.0-2.cm2.x86_64.rpm  hello_world_demo-debuginfo-1.0.0-2.cm2.x86_64.rpm
 
 # Invoke the toolkit directly
-./CBL-MarinerTutorials/mariner-docker-builder.sh -i
+./CBL-MarinerTutorials/build-in-container/mariner-docker-builder.sh -i
 #  Run the tools manually
 make build-packages SRPM_PACK_LIST="hello_world_demo" -j$(nproc)
 
 # Use optional arguments
 ## Provide path to Mariner directory. If this option is not used, the current directory is treated as Mariner directory
-./CBL-MarinerTutorials/mariner-docker-builder.sh -i --mariner_dir /path/to/CBL-Mariner/
+./CBL-MarinerTutorials/build-in-container/mariner-docker-builder.sh -i --mariner_dir /path/to/CBL-Mariner/
 
 ## Install RPMs from a custom repo, by providing path to .repo file
 ## Please ensure that custom repo file ends in '.repo' as per requirements of rpm/yum/tdnf/dnf
 ## Provide multiple paths with space (" ") as delimiter
-./CBL-MarinerTutorials/mariner-docker-builder.sh -i --RPM_repo_file "path/to/custom-repo-file.repo[ path/to/another-custom-repo-file.repo]"
+./CBL-MarinerTutorials/build-in-container/mariner-docker-builder.sh -i --RPM_repo_file "path/to/custom-repo-file.repo[ path/to/another-custom-repo-file.repo]"
 
 ## Install RPMs from an Azure blob-storage container storing custom RPMs, by providing URL of the container
 ## Provide multiple URLs with space (" ") as delimiter
-./CBL-MarinerTutorials/mariner-docker-builder.sh -i --RPM_container_URL "https://az-storage-account.blob.core.windows.net/az-container/[ https://az-storage-account.blob.core.windows.net/another-az-container/]"
+./CBL-MarinerTutorials/build-in-container/mariner-docker-builder.sh -i --RPM_container_URL "https://az-storage-account.blob.core.windows.net/az-container/[ https://az-storage-account.blob.core.windows.net/another-az-container/]"
 
 ## Disable default setting to use default Mariner package repos on packages.microsoft.com
-./CBL-MarinerTutorials/mariner-docker-builder.sh -i --disable_mariner_repo
+./CBL-MarinerTutorials/build-in-container/mariner-docker-builder.sh -i --disable_mariner_repo
 
 ```
 
