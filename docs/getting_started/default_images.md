@@ -51,7 +51,9 @@ The resulting images are placed in the `CBL-MarinerTutorials/out` folder:
 
 ### Build the cloud-init configuration image
 
-No user account is provisioned by default in most images.  To sign-in to these images, the sample meta-user-data.iso image must also be built and installed in your VM's CD drive.  The cloud-init service will detect the iso and provision a user account and password.
+No user account is provisioned by default in most images.  To sign-in to these images, the sample meta-user-data.iso image must also be built and installed in your VM's CD drive.  The cloud-init service will detect the iso and provision a user account and password or SSH Key.
+
+Before you can build the meta-user-data.iso image you will need to edit it for your use. From the toolkit folder, the file can be found in ./resources/assets/meta-user-data/user-data.  After applying your edits generate the meta-user-data.iso file as follows:
 
 ```Bash
 # Build the cloud-init configuration image
