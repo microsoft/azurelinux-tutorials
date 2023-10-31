@@ -51,7 +51,9 @@ The resulting images are placed in the `CBL-MarinerTutorials/out` folder:
 
 ### Build the cloud-init configuration image
 
-No user account is provisioned by default in most images.  To sign-in to these images, the sample meta-user-data.iso image must also be built and installed in your VM's CD drive.  The cloud-init service will detect the iso and provision a user account and password.
+No user account is provisioned by default.  To sign-in to these images at runtime, the sample meta-user-data.iso image must also be built and installed in your VM's CD drive.  The cloud-init service will detect the ISO and provision a user account and password or SSH Key.
+
+Before you can build the meta-user-data.iso image you will need to customize the user-data configuration file. From the toolkit folder, the file can be found in ./resources/assets/meta-user-data/user-data.  Using an editor set a username and password or SSH Key. After applying your edits generate the meta-user-data.iso file as follows:
 
 ```Bash
 # Build the cloud-init configuration image
@@ -61,4 +63,4 @@ sudo make meta-user-data
 
 ### Use Hyper-V to Boot Your Image
 
-See [Use Hyper-V to Boot Your Offline Image](boot.md#use-hyper-v-to-boot-your-offline-image) for instructions on using Hyper-V to boot the image and add a user profile with the `meta-user.iso` file.
+See [Use Hyper-V to Boot Your Offline Image](boot.md#use-hyper-v-to-boot-your-offline-image) for instructions on using Hyper-V to boot the image and add a user profile with the `meta-user-data.iso` file.
