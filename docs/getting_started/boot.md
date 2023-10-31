@@ -106,17 +106,4 @@ choose DVD Drive and press Add.
 
 1. Right click your VM and select _Connect..._.
 1. Select _Start_.
-1. Wait for CBL-Mariner to boot to the login prompt, then sign in with:
-   - Default Images using `meta-user.iso`:
-
-    ```bash
-    mariner_user
-    p@ssword
-    ```
-
-   - Custom Images Tutorial:
-
-    ```bash
-    root
-    p@ssw0rd
-    ```
+1. Wait for CBL-Mariner to boot to the login prompt, then sign in with the credentials you provisioned in the meta-user-data.iso file (username/password or username/sshkey pair)
