@@ -10,6 +10,8 @@ Distribution:   Mariner
 Source0:        http://dev.azure.com/mariner-org/mariner/_git/samples/%{name}-%{version}.tar.gz
 
 BuildRequires: gcc
+# add non toolchain pkg as build requires (for testing purpose)
+BuildRequires: words
 
 %description
 A simple hello-world application
