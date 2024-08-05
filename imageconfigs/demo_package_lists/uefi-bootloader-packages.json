@@ -1,6 +1,8 @@
 {
     "packages": [
         "grub2-efi-binary",
+        "grub2",
+        "ca-certificates",
         "shim-unsigned"
     ]
 }
