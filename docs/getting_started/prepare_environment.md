@@ -32,6 +32,19 @@ sudo usermod -aG docker $USER
 
 **You will need to log out and lock back in** for user changes to take effect.
 
+You can also setup this environment on CBL-Mariner
+```bash
+# Install required dependencies.
+sudo dnf -y install git make tar wget curl rpm golang genisoimage python bison gawk glibc-devel binutils kernel-headers
+```
+You may want to install rpmlint, in this case you first need to add the extended repo
+```bash
+sudo tdnf -y install mariner-repos-extended
+sudo dnf -y install rpmlint
+```
+
+At the moment docker does not support Mariner.
+
 ## Clone CBL-Mariner and Build the Toolkit
 
 To build the CBL-MarinerTutorials repository you will need the same toolkit and makefile from the CBL-Mariner repository.  So, first clone CBL-Mariner, and then checkout the stable release of interest (e.g. 2.0-stable), then build the toolkit.
