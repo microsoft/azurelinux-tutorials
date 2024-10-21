@@ -1,6 +1,6 @@
 # Tutorial: Prepare your Environment
 
-Before starting this tutorial, you will need to setup your development machine.  These instructions were tested on an x86_64 based machine running Ubuntu 22.04 and a machine running Azure Linux 2.0.
+Before starting this tutorial, you will need to setup your development machine.  These instructions were tested on an x86_64 based machine running Ubuntu 22.04 and a machine running Azure Linux.
 
 - [Install Tools](#install-tools)
 - [Clone AzureLinux](#clone-azure-linux-and-build-the-toolkit)
