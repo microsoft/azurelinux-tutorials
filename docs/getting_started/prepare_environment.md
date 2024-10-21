@@ -44,7 +44,7 @@ tree -L 2
 #    └── toolkit
 
 tree -L 1 ./azurelinux/out/
-./azurelinux/out/
+#./azurelinux/out/
 #├── images
 #├── RPMS
 #├── rpms_snapshot.json
