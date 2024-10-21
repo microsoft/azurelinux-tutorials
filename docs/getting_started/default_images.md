@@ -44,10 +44,10 @@ sudo make image -j20 CONFIG_FILE=./imageconfigs/core-efi.json
 sudo make image -j20 CONFIG_FILE=./imageconfigs/core-legacy.json
 ```
 
-The resulting images are placed in the `CBL-MarinerTutorials/out` folder:
+The resulting images are placed in the `azurelinux-tutorials/out` folder:
 
-> VHDX:       `CBL-MarinerTutorials/out/images/core-efi/`
-> VHD:        `CBL-MarinerTutorials/out/images/core-legacy/`
+> VHDX:       `azurelinux-tutorials/out/images/core-efi/`
+> VHD:        `azurelinux-tutorials/out/images/core-legacy/`
 
 ### Build the cloud-init configuration image
 
