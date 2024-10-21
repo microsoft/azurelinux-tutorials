@@ -9,21 +9,21 @@
 
 ## Tutorial: Build the Default ISO
 
-In this tutorial, we will create a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive.
+In this tutorial, we will create a bootable ISO image for installing Azure Linux to either a physical machine or virtual hard drive.
 
-The toolkit ships with several image configurations. The [image config files](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/formats/imageconfig.md) define how a CBL-Mariner image is laid out once built or installed.  Each image config will also include a list of packages to install.
+The toolkit ships with several image configurations. The [image config files](https://github.com/microsoft/azurelinux/blob/-/toolkit/docs/formats/imageconfig.md) define how an Azure Linux image is laid out once built or installed.  Each image config will also include a list of packages to install.
 
 ### Build ISO
 
-Build the default ISO by invoking the following build command from the _CBL-MarinerTutorials/toolkit_ folder.
+Build the default ISO by invoking the following build command from the _azurelinux-tutorials/toolkit_ folder.
 
 ```bash
-sudo make iso CONFIG_FILE=./imageconfigs/full.json
+sudo make iso -j20 CONFIG_FILE=./imageconfigs/full.json
 ```
 
-The first time `make image` is invoked, the toolkit downloads the necessary toolchain packages from the CBL-Mariner package repo at [packages.microsoft.com](packages.microsoft.com).  These toolchain packages are the standard set needed to build any local packages.  Once the toolchain is ready, `make` automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. `make` will then assemble the packages gathered from the package server to build the specified image.
+The first time `make image` is invoked, the toolkit downloads the necessary toolchain packages from the Azure Linux package repo at [packages.microsoft.com](packages.microsoft.com).  These toolchain packages are the standard set needed to build any local packages.  Once the toolchain is ready, `make` automatically proceeds to build any local packages.  In this case, the core repo's image configs do not use any of the packages located in the Tutorial repo so nothing will be built. `make` will then assemble the packages gathered from the package server to build the specified image.
 
-The resulting ISO is placed in the `CBL-MarinerTutorials/out/images/full` folder.
+The resulting ISO is placed in the `azurelinux-tutorials/out/images/full` folder.
 
 ### Use Hyper-V to Boot Your ISO Installer
 
@@ -39,9 +39,9 @@ The tools can also build offline images for direct use in VMs or as containers:
 
 ```bash
 # VHDX
-sudo make image CONFIG_FILE=./imageconfigs/core-efi.json 
+sudo make image -j20 CONFIG_FILE=./imageconfigs/core-efi.json 
 # VHD
-sudo make image CONFIG_FILE=./imageconfigs/core-legacy.json
+sudo make image -j20 CONFIG_FILE=./imageconfigs/core-legacy.json
 ```
 
 The resulting images are placed in the `CBL-MarinerTutorials/out` folder:
@@ -58,7 +58,7 @@ Before you can build the meta-user-data.iso image you will need to customize the
 ```Bash
 # Build the cloud-init configuration image
 # The output image is ../out/images/meta-user-data.iso
-sudo make meta-user-data
+sudo make -j20 meta-user-data
 ```
 
 ### Use Hyper-V to Boot Your Image
