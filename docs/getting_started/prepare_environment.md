@@ -17,11 +17,8 @@ To build the `Azurelinux-Tutorials` repository you will need the same toolkit an
 ### Example for Azurelinux 3.0 Toolkit
 
 ```bash
-git clone https://github.com/microsoft/azurelinux.git
-pushd azurelinux/toolkit
-git checkout 3.0-stable
-sudo make -j20 package-toolkit REBUILD_TOOLS=y
-popd
+git clone -b 3.0-stable https://github.com/microsoft/azurelinux.git
+sudo make -C azurelinux/toolkit -j20 package-toolkit REBUILD_TOOLS=y
 ```
 
 ## Clone Azure Linux Tutorials Repo and Extract the Toolkit
