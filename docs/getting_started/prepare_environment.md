@@ -21,16 +21,79 @@ git clone -b 3.0-stable https://github.com/microsoft/azurelinux.git
 sudo make -C azurelinux/toolkit -j20 package-toolkit REBUILD_TOOLS=y
 ```
 
+```bash
+# Your directories should look like this now
+tree -L 2
+#.
+#└── azurelinux
+#    ├── build
+#    ├── ccache
+#    ├── cgmanifest.json
+#    ├── CODE_OF_CONDUCT.md
+#    ├── codeql3000.yml
+#    ├── CONTRIBUTING.md
+#    ├── LICENSE
+#    ├── LICENSES-AND-NOTICES
+#    ├── out
+#    ├── README.md
+#    ├── SECURITY.md
+#    ├── SPECS
+#    ├── SPECS-EXTENDED
+#    ├── SPECS-SIGNED
+#    ├── SUPPORT.md
+#    └── toolkit
+
+tree -L 1 ./azurelinux/out/
+./azurelinux/out/
+#├── images
+#├── RPMS
+#├── rpms_snapshot.json
+#├── SRPMS
+#└── toolkit-3.0.20241021.1514-x86_64.tar.gz    <---- This is the toolkit that was built
+```
+
 ## Clone Azure Linux Tutorials Repo and Extract the Toolkit
 
-Now clone the `Azurelinux-Tutorials` repo and extract the toolkit to the Azurelinux-Tutorials repository.  
+Now clone the `Azurelinux-Tutorials` repo and extract the toolkit to the Azurelinux-Tutorials repository.
 
 ```bash
 git clone https://github.com/microsoft/azurelinux-tutorials.git
-pushd azurelinux-tutorials
-cp ../azurelinux/out/toolkit-*.tar.gz ./
-tar -xzvf toolkit-*.tar.gz
-cd ./toolkit
+tar -xzvf ./azurelinux/out/toolkit-*.tar.gz -C ./azurelinux-tutorials
+pushd ./azurelinux-tutorials/toolkit
+```
+
+```bash
+# The layout should now look like this
+tree -L 2
+#.
+#├── azurelinux
+#│   ├── build
+#│   ├── ccache
+#│   ├── cgmanifest.json
+#│   ├── CODE_OF_CONDUCT.md
+#│   ├── codeql3000.yml
+#│   ├── CONTRIBUTING.md
+#│   ├── LICENSE
+#│   ├── LICENSES-AND-NOTICES
+#│   ├── out
+#│   ├── README.md
+#│   ├── SECURITY.md
+#│   ├── SPECS
+#│   ├── SPECS-EXTENDED
+#│   ├── SPECS-SIGNED
+#│   ├── SUPPORT.md
+#│   └── toolkit
+#└── azurelinux-tutorials
+#    ├── build-in-container
+#    ├── CODE_OF_CONDUCT.md
+#    ├── docs
+#    ├── imageconfigs
+#    ├── imaging-from-packer
+#    ├── LICENSE
+#    ├── README.md
+#    ├── SECURITY.md
+#    ├── SPECS
+#    └── toolkit    <---- You are here
 ```
 
 The toolkit folder now contains the makefile, support scripts and the go tools compiled in [this section](#clone-azure-linux-and-build-the-toolkit). The toolkit will preserve the previously compiled tool binaries, however the toolkit is also able to rebuild them if desired. (Not recommended: set `REBUILD_TOOLS=y` to use locally rebuilt tool binaries during a build). For more information on our toolkit see [How The Build System Works](https://github.com/microsoft/azurelinux/blob/-/toolkit/docs/how_it_works/0_intro.md) in the Azure Linux repo.  
