@@ -2,28 +2,29 @@
 
 ## Tutorial: Modify the Image Kernel
 
-In some situations, you may want to build and test variations of the default CBL-Mariner kernel.  Because the `kernel` is also a package, the process is similar to adding a new package as discussed in the previous section.  
+In some situations, you may want to build and test variations of the default azurelinux kernel.  Because the `kernel` is also a package, the process is similar to adding a new package as discussed in the previous section.  
 
 ### Prep your Kernel SPEC Environment
-The following assumes you have already completed the [Prepare your Environment](../../docs/getting_started/prepare_environment.md) steps. To begin creating a custom kernel, copy the contents of the CBL-Mariner `kernel` spec folder into your clone of the `CBL-MarinerTutorials` repo.
+The following assumes you have already completed the [Prepare your Environment](../../docs/getting_started/prepare_environment.md) steps. To begin creating a custom kernel, copy the contents of the azurelinux `kernel` spec folder into your clone of the `azurelinux-tutorials` repo.
 
 ```bash
 #
-# The following assumes CBL-Mariner and CBL-MarinerTutorials were cloned under a folder named `git`
+# The following assumes azurelinux and azurelinux-tutorials were cloned under a folder named `git`
 #
-# Copy only the kernel building components to CBL-MarinerTutorials
-user@machine:~/git$ rsync -a  --exclude 'CVE*' CBL-Mariner/SPECS/kernel CBL-MarinerTutorials/SPECS/ 
+# Copy only the kernel building components to azurelinux-tutorials
+user@machine:~/git$ rsync -a  --exclude 'CVE*' azurelinux/SPECS/kernel azurelinux-tutorials/SPECS/ 
 ```
 
-Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). The tags on this repo follow the format `/rolling-lts/mariner<-2>/<kernel version>`. This translates to
-* For 1.0 kernels: `/rolling-lts/mariner/5.10.X.1`
+Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). The tags on this repo follow the format `/rolling-lts/mariner<-2 or -3>/<kernel version>`. This translates to
+* [deprecated] For 1.0 kernels: `/rolling-lts/mariner/5.10.X.1`
 * For 2.0 kernels: `/rolling-lts/mariner-2/5.15.X.1`
+* For 3.0 kernels: `/rolling-lts/mariner-3/6.6.X.1`
 
 You should choose the tag which matches the `Version` in the `kernel.spec` file.
 
 ```bash
 # Switch to the kernel folder
-$ cd CBL-MarinerTutorials/SPECS/kernel/ 
+$ cd azurelinux-tutorials/SPECS/kernel/ 
 
 # Determine the kernel version you are using (yours may vary)
 $ grep Version: kernel.spec
@@ -103,10 +104,10 @@ You should see build failures have occured.
 
 ```bash
 INFO[0068] Failed SRPMs:                                
-INFO[0068] --> kernel-5.15.102.1-100.cm2.src.rpm , error: exit status 2, for details see: /home/user/repos/CBL-MarinerDemo/build/logs/pkggen/rpmbuilding/kernel-5.15.102.1-100.cm2.src.rpm.log 
+INFO[0068] --> kernel-5.15.102.1-100.cm2.src.rpm , error: exit status 2, for details see: /home/user/repos/azurelinux-tutorials/build/logs/pkggen/rpmbuilding/kernel-5.15.102.1-100.cm2.src.rpm.log 
 ```
 
-Looking at the log `CBL-MarinerDemo/build/logs/pkggen/rpmbuilding/kernel-5.15.102.1-100.cm2.src.rpm.log`, you should see:
+Looking at the log `azurelinux-tutorials/build/logs/pkggen/rpmbuilding/kernel-5.15.102.1-100.cm2.src.rpm.log`, you should see:
 
 ```bash
 # For readability, time stamps removed
@@ -166,7 +167,7 @@ INFO[2416] Built SRPMs:
 INFO[2416] --> kernel-5.15.102.1-100.cm2.src.rpm   
 ```
 
-You can also see the built kernel RPM in `CBL-MarinerTutorials/out/RPMS/`. This RPM can be `scp`'d to a running image and installed via `sudo rpm -ihv kernel-5.15.102.1-100.cm2.rpm` .
+You can also see the built kernel RPM in `azurelinux-tutorials/out/RPMS/`. This RPM can be `scp`'d to a running image and installed via `sudo rpm -ihv kernel-5.15.102.1-100.cm2.rpm` .
 
 ### Build an Image with a Custom Kernel
 
@@ -174,7 +175,7 @@ You can also build an image with our new kernel. Note that even if you hadn't pr
 
 ```bash
 # Enter the toolkit
-cd CBL-MarinerTutorials/toolkit
+cd azurelinux-tutorials/toolkit
 
 # Clean our build environment
 sudo make clean
