@@ -36,7 +36,7 @@ The complete package set of an image is defined in the "PackageLists" array of e
 
 Each package list defines the set of packages to include in the final image. In this example, there are two, so the resulting demo VHD contains the union of the two package lists.  While it is possible to combine both package lists into a single JSON file, the separation adds clarity by grouping related content.  In this case, packages originating from packages.microsoft.com are in the core-packages set, and packages built from the local repository are specified in the demo-packages set.
 
-The first package list, core-packages.json, includes a superset-package called [core-packages-base-image](https://github.com/microsoft/CBL-Mariner/blob/-/SPECS/core-packages/core-packages.spec).  Core-packages-base-image is common to most derivatives as it contains the common set of packages used in Mariner Core.  This bundling is a convenience.  It is possible to list each package individually instead.  The second package, initramfs, is used for booting CBL-Mariner in either a virtualized or physical hardware environment.  Not every image needs it, so it's not included in the `core-packages-base-image` superset.  Instead, it's specified separately.
+The first package list, core-packages.json, includes a superset-package called [core-packages-base-image](https://github.com/microsoft/azurelinux/blob/-/SPECS/core-packages/core-packages.spec).  Core-packages-base-image is common to most derivatives as it contains the common set of packages used in Azure Linux Core.  This bundling is a convenience.  It is possible to list each package individually instead.  The second package, initramfs, is used for booting Azure Linux in either a virtualized or physical hardware environment.  Not every image needs it, so it's not included in the `core-packages-base-image` superset.  Instead, it's specified separately.
 
    ```json
     {
@@ -47,7 +47,7 @@ The first package list, core-packages.json, includes a superset-package called [
     }
    ```
 
-The second package list, demo-packages.json, contains the Hello World and os-subrelease packages that are unique to the CBL-MarinerTutorials repository:
+The second package list, demo-packages.json, contains the Hello World and os-subrelease packages that are unique to the azurelinux-tutorials repository:
 
    ```json
    {
@@ -64,7 +64,7 @@ In the previous section we described how the package lists are defined.  In this
 
 ### Add Latest Pre-Built Package
 
-The Zip package is not included in your demo image by default.  Because Zip is already released for CBL-Mariner lets add it to your demo image.  Open the [core-packages.json](./imageconfigs/demo_package_lists/core-packages.json) file with your favorite editor,  Add zip to the packages array before initramfs.  While it's possible to add zip after initramfs, it is currently recommended to insert new packages before initramfs due to a performance quirk in the build system.
+The Zip package is not included in your demo image by default.  Because Zip is already released for Azure Linux lets add it to your demo image.  Open the [core-packages.json](./imageconfigs/demo_package_lists/core-packages.json) file with your favorite editor,  Add zip to the packages array before initramfs.  While it's possible to add zip after initramfs, it is currently recommended to insert new packages before initramfs due to a performance quirk in the build system.
 
 ```json
  {
@@ -78,7 +78,7 @@ The Zip package is not included in your demo image by default.  Because Zip is a
 Save the file.  For this tutorial we will continue building the VHD image, but you may rebuild the image of your choice because the ISO, VHD and VHDX all share the same core package list file.
 
 ```bash
-cd CBL-MarinerTutorials/toolkit
+cd azurelinux-tutorials/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 Boot the image and verify that the latest version of zip is now provided:
@@ -98,13 +98,13 @@ Boot the image and verify that the latest version of zip is now provided:
 
 By default the _latest_ version of any package specified in a package list will be included in your image.  It is important to note that each time you rebuild your image it may differ from your previous build as the packages on packages.microsoft.com are periodically updated to resolve security vulnerabilities. This behavior may or may not be desired, but you can always be assured that the most recent build is also the most up to date with respect to CVE's. 
 
-If you want to guarantee that your next build will be reproduced the same way at a later time, CBL-Mariner provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _CBL-MarinerTutorials/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#reproducing-a-build) in the CBL-Mariner git repository for advanced details.
+If you want to guarantee that your next build will be reproduced the same way at a later time, Azure Linux provides some support for this. Each time an image is built, a summary file is generated that lists the explicit packages included in the build.  The default location of this file is at: _Azure LinuxTutorials/build/pkg_artifacts/graph_external_deps.json_.  To capture your build's explicit contents and reproduce the build later, it's important to save this file for later use.  See [Reproducing a Build](https://github.com/microsoft/Azure Linux/blob/-/toolkit/docs/building/building.md#reproducing-a-build) in the Azure Linux git repository for advanced details.
 
 The next section also describes a technique for pinning specific package versions.
 
 ### Add Specific Pre-Built Package Version
 
-Occasionally you may need to install a very specific version of a package in your image at build time, rather than the latest version. CBL-Mariner supports this capability.
+Occasionally you may need to install a very specific version of a package in your image at build time, rather than the latest version. Azure Linux supports this capability.
 
 This time let's add `unzip` version 6.0-19, and the latest dash release for `etcd` version 3.5.1 to your demo image.  You do this in the following way:
 
@@ -120,12 +120,12 @@ This time let's add `unzip` version 6.0-19, and the latest dash release for `etc
 }
 ```
 
-**NOTE**: Release fields always have the `.[mariner_release]` suffix (`.cm2` in our case). Specifying only the version without the release number will always get you the latest release for the chosen version.
+**NOTE**: Release fields always have the `.[azure_linux_release]` suffix (`.cm2` in our case). Specifying only the version without the release number will always get you the latest release for the chosen version.
 
 Save the file and rebuild your image.
 
 ```bash
-cd CBL-MarinerTutorials/toolkit
+cd azurelinux-tutorials/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 
@@ -159,11 +159,11 @@ Similarly, `etcd` is version 3.5.1, latest release.
 
 ### Add Packages from Other RPM Repositories
 
-It is possible to build your images and packages using pre-built RPMs from repositories other than the default CBL-Mariner ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
+It is possible to build your images and packages using pre-built RPMs from repositories other than the default Azure Linux ones. In order to inform the toolkit to access them during the build, you have to make use of the [REPO_LIST](https://github.com/microsoft/Azure Linux/blob/-/toolkit/docs/building/building.md#repo_list) argument where you specify .repo files pointing to the additional repositories.
 
 Example:
 
-Let's say your CBL-Mariner 2.0 image requires the `indent` package.  This package is available inside the [CBL-Mariner Extended Repository](http://packages.microsoft.com/cbl-mariner/2.0/prod/extended/x86_64/) and the corresponding .repo file pointing to Mariner's official RPM repository hosting its packages is available in the toolkit under `toolkit/repos/mariner-extended.repo`. With that you'll be able to build your image by first adding `indent` to your package list:
+Let's say your Azure Linux 2.0 image requires the `indent` package.  This package is available inside the [Azure Linux Extended Repository](http://packages.microsoft.com/cbl-mariner/2.0/prod/extended/x86_64/) and the corresponding .repo file pointing to Azure Linux's official RPM repository hosting its packages is available in the toolkit under `toolkit/repos/azure-linux-extended.repo`. With that you'll be able to build your image by first adding `indent` to your package list:
 
 ```json
  {
@@ -179,22 +179,22 @@ Let's say your CBL-Mariner 2.0 image requires the `indent` package.  This packag
 and then by running the following command:
 
 ```bash
-sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/mariner-extended.repo
+sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json REPO_LIST=repos/azure-linux-extended.repo
 ```
 
-CBL-Mariner's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#repo_list) for more details.
+Azure Linux's toolkit provides other .repo files under `toolkit/repos`. Refer to the [REPO_LIST documentation](https://github.com/microsoft/Azure Linux/blob/-/toolkit/docs/building/building.md#repo_list) for more details.
 
-> **NOTE:** The core repo contains these repo files in [SPECS/mariner-repos/](https://github.com/microsoft/CBL-Mariner/blob/-/SPECS/mariner-repos/).
+> **NOTE:** The core repo contains these repo files in [SPECS/mariner-repos/](https://github.com/microsoft/Azure Linux/blob/-/SPECS/mariner-repos/).
 
 ## Tutorial: Customize your Image with Unsupported Packages
 
-In the previous tutorial we described how pre-existing packages can be added to your demo image.  In this tutorial we will walk through the process of adding a new package that Mariner does not formally support through the addition of a SPEC file.  
+In the previous tutorial we described how pre-existing packages can be added to your demo image.  In this tutorial we will walk through the process of adding a new package that Azure Linux does not formally support through the addition of a SPEC file.  
 
 Packages are defined by RPM SPEC files. At its core, a SPEC file contains the instructions for building and installing a package.  Most SPEC files contain a pointer to one or more compressed source files, pointers to patch files, and the name, version and licensing information associated with the package.  SPEC files also contain references to build and runtime dependencies.
 
 The goal of this tutorial is to show the process for adding a SPEC file to the tutorial repo, not to delve into the details of creating a SPEC file.  For detailed information on SPEC file syntax and features refer to the [RPM Packaging Guide](https://rpm-packaging-guide.github.io/), the [RPM Reference Manual](https://rpm-software-management.github.io/rpm/manual/), or search the web as needed.
 
-To add a new package to the CBL-MarinerTutorials repo you must take the following actions:
+To add a new package to the Azure LinuxTutorials repo you must take the following actions:
 
 1. [Acquire the compressed source file (the tarball) you want to build](#acquire-the-compressed-source-file)
 1. [Create a signature meta-data file (a SHA-256 hash of the tarball)](#create-a-signature-meta-data-file)
@@ -202,18 +202,18 @@ To add a new package to the CBL-MarinerTutorials repo you must take the followin
 1. [Check your .spec file to ensure it is correct](#check-your-spec-file)
 1. [Add your package to the .json file](#add-your-package)
 
-For this tutorial we will add the "gnuchess" package to your CBL-MarinerTutorials image.
+For this tutorial we will add the "gnuchess" package to your Azure LinuxTutorials image.
 
 ### Acquire the Compressed Source File
 
-First, download the source code for gnuchess 6.2.7 [here](https://ftp.gnu.org/gnu/chess/gnuchess-6.2.7.tar.gz).  And save it in a new CBL-MarinerTutorials/SPECS/gnuchess folder.  Also, download and save the [game data file](http://ftp.gnu.org/pub/gnu/chess/book_1.01.pgn.gz) to the gnuchess folder.
+First, download the source code for gnuchess 6.2.7 [here](https://ftp.gnu.org/gnu/chess/gnuchess-6.2.7.tar.gz).  And save it in a new Azure LinuxTutorials/SPECS/gnuchess folder.  Also, download and save the [game data file](http://ftp.gnu.org/pub/gnu/chess/book_1.01.pgn.gz) to the gnuchess folder.
 
 Next, create the SPEC file for gnuchess.  This may be created from scratch, but in many cases it's easiest to leverage an open source version as a template.  Since the focus of this tutorial is to demonstrate how to quickly add a new package, we will obtain an existing SPEC file [Fedora source rpm for gnuchess](https://src.fedoraproject.org/rpms/gnuchess/blob/master/f/gnuchess.spec).
 
 Clone the Fedora gnuchess repo and copy the SPEC and patch files into your gnuchess folder:
 
 ```bash
-cd CBL-MarinerTutorials/SPECS/gnuchess
+cd Azure LinuxTutorials/SPECS/gnuchess
 git clone https://src.fedoraproject.org/rpms/gnuchess.git /tmp/gnuchess
 pushd /tmp/gnuchess
 git checkout 03a6481
@@ -223,12 +223,12 @@ cp /tmp/gnuchess/gnuchess.spec .
 
 ### Create a Signature Meta-data File
 
-Now, calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one. The signature meta-data file can also be automatically created using a specific argument in the command line as seen in the [CBL-Mariner documentation](https://github.com/microsoft/CBL-Mariner/blob/-/toolkit/docs/building/building.md#source-hashes).
+Now, calculate the SHA-256 hashed for gnuchess-6.2.7.tar.gz and the book_1.01.pgn.gz file  The SHA-256 sum is used by the build system as an integrity check to ensure that the tarballs associated with a SPEC file are the expected one. The signature meta-data file can also be automatically created using a specific argument in the command line as seen in the [Azure Linux documentation](https://github.com/microsoft/Azure Linux/blob/-/toolkit/docs/building/building.md#source-hashes).
 
 Calculate the new checksum:
 
 ```bash
-$ cd CBL-MarinerTutorials/SPECS/gnuchess
+$ cd Azure LinuxTutorials/SPECS/gnuchess
 $ sha256sum gnuchess-6.2.7.tar.gz
 e536675a61abe82e61b919f6b786755441d9fcd4c21e1c82fb9e5340dd229846  gnuchess-6.2.7.tar.gz
 $ sha256sum book_1.01.pgn.gz
@@ -246,10 +246,10 @@ Using your favorite editor create and save a gnuchess.signatures.json file with 
 }
 ```
 
-At this point your CBL-MarinerTutorials/SPECS/gnuchess folder should look similar to this:
+At this point your Azure LinuxTutorials/SPECS/gnuchess folder should look similar to this:
 
 ```bash
-~/CBL-MarinerTutorials/SPECS/gnuchess$ ls -la
+~/Azure LinuxTutorials/SPECS/gnuchess$ ls -la
 total 816
 drwxr-xr-x 2 jon jon   4096 Jan 22 14:23 .
 drwxr-xr-x 5 jon jon   4096 Jan 22 13:43 ..
@@ -261,11 +261,11 @@ drwxr-xr-x 5 jon jon   4096 Jan 22 13:43 ..
 
 ### Create a .spec File
 
-Now, we need to modify the gnuchess.spec file slightly to build properly for CBL-Mariner by:
+Now, we need to modify the gnuchess.spec file slightly to build properly for Azure Linux by:
 
 1. bumping the release number
 1. selecting the non-precompiled book
-1. patching the BuildRequires for c++ to use the CBL-Mariner package name
+1. patching the BuildRequires for c++ to use the Azure Linux package name
 1. updating the %changelog and professionally show gratitude to Fedora
 
 Your SPEC file should appear similar to this:
@@ -310,11 +310,11 @@ Next, you can check your SPEC file to ensure that it conforms with RPM design ru
 At this point, we can use a shortcut to verify that the gnu chess package compiles by issuing the following command.  It will build any packages not already built, but not build the image itself.
 
 ```bash
-$ cd CBL-MarinerTutorials/toolkit
+$ cd azurelinux-tutorials/toolkit
 $ sudo make build-packages CONFIG_FILE=
 ```
 
-If the build fails, inspect the build output for clues and repair any issues.  The default location for build logs is in the _CBL-MarinerTutorials/build/logs/pkggen/rpmbuilding/_ folder.  There should be one log for each package.
+If the build fails, inspect the build output for clues and repair any issues.  The default location for build logs is in the _Azure LinuxTutorials/build/logs/pkggen/rpmbuilding/_ folder.  There should be one log for each package.
 
 ### Add your Package
 
@@ -333,7 +333,7 @@ Finally, we need to add gnuchess to the demo-packages.json file.
 Save your demo-packages.json file and rebuild your image.
 
 ```bash
-cd CBL-MarinerTutorials/toolkit
+cd azurelinux-tutorials/toolkit
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json
 ```
 

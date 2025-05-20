@@ -14,11 +14,11 @@ License:        Apache License
 Group:          System Environment/Base
 URL:            https://my-company-or-product-url
 Vendor:         My Company Name
-Distribution:   Mariner
+Distribution:   Azure Linux
 BuildArch:      noarch
 
 %description
-This package creates a sample os subrelease file: /etc/os-subrelease.  Replace contents as needed for your CBL-Mariner based product information
+This package creates a sample os subrelease file: /etc/os-subrelease.  Replace contents as needed for your Azure Linux based product information
 
 %install
 rm -rf $RPM_BUILD_ROOT
