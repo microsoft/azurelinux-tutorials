@@ -163,7 +163,7 @@ It is possible to build your images and packages using pre-built RPMs from repos
 
 Example:
 
-Let's say your Azure Linux 2.0 image requires the `indent` package.  This package is available inside the [Azure Linux Extended Repository](http://packages.microsoft.com/cbl-mariner/2.0/prod/extended/x86_64/) and the corresponding .repo file pointing to Azure Linux's official RPM repository hosting its packages is available in the toolkit under `toolkit/repos/azure-linux-extended.repo`. With that you'll be able to build your image by first adding `indent` to your package list:
+Let's say your Azure Linux 2.0 image requires the `indent` package.  This package is available inside the [Azure Linux Extended Repository](http://packages.microsoft.com/azurelinux/2.0/prod/extended/x86_64/) and the corresponding .repo file pointing to Azure Linux's official RPM repository hosting its packages is available in the toolkit under `toolkit/repos/azure-linux-extended.repo`. With that you'll be able to build your image by first adding `indent` to your package list:
 
 ```json
  {

@@ -52,7 +52,7 @@ _Note:_ Having Dynamic Memory enabled may lead your app to crash due to integrat
 1. Select _Start_.
 1. Follow the Installer Prompts to Install your image
 1. When installation completes, select restart to reboot the machine. The installation ISO will be automatically ejected.
-1. When prompted sign in to your CBL-Mariner system using the user name and password provisioned through the Installer.
+1. When prompted sign in to your Azure Linux system using the user name and password provisioned through the Installer.
 
 ## Use Hyper-V to Boot Your Offline Image
 
@@ -106,4 +106,4 @@ choose DVD Drive and press Add.
 
 1. Right click your VM and select _Connect..._.
 1. Select _Start_.
-1. Wait for CBL-Mariner to boot to the login prompt, then sign in with the credentials you provisioned in the meta-user-data.iso file (username/password or username/sshkey pair).
+1. Wait for Azure Linux to boot to the login prompt, then sign in with the credentials you provisioned in the meta-user-data.iso file (username/password or username/sshkey pair).
