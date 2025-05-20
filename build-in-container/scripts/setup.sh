@@ -29,23 +29,23 @@ SOURCE_URL="https://cblmarinerstorage.blob.core.windows.net/sources/core"
 SPECS_DIR="$MARINER_BASE_DIR/SPECS"
 USE_CCACHE="y"
 
-# Build Mariner toolkit if not present, by cloning Mariner GitHub repo
+# Build Azure Linux toolkit if not present, by cloning Azure Linux GitHub repo
 #
 # No arguments
 # Global variables expected to be defined: BUILD_DIR, CHROOT_DIR, CHROOT_NB, OUT_DIR
 download_mariner_toolkit() {
     if [ ! "$(ls -A toolkit)" ]; then
-    echo "------------ Preparing Mariner toolkit ------------"
-        if [ ! -d CBL-Mariner ]; then
-            echo "------------ Cloning Mariner toolkit from github ------------"
+    echo "------------ Preparing Azure Linux toolkit ------------"
+        if [ ! -d azurelinux ]; then
+            echo "------------ Cloning Azure Linux toolkit from github ------------"
             git clone \
                 --branch ${MARINER_RELEASE_TAG} \
                 --depth 1 \
                 ${CBL_MARINER_GIT_URL}
         fi
-        echo "------------ Building Mariner toolkit ------------"
+        echo "------------ Building Azure Linux toolkit ------------"
         make -j$(nproc) \
-            -C CBL-Mariner/toolkit \
+            -C azurelinux/toolkit \
             package-toolkit \
             BUILD_DIR="$BUILD_DIR" \
             CHROOT_DIR="$CHROOT_DIR" \
@@ -54,7 +54,7 @@ download_mariner_toolkit() {
             LOG_LEVEL=info \
             OUT_DIR="$OUT_DIR" \
             REBUILD_TOOLS=y && \
-        rm -rf CBL-Mariner && \
+        rm -rf azurelinux && \
         tar -xzvf ${OUT_DIR}/toolkit-*.tar.gz
     fi
 }
