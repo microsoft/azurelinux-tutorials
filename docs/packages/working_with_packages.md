@@ -1,5 +1,7 @@
 # Working with Packages
 
+> **Note:** For customizing Azure Linux images, we recommend using the [Prism tool](https://github.com/microsoft/azure-linux-image-tools), which is the preferred method for building custom images. Please refer to the [Prism Image Customizer documentation](https://microsoft.github.io/azure-linux-image-tools/imagecustomizer/README.html) for details. The instructions below are still valid but represent the legacy approach for customizing images with packages.
+
 - [Image Config File](#image-config-file)
     - [File Paths](#file-paths)
     - [Package Lists](#package-lists)
