@@ -11,10 +11,10 @@ param (
    [string]
    $isoChecksum = "file:https://osrelease.download.prss.microsoft.com/pr/download/Mariner-2.0-x86_64.iso.sha256",
 
-   # Name of the CBL-Mariner configuration in the ISO
-   # Note that default config name for CBL-Mariner ISO is "CBL-Mariner Full"
+   # Name of the Azure Linux configuration in the ISO
+   # Note that default config name for Azure Linux ISO is "Azure Linux Full"
    [string]
-   $marinerConfigName = 'CBL-Mariner Full',
+   $marinerConfigName = 'Azure Linux Full',
 
    # username used to login
    [Parameter(mandatory=$true)]
@@ -36,7 +36,7 @@ param (
    # name of the 'main' provisioner script
    # this script must be in the provisionner folder
    [string]
-   $provisionerScript = 'customizeMariner.sh',
+   $provisionerScript = 'customizeAzureLinux.sh',
    
    # Name of the VM
    [string]

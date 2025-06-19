@@ -2,10 +2,10 @@
 
 set -e
 
-# install additional repositories from where to fetch Mariner packages
+# install additional repositories from where to fetch Azure Linux packages
 echo "-- install additional repositories"
 echo $USER_PSW | sudo -S tdnf -y install \
-    mariner-repos-extras
+    azure-linux-repos-extras
 
 # install packages
 echo "-- install required packages"
