@@ -15,7 +15,7 @@ The following assumes you have already completed the [Prepare your Environment](
 user@machine:~/git$ rsync -a  --exclude 'CVE*' azurelinux/SPECS/kernel azurelinux-tutorials/SPECS/ 
 ```
 
-Next, you will need to download a source tarball from [Azure-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). The tags on this repo follow the format `/rolling-lts/mariner<-2 or -3>/<kernel version>`. This translates to
+Next, you will need to download a source tarball from [CBL-Mariner-Linux-Kernel](https://github.com/microsoft/CBL-Mariner-Linux-Kernel). The tags on this repo follow the format `/rolling-lts/mariner<-2 or -3>/<kernel version>`. This translates to
 * [deprecated] For 1.0 kernels: `/rolling-lts/mariner/5.10.X.1`
 * For 2.0 kernels: `/rolling-lts/mariner-2/5.15.X.1`
 * For 3.0 kernels: `/rolling-lts/mariner-3/6.6.X.1`
