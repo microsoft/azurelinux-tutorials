@@ -9,7 +9,7 @@ Azure Linux OS Guard offers several key benefits:
 
 1. **Code Integrity**: By enforcing code integrity (CI) via Integrity Policy Enforcement (IPE) Azure Linux OS Guard ensures only trusted binaries (on the host and in containers) are loaded into memory. This further extends the security promise of Secure Boot (aka Trusted Launch) that ensures the integrity of the system is maintained during boot.
 2. **Immutable /usr**: By ensuring `/usr` is read-only, the integrity of the core executables on the system can be maintained.  
-3. **Declarative, Image Builds & Servicing**: Azure Linux OS Guard makes heavy use of [Image Customizer](https://github.com/microsoft/azure-linux-image-tools) which is an image build solution built by the Core OS group within Microsoft, allowing teams to easily extend the base image using a declarative configuration. 
+3. **Declarative Image Builds & Servicing**: Azure Linux OS Guard makes heavy use of [Image Customizer](https://github.com/microsoft/azure-linux-image-tools) which is an image build solution built by the Core OS group within Microsoft, allowing users to easily extend the base image using a declarative configuration. 
 4. **Mandatory Access Control**: Azure Linux OS Guard introduces SELinux in enforcing mode to ensure only authorized processes can perform certain actions. 
 
 ## Prerequisites
@@ -63,7 +63,7 @@ az storage account create --resource-group "$RESOURCE_GROUP_NAME" --name "$STORA
 az storage container create --account-name "$STORAGE_ACCOUNT_NAME" --auth-mode login --name "$STORAGE_CONTAINER_NAME"
 ```
 
-4) Upload the Azure Linux OS Guard VHD
+4) Upload the Azure Linux OS Guard VHD.
 
 ```bash
 az storage blob upload --account-name "$STORAGE_ACCOUNT_NAME" --container-name "$STORAGE_CONTAINER_NAME" --name image.vhd --file image.vhd --auth-mode login
@@ -165,7 +165,7 @@ az deployment group create \
 
 ## Deploy a VM with the Azure Linux OS Guard VM
 
-Run the following command to deploy a VM with the image you created. **Note**: There is a known issue with the Linux Guard image booting on smaller SKUs (such as Standard_DS1_v2)
+Run the following command to deploy a VM with the image you created. **Note**: There is a known issue with the Linux Guard image booting on smaller SKUs (such as Standard_DS1_v2).
 
 ```bash
 az vm create \
