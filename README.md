@@ -15,8 +15,8 @@ flowchart TD
     id1{{Do you want to experiment with Mariner or contribute to Mariner?}}
 
     id2A[Do you want to build locally with Mariner?]
-    id2B[Do you want to add an unsupported package? \n either a package Mariner has never supported \nor an updated major/minor version of a package Mariner supports]
-    id2C[Do you want to use Mariner for your project? \n ex. bare metal, IoT, embedded devices, etc.]
+    id2B[Do you want to add an unsupported package? <br> either a package Mariner has never supported <br>or an updated major/minor version of a package Mariner supports]
+    id2C[Do you want to use Mariner for your project? <br> ex. bare metal, IoT, embedded devices, etc.]
     id2D[Use the CBL-MarinerTutorials repo]
     id1 -->|experiment| id2A
     id2A -.-|or| id2B
@@ -25,7 +25,7 @@ flowchart TD
     
 
     id3[Do you want to fix an issue in Mariner?]
-    id3B[Do you want to add a common package? \n either a package supported by another major distro \nor a package used widely across popular open-source projects]
+    id3B[Do you want to add a common package? <br> either a package supported by another major distro <br>or a package used widely across popular open-source projects]
     id3C[Do you want to modify a supported Mariner package?]
     id3D[Do you want to rebuild Mariner from end-to-end?]
     id3E[Use the CBL-Mariner repo]
