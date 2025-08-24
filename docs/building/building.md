@@ -11,19 +11,19 @@ In the previous tutorials, we configured your build machine, walked through how 
 
 ### Build Derivate VHD or VHDX
 
-Choose an image to build by invoking one of the following build commands from the _CBL-MarinerTutorials/toolkit_ folder.
+Choose an image to build by invoking one of the following build commands from the _azurelinux-tutorials/toolkit_ folder.
 
 ```bash
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhd.json 
 sudo make image CONFIG_FILE=../imageconfigs/demo_vhdx.json
 ```
 
-The first time make image is invoked the toolkit downloads the necessary toolchain packages from the CBL-Mariner repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the CBL-MarinerTutorials repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the [Hello World](./SPECS/hello_world_demo/hello_world_demo.spec) and [OS-Subrelease](./SPECS/os-subrelease/os-subrelease.spec) packages will be compiled.  After all local packages are built, make will assemble the packages to build an image.
-The resulting binaries (images and rpms) are placed in the CBL-MarinerTutorials/out folder
+The first time make image is invoked the toolkit downloads the necessary toolchain packages from the Azure Linux repository at packages.microsoft.com.  These toolchain packages are the standard set needed to build any local packages contained in the azurelinux-tutorials repo.  Once the toolchain is ready, make automatically proceeds to build any local packages.  In this case, the [Hello World](./SPECS/hello_world_demo/hello_world_demo.spec) and [OS-Subrelease](./SPECS/os-subrelease/os-subrelease.spec) packages will be compiled.  After all local packages are built, make will assemble the packages to build an image.
+The resulting binaries (images and rpms) are placed in the azurelinux-tutorials/out folder
 
-    VHDX:       `CBL-MarinerTutorials/out/images/demo_vhdx/`
-    VHD:        `CBL-MarinerTutorials/out/images/demo_vhd/`
-    PACKAGES:   `CBL-MarinerTutorials/out/RPMS/x86_64/`
+    VHDX:       `azurelinux-tutorials/out/images/demo_vhdx/`
+    VHD:        `azurelinux-tutorials/out/images/demo_vhd/`
+    PACKAGES:   `azurelinux-tutorials/out/RPMS/x86_64/`
 
 ### Use Hyper-V to Boot Your Demo Image
 
@@ -47,16 +47,16 @@ Now show the contents of the os-subrelease file
     NAME="My Product Name"
     VERSION="my-version-id"
     ```
-Congratulations you've built and launched your first CBL-Mariner derivative image!
+Congratulations you've built and launched your first Azure Linux derivative image!
 
 ## Tutorial: Build a Demo ISO
 
-In the previous tutorial, we learned how to create a simple VHD(X) image. In this tutorial, we will turn our attention to creating a bootable ISO image for installing CBL-Mariner to either a physical machine or virtual hard drive.
+In the previous tutorial, we learned how to create a simple VHD(X) image. In this tutorial, we will turn our attention to creating a bootable ISO image for installing Azure Linux to either a physical machine or virtual hard drive.
 
 Let's jump right in.  Run the following command to build a demo ISO:
 
 ```bash
-cd CBL-MarinerTutorials/toolkit
+cd azurelinux-tutorials/toolkit
 sudo make iso CONFIG_FILE=../imageconfigs/demo_iso.json
 ```
 

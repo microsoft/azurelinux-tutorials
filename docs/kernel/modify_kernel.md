@@ -30,7 +30,7 @@ $ cd azurelinux-tutorials/SPECS/kernel/
 $ grep Version: kernel.spec
 Version:        5.15.102.1
 
-# Download the associated tar.gz file from https://github.com/microsoft/CBL-Mariner-Linux-Kernel. Be sure to substitute your Mariner version and kernel version.
+# Download the associated tar.gz file from https://github.com/microsoft/CBL-Mariner-Linux-Kernel. Be sure to substitute your Azure Linux version and kernel version.
 $ wget -O kernel-5.15.102.1.tar.gz https://github.com/microsoft/CBL-Mariner-Linux-Kernel/archive/refs/tags/rolling-lts/mariner-2/5.15.102.1.tar.gz
 ```
 
